@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".login.Activity_Register">
+
+    <View
+        android:id="@+id/view_rectangle_login"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@color/red"
+        android:scaleType="centerCrop"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent=".5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintWidth_percent="1">
+
+    </View>
+
+
+    <TextView
+        style="@style/title"
+        android:id="@+id/textview_registeractivity_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/register"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/registeractivity_constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent=".1"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.931" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/registeractivity_constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/shape_round_white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent=".80"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1">
+
+        <fragment
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+
+            android:id="@+id/fragment_register"
+            class="com.poma.restaurant.login.Fragment_Register"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:layout_constraintHeight_percent="1"
+
+            app:layout_constraintVertical_bias="1"
+            app:layout_constraintHorizontal_bias=".5"/>
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

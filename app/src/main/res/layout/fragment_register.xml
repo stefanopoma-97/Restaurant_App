@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".login.Fragment_Login">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textview_registerform_alert_message"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintWidth_percent=".8"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+
+                app:layout_constraintBottom_toTopOf="@+id/edittext_registerform_username"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                app:layout_constraintVertical_bias=".8"
+                app:layout_constraintHorizontal_bias=".5"
+
+                android:textColor="@color/red"
+                android:text="wrong pass"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:textAlignment="center"
+                android:visibility="invisible"/>
+
+            <EditText
+                android:id="@+id/edittext_registerform_username"
+
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent=".8"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                app:layout_constraintVertical_bias=".05"
+                app:layout_constraintHorizontal_bias=".3"
+
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+
+                android:hint="@string/username"/>
+
+            <EditText
+                android:id="@+id/edittext_registerform_password"
+
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent=".8"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_username"
+
+                app:layout_constraintVertical_bias=".02"
+                app:layout_constraintHorizontal_bias=".3"
+
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+
+                android:hint="@string/password"/>
+
+            <EditText
+                android:id="@+id/edittext_registerform_name"
+
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent=".8"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_password"
+
+                app:layout_constraintVertical_bias=".02"
+                app:layout_constraintHorizontal_bias=".3"
+
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+
+                android:hint="@string/name"/>
+
+            <EditText
+                android:id="@+id/edittext_registerform_surnamename"
+
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent=".8"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_name"
+
+                app:layout_constraintVertical_bias=".02"
+                app:layout_constraintHorizontal_bias=".3"
+
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+
+                android:hint="@string/surname"/>
+
+            <EditText
+                android:id="@+id/edittext_registerform_email"
+
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent=".8"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_surnamename"
+
+                app:layout_constraintVertical_bias=".02"
+                app:layout_constraintHorizontal_bias=".3"
+
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+
+                android:hint="@string/email"/>
+
+            <EditText
+                android:id="@+id/edittext_registerform_location"
+
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent=".8"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_email"
+
+                app:layout_constraintVertical_bias=".02"
+                app:layout_constraintHorizontal_bias=".3"
+
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+
+                android:hint="@string/location"/>
+
+            <DatePicker
+                android:id="@+id/datepicker_registerform_date"
+
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.9"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_location"
+
+                app:layout_constraintVertical_bias=".3"
+                app:layout_constraintHorizontal_bias=".5"
+
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+
+                android:hint="@string/location"/>
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button_registerform_register"
+                style="@style/button_primary"
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="16dp"
+
+                android:background="@drawable/button_primary_shape"
+                android:text="@string/login"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+
+                app:layout_constraintHorizontal_bias=".5"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/datepicker_registerform_date"
+                app:layout_constraintWidth_percent=".8" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button_registerform_cancel"
+                style="@style/button_secondary"
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="24dp"
+
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/button_secondary_shape"
+                android:text="@string/cancel"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias=".5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button_registerform_register"
+                app:layout_constraintWidth_percent=".8" />
+
+
+
+            />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+
+
+</FrameLayout>

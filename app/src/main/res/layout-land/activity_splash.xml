@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            style="@style/title_slash"
+            android:id="@+id/splash_textview_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
+            android:layout_above="@id/splash_imageview"
+            android:text="@string/app_name">
+        </TextView>
+
+        <TextView
+            style="@style/slogan_slash"
+            android:id="@+id/splash_textview_slogan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/splash_imageview"
+            android:text="@string/slogan">
+        </TextView>
+
+        <ImageView
+            android:id="@+id/splash_imageview"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:src="@mipmap/logo_launcher" />
+
+    </RelativeLayout>
+
+</FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

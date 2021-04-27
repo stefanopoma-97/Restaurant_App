@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="splash_theme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="title_slash" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textSize">30dp</item>
+        <item name="android:textColor">@drawable/title_splash_color</item>
+    </style>
+
+    <style name="title" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textSize">50dp</item>
+        <item name="android:textColor">@drawable/title_splash_color</item>
+    </style>
+
+    <style name="slogan_slash" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@drawable/slogan_splash_color</item>
+    </style>
+
+    <style name="button_primary" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="backgroundTint">@color/red</item>
+    </style>
+
+    <style name="button_primary_admin" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="backgroundTint">@color/blue_link</item>
+    </style>
+
+    <style name="button_secondary" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="backgroundTint">@color/grey</item>
+    </style>
+</resources>

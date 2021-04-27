@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">Restaurant</string>
+    <string name="slogan">Slogan</string>
+
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="login_admin">Login Admin</string>
+    <string name="anonymous_access">Anonymous access</string>
+    <string name="admin_access">Admin access</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="cancel">Cancel</string>
+    <string name="forget_password">Forget password?</string>
+    <string name="user_mandatory">Insert a Username</string>
+    <string name="password_mandatory">Insert a Password</string>
+    <string name="email_mandatory">Insert an Email</string>
+    <string name="location_mandatory">Insert a Location</string>
+    <string name="name_mandatory">Insert a Name</string>
+    <string name="surname_mandatory">Insert a Surname</string>
+    <string name="wrong_credentials">Wrong credentials</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="email">Email</string>
+    <string name="location">Location</string>
+    <string name="date">Date</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

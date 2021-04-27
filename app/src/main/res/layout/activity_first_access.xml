@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".login.Activity_First_Access"
+    >
+
+
+
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@color/red"
+        android:scaleType="centerCrop"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent=".5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintWidth_percent="1">
+
+    </View>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:cardCornerRadius="250dp"
+        app:cardBackgroundColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:layout_constraintVertical_bias=".5"
+
+        >
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:cardCornerRadius="250dp"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@mipmap/logo_launcher"
+                android:scaleType="centerCrop"/>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/shape_round_white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent=".70"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1">
+
+
+        <fragment
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+
+        android:id="@+id/fragment_access"
+        class="com.poma.restaurant.login.Fragment_Access"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintHeight_percent=".8"
+
+        app:layout_constraintVertical_bias=".2"
+        app:layout_constraintHorizontal_bias=".5"
+        >
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_access_admin"
+        class="com.poma.restaurant.login.Fragment_Access_Admin"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+
+
+        app:layout_constraintEnd_toEndOf="@+id/fragment_access"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_access"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+
+    </fragment>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
