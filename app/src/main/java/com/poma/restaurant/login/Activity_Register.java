@@ -41,4 +41,9 @@ public class Activity_Register extends AppCompatActivity implements Fragment_Reg
         setResult(RESULT_CANCELED,intent);
         finish();
     }
+
+    @Override
+    public void changePassword() {
+
+    }
 }

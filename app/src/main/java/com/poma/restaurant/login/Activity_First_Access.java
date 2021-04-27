@@ -51,7 +51,10 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
 
     @Override
     public void anonymous_access(Boolean user) {
-
+        Log.d(TAG_LOG, "Anonymous access");
+        Intent mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
+        startActivity(mainIntent);
+        Log.d(TAG_LOG, "start menù anonymous");
     }
 
     @Override
@@ -102,16 +105,16 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
             switch (resultCode)
             {
                 case RESULT_OK:
-                    /*final UserModel userModel = (UserModel)data.getParcelableExtra(UserModel.USER_DATA_EXTRA);
-                    final Intent detailIntent = new Intent(Action.SHOW_USER_ACTION);
-                    Log.d(TAG_LOG,"Registration completed! Username:"+userModel.getUsername());
-                    detailIntent.putExtra(UserModel.USER_DATA_EXTRA,userModel);
-                    Log.d(TAG_LOG,"Put Extra in intent");
-                    startActivity(detailIntent);
-                    Log.d(TAG_LOG,"Start Intent");
-                    finish();*/
+                    //TODO salvare nel db
+                    Log.d(TAG_LOG, "Return from register (user): OK");
+                    user = data.getParcelableExtra(User.USER_DATA_EXTRA);
+                    mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
+                    startActivity(mainIntent);
+                    Log.d(TAG_LOG, "start menù with user: "+user.getUsername()+"date: "+user.getDate());
+                    //finish();
                     break;
                 case RESULT_CANCELED:
+                    Log.d(TAG_LOG, "Return from register: CANCELED");
                     break;
             }
         }

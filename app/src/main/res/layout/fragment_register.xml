@@ -81,6 +81,24 @@
 
                 android:hint="@string/password"/>
 
+            <Button
+                android:id="@+id/button_registerform_changepassword"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintWidth_percent=".8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_username"
+
+                app:layout_constraintVertical_bias=".02"
+                app:layout_constraintHorizontal_bias=".3"
+                android:text="@string/change_password"
+                style="@style/button_secondary"
+                android:visibility="gone">
+
+            </Button>
+
             <EditText
                 android:id="@+id/edittext_registerform_name"
 
@@ -196,11 +214,12 @@
                 android:layout_marginTop="16dp"
 
                 android:background="@drawable/button_primary_shape"
-                android:text="@string/login"
+                android:text="@string/register"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
 
                 app:layout_constraintHorizontal_bias=".5"
+                app:layout_constraintVertical_bias=".1"
 
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/datepicker_registerform_date"
@@ -220,6 +239,7 @@
                 android:text="@string/cancel"
 
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias=".1"
 
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias=".5"

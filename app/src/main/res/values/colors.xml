@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="text_default">#595959</color>
     <color name="text_secondary">#808080</color>
+    <color name="red_light">#ff9ea1</color>
     <color name="red">#f5585c</color>
     <color name="blue_link">#0645AD</color>
     <color name="grey">#bfbfbf</color>

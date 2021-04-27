@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.poma.restaurant.R;
 
+import java.text.DateFormat;
 import java.util.Calendar;
 
 /**
@@ -36,6 +37,7 @@ public class Fragment_Register extends Fragment {
     private EditText e_location;
     private EditText e_name;
     private EditText e_surname;
+    private Button btn_changepassword;
 
     private TextView error;
 
@@ -74,6 +76,7 @@ public class Fragment_Register extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG_LOG,"On create");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -84,6 +87,8 @@ public class Fragment_Register extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.d(TAG_LOG,"On createView");
+
         View view= (View) inflater.inflate(R.layout.fragment_register, container, false);
 
         this.btn_cancel = (Button)view.findViewById(R.id.button_registerform_cancel);
@@ -98,11 +103,20 @@ public class Fragment_Register extends Fragment {
         this.e_name = (EditText)view.findViewById(R.id.edittext_registerform_name);
         this.e_surname = (EditText)view.findViewById(R.id.edittext_registerform_surnamename);
 
+        this.btn_changepassword = (Button) view.findViewById(R.id.button_registerform_changepassword);
+
 
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.cancel();
+            }
+        });
+
+        btn_changepassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.changePassword();
             }
         });
 
@@ -143,6 +157,8 @@ public class Fragment_Register extends Fragment {
         public void register(String username, String password, String name, String surname,
                              String location, String email, long date);
         public void cancel();
+
+        public void changePassword();
     }
 
     private Fragment_Register.RegisterInterface listener;
@@ -157,6 +173,7 @@ public class Fragment_Register extends Fragment {
             listener = (Fragment_Register.RegisterInterface) activity;
         }
         else {
+            Log.d(TAG_LOG,"Activity non ha interfaccia");
             throw new ClassCastException(activity.toString() +
                     "Does not implement the interface");
         }
@@ -225,5 +242,95 @@ public class Fragment_Register extends Fragment {
         }
         return true;
     }
+
+    //SETTERS
+    public void setE_username(String e_username) {
+        this.e_username.setText(e_username);
+    }
+
+    public void setE_password(String e_password) {
+        this.e_password.setText(e_password);
+    }
+
+    public void setE_date(long e_date) {
+        final DateFormat format = DateFormat.getDateInstance(DateFormat.MEDIUM);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(e_date);
+        this.e_date.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                                calendar.get(Calendar.DAY_OF_MONTH));
+    }
+
+    public void setE_email(String e_email) {
+        this.e_email.setText(e_email);
+    }
+
+    public void setE_location(String e_location) {
+        this.e_location.setText(e_location);
+    }
+
+    public void setE_name(String e_name) {
+        this.e_name.setText(e_name);
+    }
+
+    public void setE_surname(String e_surname) {
+        this.e_surname.setText(e_surname);
+    }
+
+    public void setVisibilityDate(int v){
+        this.e_date.setVisibility(v);
+    }
+
+    public void setVisibilityPassword(int v){
+        this.e_password.setVisibility(v);
+    }
+
+    public void setVisibilityBtnPassword(int v){
+        this.btn_changepassword.setVisibility(v);
+    }
+
+    public void setRegisterText(String text){
+        this.btn_register.setText(text);
+    }
+
+    public void setCancelText(String text){
+        this.btn_cancel.setText(text);
+    }
+
+    //GETTERS
+
+    public String getE_username() {
+        return this.e_username.getText().toString();
+    }
+
+    public String getE_password() {
+        return this.e_password.getText().toString();
+    }
+
+    public String getE_email() {
+        return this.e_email.getText().toString();
+    }
+
+    public String getE_name() {
+        return this.e_name.getText().toString();
+    }
+
+    public String getE_surname() {
+        return this.e_surname.getText().toString();
+    }
+
+    public String getE_location() {
+        return this.e_location.getText().toString();
+    }
+
+    public long  getE_date() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(e_date.getYear(),e_date.getMonth(),e_date.getDayOfMonth());
+        long date = cal.getTimeInMillis();
+        return date;
+    }
+
+
+
+
 
 }

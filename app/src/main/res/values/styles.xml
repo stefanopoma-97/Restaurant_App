@@ -41,4 +41,14 @@
         <item name="android:textColor">@color/white</item>
         <item name="backgroundTint">@color/grey</item>
     </style>
+
+
+
+
+
+
+    <style name="MyActionBar"
+        parent="@style/Theme.AppCompat.Light">
+        <item name="android:colorForeground">@color/red</item>
+    </style>
 </resources>

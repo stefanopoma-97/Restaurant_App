@@ -72,6 +72,8 @@ public class Fragment_Access extends Fragment {
 
         Button button = (Button) view.findViewById(R.id.login_button);
         Button btn_register = (Button) view.findViewById(R.id.register_button);
+        Button btn_anonymous = (Button) view.findViewById(R.id.anonymous_access_button);
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +86,13 @@ public class Fragment_Access extends Fragment {
             @Override
             public void onClick(View v) {
                 listener.register(true);
+            }
+        });
+
+        btn_anonymous.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.anonymous_access(true);
             }
         });
 

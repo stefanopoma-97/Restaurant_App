@@ -46,6 +46,8 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
 
     @Override
     public void login(String username, String password) {
+
+        //TODO controllo con db
         Log.d(TAG_LOG, "inizio metodo login, con user: "+this.user);
 
         Fragment_Login fragment_login = (Fragment_Login)
