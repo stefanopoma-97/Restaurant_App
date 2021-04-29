@@ -91,7 +91,7 @@ public class Activity_Register extends AppCompatActivity implements Fragment_Reg
 
                             FirebaseUser user = mAuth.getCurrentUser();
                             User user_create;
-                            user_create= User.create(username,password).withDate(date).withEmail(email).withLocation(location).withName(name).withSurname(surname);
+                            user_create= User.create(username,password).withDate(date).withEmail(email).withLocation(location).withName(name).withSurname(surname).withAdmin(false);
 
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -100,7 +100,7 @@ public class Activity_Register extends AppCompatActivity implements Fragment_Reg
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
                                         Toast.makeText(Activity_Register.this, "Creazione account", Toast.LENGTH_SHORT).show();
-                                        Log.d(TAG_LOG, "Creo user: user: "+user_create.getEmail());
+                                        Log.d(TAG_LOG, "Creo user: admin: "+user_create.getAdmin());
                                         progressBarr(false);
                                         getBack(RESULT_OK, user_create);
 
@@ -122,14 +122,6 @@ public class Activity_Register extends AppCompatActivity implements Fragment_Reg
 
                         else {
                             Log.d(TAG_LOG, "createUserWithEmail:fail");
-                            /*String message = task.getException().getMessage();
-                            String localizedMessage = task.getException().getLocalizedMessage();
-                            //String errorCode = ((FirebaseAuthInvalidUserException) task.getException()).getErrorCode();
-
-                            Log.d(TAG_LOG, "message: "+message);
-                            Log.d(TAG_LOG, "localized message: "+localizedMessage);
-
-                            //Log.d(TAG_LOG, "error code: "+errorCode);*/
 
                             try {
                                 throw task.getException();
@@ -140,18 +132,15 @@ public class Activity_Register extends AppCompatActivity implements Fragment_Reg
                             } catch(FirebaseAuthInvalidCredentialsException e) {
                                 Log.d(TAG_LOG, "credential exception");
                                 fragment_register.setError(getResources().getString(R.string.email_error));
-                            } catch(FirebaseAuthUserCollisionException e) {
-                                Log.d(TAG_LOG, "user collision");
-                                fragment_register.setError(getResources().getString(R.string.email_exist));
-
-
-                            } catch(Exception e) {
+                            } catch(FirebaseAuthInvalidUserException e) {
+                                Log.d(TAG_LOG, "User exception");
+                                fragment_register.setError(getResources().getString(R.string.no_user));
+                            }
+                            catch(Exception e) {
                                 Log.e(TAG_LOG, e.getMessage());
                             }
 
 
-
-                            //Toast.makeText(Activity_Register.this, "Errore creazione account", Toast.LENGTH_SHORT).show();
 
                         }
                     }

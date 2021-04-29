@@ -10,9 +10,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.poma.restaurant.login.Activity_First_Access;
 
 public class Activity_Splash extends AppCompatActivity {
+    private FirebaseAuth mAuth;
 
     //tempo che dobbiamo aspettare
     private static final long MIN_WAIT_INTERVAL = 1000L;
@@ -73,6 +76,22 @@ public class Activity_Splash extends AppCompatActivity {
         if(startTime == -1L) {
             startTime = SystemClock.uptimeMillis();
         }
+
+        Log.d(TAG_LOG, "on start");
+        mAuth= FirebaseAuth.getInstance();
+
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            //Toast.makeText(Activity_Register.this, "C'è utente: "+currentUser, Toast.LENGTH_SHORT).show();
+            mAuth.signOut();
+
+        }
+        else {
+            //Toast.makeText(Activity_Register.this, "Non c'è utente: ", Toast.LENGTH_SHORT).show();
+
+        }
+
         Log.d(TAG_LOG, "Activity started");
     }
 

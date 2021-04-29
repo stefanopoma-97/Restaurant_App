@@ -144,6 +144,9 @@ public class Fragment_Login extends Fragment {
 
     public void setError(String text){
         this.error.setText(text);
+        this.error.setVisibility(View.VISIBLE);
+        this.error.requestFocus();
+
     }
 
     private Boolean checkFields (){

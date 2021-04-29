@@ -1,8 +1,11 @@
 package com.poma.restaurant.model;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
+
+import androidx.annotation.RequiresApi;
 
 public class User implements Parcelable {
 
@@ -13,6 +16,7 @@ public class User implements Parcelable {
     private String location;
     private String name;
     private String surname;
+    private boolean admin;
     public static final String USER_DATA_EXTRA = "com.poma.restaurant.model.USER_DATA_EXTRA";
 
     private static final byte PRESENT = 1;
@@ -33,6 +37,7 @@ public class User implements Parcelable {
     };
 
     //costructor to pass from parcel to java object
+
     public User(Parcel in) {
         this.username = in.readString();
         this.password = in.readString();
@@ -58,6 +63,10 @@ public class User implements Parcelable {
         if(in.readByte() == PRESENT)
         {
             this.surname = in.readString();
+        }
+        if(in.readByte() == PRESENT)
+        {
+            this.admin = in.readInt() == 1;
         }
     }
 
@@ -113,12 +122,21 @@ public class User implements Parcelable {
         } else {
             dest.writeByte(NOT_PRESENT);
         }
+
+        if(!(Boolean.valueOf(this.admin)==null))
+        {
+            dest.writeByte(PRESENT);
+            dest.writeInt(this.admin ? 1 : 0);
+        } else {
+            dest.writeByte(NOT_PRESENT);
+        }
     }
 
     private User(final String username, final String password) {
 
         this.username = username;
         this.password = password;
+        this.admin = false;
     }
 
     public static User create(final String username, final String password) {
@@ -151,6 +169,11 @@ public class User implements Parcelable {
         return this;
     }
 
+    public User withAdmin(boolean admin) {
+        this.admin = admin;
+        return this;
+    }
+
     public String getUsername() {
         return this.username;
     }
@@ -177,5 +200,9 @@ public class User implements Parcelable {
 
     public long getDate() {
         return this.date;
+    }
+
+    public boolean getAdmin() {
+        return this.admin;
     }
 }

@@ -164,7 +164,7 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             //Toast.makeText(Activity_Register.this, "C'è utente: "+currentUser, Toast.LENGTH_SHORT).show();
-            mAuth.signOut();
+            //mAuth.signOut();
 
         }
         else {
