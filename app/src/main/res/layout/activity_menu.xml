@@ -47,6 +47,14 @@
 
         </Button>
 
+        <Button
+            android:id="@+id/button_menu_loguout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="logout"
+            tools:layout_editor_absoluteX="152dp"
+            tools:layout_editor_absoluteY="469dp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

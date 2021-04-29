@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.poma.restaurant.R;
 
 /**
@@ -27,6 +28,7 @@ public class Fragment_Login extends Fragment {
     private Button btn_login;
     private EditText e_username;
     private EditText e_password;
+    private EditText e_email;
     private TextView error;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -79,6 +81,8 @@ public class Fragment_Login extends Fragment {
         this.btn_login = (Button)view.findViewById(R.id.login_confirm);
         this.e_username = (EditText)view.findViewById(R.id.username_loginform);
         this.e_password = (EditText)view.findViewById(R.id.password_loginform);
+        this.e_email = (EditText)view.findViewById(R.id.email_loginform);
+
         this.error = (TextView)view.findViewById(R.id.textview_alert_message_loginform);
 
 
@@ -98,9 +102,11 @@ public class Fragment_Login extends Fragment {
                 if(checkFields()){
                     String username = e_username.getText().toString();
                     String password = e_password.getText().toString();
-                    Log.d(TAG_LOG,"fragment manda comando login a activity");
+                    String email = e_email.getText().toString();
 
-                    listener.login(username, password);
+                    Log.d(TAG_LOG,"fragment manda comando login a activity");
+                    listener.login(email, password);
+
                 }
                 else{
                     return;
@@ -115,7 +121,7 @@ public class Fragment_Login extends Fragment {
     //Interfaccia
     //Activity deve implementare i metodi specificati
     public interface LoginInterface {
-        public void login(String username, String password);
+        public void login(String email, String password);
         public void cancel();
     }
 
@@ -141,12 +147,12 @@ public class Fragment_Login extends Fragment {
     }
 
     private Boolean checkFields (){
-        String username = this.e_username.getText().toString();
+        String email = this.e_email.getText().toString();
         String password = this.e_password.getText().toString();
 
-        if(TextUtils.isEmpty(username))
+        if(TextUtils.isEmpty(email))
         {
-            error.setText(getResources().getString(R.string.user_mandatory));
+            error.setText(getResources().getString(R.string.email_mandatory));
             error.setVisibility(View.VISIBLE);
             return false;
         }

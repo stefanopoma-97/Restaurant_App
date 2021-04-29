@@ -33,6 +33,11 @@
     <string name="password_same">Your new password cannot be same as old password</string>
     <string name="save">Save</string>
     <string name="error_old_pass">Old password is wrong</string>
+    <string name="password_saved">Password has been saved</string>
+    <string name="email_error">Insert a real mail</string>
+    <string name="email_exist">This mail already exist</string>
+    <string name="password_weak">Password weak</string>
+    <string name="register_wait">Registering Please Wait...</string>
 
 
     <string name="back">Back</string>

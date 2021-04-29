@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.poma.restaurant.R;
 
@@ -40,6 +42,9 @@ public class Activity_Password extends AppCompatActivity implements Fragment_Pas
 
         if(old_password.equals("poma")){
             Log.d(TAG_LOG, "old password ok");
+
+            Toast.makeText(Activity_Password.this, getResources().getString(R.string.password_saved), Toast.LENGTH_SHORT).show();
+
             finish();
         }
         else {

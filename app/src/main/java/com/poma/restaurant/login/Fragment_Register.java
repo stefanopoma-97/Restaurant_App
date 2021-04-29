@@ -1,6 +1,7 @@
 package com.poma.restaurant.login;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,9 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.poma.restaurant.R;
@@ -39,7 +42,11 @@ public class Fragment_Register extends Fragment {
     private EditText e_surname;
     private Button btn_changepassword;
 
+    private Spinner spinner;
+
     private TextView error;
+
+    //TODO progress bar
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -102,9 +109,18 @@ public class Fragment_Register extends Fragment {
         this.e_location = (EditText)view.findViewById(R.id.edittext_registerform_location);
         this.e_name = (EditText)view.findViewById(R.id.edittext_registerform_name);
         this.e_surname = (EditText)view.findViewById(R.id.edittext_registerform_surnamename);
+        this.spinner = (Spinner) view.findViewById(R.id.spinner_registerform_location);
+
 
         this.btn_changepassword = (Button) view.findViewById(R.id.button_registerform_changepassword);
 
+
+        String[] items = new String[]{"Brescia", "Milano", "Bergamo"};
+        //create an adapter to describe how the items are displayed, adapters are used in several places in android.
+        //There are multiple variations of this, but this is the basic variant.
+        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, items);
+        //set the spinners adapter to the previously created one.
+        spinner.setAdapter(adapter);
 
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +144,8 @@ public class Fragment_Register extends Fragment {
                     String username = e_username.getText().toString();
                     String password = e_password.getText().toString();
                     String email = e_email.getText().toString();
-                    String location = e_location.getText().toString();
+                    //String location = e_location.getText().toString();
+                    String location = spinner.getSelectedItem().toString();
                     String name = e_name.getText().toString();
                     String surname = e_surname.getText().toString();
 
@@ -137,7 +154,8 @@ public class Fragment_Register extends Fragment {
                     final long date = cal.getTimeInMillis();
 
                     Log.d(TAG_LOG,"fragment manda comando register a activity");
-                    listener.register(username,name,name, surname, location, email, date);
+                    error.setVisibility(View.GONE);
+                    listener.register(username,password,name, surname, location, email, date);
                 }
                 else{
                     return;
@@ -181,13 +199,17 @@ public class Fragment_Register extends Fragment {
 
     public void setError(String text){
         this.error.setText(text);
+        this.error.setVisibility(View.VISIBLE);
+        this.error.requestFocus();
     }
+
 
     private Boolean checkFields (){
         String username = this.e_username.getText().toString();
         String password = this.e_password.getText().toString();
         String email = this.e_email.getText().toString();
-        String location = this.e_location.getText().toString();
+        //String location = this.e_location.getText().toString();
+        String location = this.spinner.getSelectedItem().toString();
         String name = this.e_name.getText().toString();
         String surname = this.e_surname.getText().toString();
 
@@ -328,7 +350,6 @@ public class Fragment_Register extends Fragment {
         long date = cal.getTimeInMillis();
         return date;
     }
-
 
 
 

@@ -8,7 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.poma.restaurant.R;
 import com.poma.restaurant.model.User;
 import com.poma.restaurant.utilities.Action;
@@ -16,6 +19,8 @@ import com.poma.restaurant.utilities.Action;
 public class Activity_Login extends AppCompatActivity implements Fragment_Login.LoginInterface{
     private static final String TAG_LOG = Activity_Login.class.getName();
     private static final String USER_LOGIN_EXTRA = "com.poma.restaurant.USER_LOGIN_EXTRA ";
+    private FirebaseAuth mAuth;
+
 
     private Boolean user;
 
@@ -30,6 +35,10 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
         View view = findViewById(R.id.view_rectangle_login);
         Button btn_login = (Button)findViewById(R.id.login_confirm);
 
+        //Auth
+        mAuth = FirebaseAuth.getInstance();
+
+
         Intent intent = getIntent(); //receive the intent from Activity_first_access
 
         if (intent.getBooleanExtra(USER_LOGIN_EXTRA, false)) this.user = true;
@@ -42,6 +51,23 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
         }
 
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG_LOG, "on start");
+
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            Toast.makeText(Activity_Login.this, "C'è utente: "+currentUser, Toast.LENGTH_SHORT).show();
+
+        }
+        else {
+            Toast.makeText(Activity_Login.this, "Non c'è utente: ", Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     @Override

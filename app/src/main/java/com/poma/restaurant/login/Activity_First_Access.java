@@ -1,20 +1,42 @@
 package com.poma.restaurant.login;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseError;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.poma.restaurant.R;
 import com.poma.restaurant.menu.Activity_Menu;
 import com.poma.restaurant.model.User;
 import com.poma.restaurant.utilities.Action;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Activity_First_Access extends AppCompatActivity implements Fragment_Access.FirstAccessInterface, Fragment_Access_Admin.FirstAccessAdminInterface {
 
     private static final String TAG_LOG = Activity_First_Access.class.getName();
     private static final String USER_LOGIN_EXTRA = "com.poma.restaurant.USER_LOGIN_EXTRA ";
+    private FirebaseAuth mAuth;
 
 
     private static final int LOGIN_REQUEST_ID = 1;
@@ -25,6 +47,9 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_access);
         Log.d(TAG_LOG,"Start activity");
+
+
+
 
     }
 
@@ -53,6 +78,14 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
     public void anonymous_access(Boolean user) {
         Log.d(TAG_LOG, "Anonymous access");
         Intent mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
+
+        /*FirebaseDatabase db =FirebaseDatabase.getInstance("https://restaurant-app-f5ff3-default-rtdb.europe-west1.firebasedatabase.app/");
+        //FirebaseDatabase db =FirebaseDatabase.getInstance();
+        DatabaseReference myRef = db.getReference("message");
+        myRef.setValue("Hello, World!");*/
+
+
+
         startActivity(mainIntent);
         Log.d(TAG_LOG, "start menù anonymous");
     }
@@ -117,6 +150,26 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
                     Log.d(TAG_LOG, "Return from register: CANCELED");
                     break;
             }
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Log.d(TAG_LOG, "on start");
+        mAuth= FirebaseAuth.getInstance();
+
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            //Toast.makeText(Activity_Register.this, "C'è utente: "+currentUser, Toast.LENGTH_SHORT).show();
+            mAuth.signOut();
+
+        }
+        else {
+            //Toast.makeText(Activity_Register.this, "Non c'è utente: ", Toast.LENGTH_SHORT).show();
+
         }
     }
 }

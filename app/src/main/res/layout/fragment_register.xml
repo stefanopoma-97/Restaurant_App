@@ -16,6 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
+
             <TextView
                 android:id="@+id/textview_registerform_alert_message"
                 android:layout_width="0dp"
@@ -24,7 +26,7 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
 
-                app:layout_constraintBottom_toTopOf="@+id/edittext_registerform_username"
+                app:layout_constraintBottom_toTopOf="@+id/edittext_registerform_email"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -40,7 +42,7 @@
                 android:visibility="invisible"/>
 
             <EditText
-                android:id="@+id/edittext_registerform_username"
+                android:id="@+id/edittext_registerform_email"
 
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent=".8"
@@ -58,7 +60,7 @@
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
 
-                android:hint="@string/username"/>
+                android:hint="@string/email"/>
 
             <EditText
                 android:id="@+id/edittext_registerform_password"
@@ -70,7 +72,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_username"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_email"
 
                 app:layout_constraintVertical_bias=".02"
                 app:layout_constraintHorizontal_bias=".3"
@@ -89,7 +91,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_username"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_email"
 
                 app:layout_constraintVertical_bias=".02"
                 app:layout_constraintHorizontal_bias=".3"
@@ -142,7 +144,7 @@
                 android:hint="@string/surname"/>
 
             <EditText
-                android:id="@+id/edittext_registerform_email"
+                android:id="@+id/edittext_registerform_username"
 
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent=".8"
@@ -160,10 +162,33 @@
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
 
-                android:hint="@string/email"/>
+                android:hint="@string/username"/>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinner_registerform_location"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent=".8"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_username"
+                android:spinnerMode="dropdown"
+                android:prompt="@string/location"
+
+
+                app:layout_constraintVertical_bias=".02"
+                app:layout_constraintHorizontal_bias=".3"
+
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+
+            </androidx.appcompat.widget.AppCompatSpinner>
 
             <EditText
                 android:id="@+id/edittext_registerform_location"
+                android:visibility="gone"
 
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent=".8"
@@ -172,7 +197,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_email"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_username"
 
                 app:layout_constraintVertical_bias=".02"
                 app:layout_constraintHorizontal_bias=".3"

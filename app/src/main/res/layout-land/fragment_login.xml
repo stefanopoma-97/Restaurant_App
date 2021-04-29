@@ -31,8 +31,33 @@
             android:textAlignment="center"
             android:visibility="invisible"/>
 
+
+
         <EditText
             android:id="@+id/username_loginform"
+
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent=".8"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintBottom_toTopOf="@+id/password_loginform"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:layout_constraintVertical_bias=".9"
+            app:layout_constraintHorizontal_bias=".3"
+
+            android:visibility="gone"
+
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+
+            android:hint="@string/username"/>
+
+        <EditText
+            android:id="@+id/email_loginform"
 
             android:layout_width="0dp"
             app:layout_constraintWidth_percent=".8"
@@ -50,7 +75,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
 
-            android:hint="@string/username"/>
+            android:hint="@string/email"/>
 
         <EditText
             android:id="@+id/password_loginform"
