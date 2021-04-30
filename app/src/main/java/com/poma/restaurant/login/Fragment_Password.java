@@ -115,18 +115,6 @@ public class Fragment_Password extends Fragment {
             }
         });
 
-        /*e_old_password.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                checkEnableButton();
-                return true;
-            }
-        });*/
-
-
-
-
-
 
 
         return view;
@@ -159,6 +147,8 @@ public class Fragment_Password extends Fragment {
 
     public void setError(String text){
         this.error.setText(text);
+        this.error.setVisibility(View.VISIBLE);
+        this.error.requestFocus();
     }
 
     private Boolean checkFields (){
@@ -235,6 +225,30 @@ public class Fragment_Password extends Fragment {
         else {
             buttonSaveSetEnable(false);
         }
+    }
+
+    public String get_new(){
+        return this.e_new_password.getText().toString();
+    }
+
+    public String get_old(){
+        return this.e_old_password.getText().toString();
+    }
+
+    public String get_repeat(){
+        return this.e_repeat_password.getText().toString();
+    }
+
+    public void set_new (String s){
+        this.e_new_password.setText(s);
+    }
+
+    public void set_old (String s){
+        this.e_old_password.setText(s);
+    }
+
+    public void set_repeat (String s){
+        this.e_repeat_password.setText(s);
     }
 
 

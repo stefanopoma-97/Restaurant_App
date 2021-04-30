@@ -60,7 +60,50 @@
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
 
+                android:visibility="visible"
+
                 android:hint="@string/email"/>
+
+            <TextView
+                android:id="@+id/textview_registerform_email"
+
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent=".8"
+                android:layout_height="wrap_content"
+
+                android:textAlignment="center"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                app:layout_constraintVertical_bias=".05"
+                app:layout_constraintHorizontal_bias=".3"
+
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+
+                android:visibility="invisible"
+
+                android:hint="@string/email"/>
+
+            <Button
+                android:id="@+id/button_registerform_changeemail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintWidth_percent=".8"
+                app:layout_constraintBottom_toTopOf="@+id/edittext_registerform_password"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent"
+
+                app:layout_constraintVertical_bias="1"
+                app:layout_constraintHorizontal_bias=".3"
+                android:text="@string/change_password"
+                style="@style/button_secondary"
+                android:visibility="gone"/>
 
             <EditText
                 android:id="@+id/edittext_registerform_password"
@@ -97,7 +140,7 @@
                 app:layout_constraintHorizontal_bias=".3"
                 android:text="@string/change_password"
                 style="@style/button_secondary"
-                android:visibility="gone">
+                android:visibility="invisible">
 
             </Button>
 

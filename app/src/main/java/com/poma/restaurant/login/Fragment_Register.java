@@ -41,10 +41,15 @@ public class Fragment_Register extends Fragment {
     private EditText e_name;
     private EditText e_surname;
     private Button btn_changepassword;
+    private Button btn_changeemail;
+
+    private TextView t_email;
 
     private Spinner spinner;
 
     private TextView error;
+
+    private static boolean modifica = false;
 
     //TODO progress bar
 
@@ -113,6 +118,8 @@ public class Fragment_Register extends Fragment {
 
 
         this.btn_changepassword = (Button) view.findViewById(R.id.button_registerform_changepassword);
+        this.btn_changeemail = (Button)view.findViewById(R.id.button_registerform_changeemail);
+        this.t_email = (TextView)view.findViewById(R.id.textview_registerform_email);
 
 
         String[] items = new String[]{"Brescia", "Milano", "Bergamo"};
@@ -139,27 +146,51 @@ public class Fragment_Register extends Fragment {
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG_LOG,"Click su bottone register, modifica: "+modifica);
 
-                if(checkFields()){
-                    String username = e_username.getText().toString();
-                    String password = e_password.getText().toString();
-                    String email = e_email.getText().toString();
-                    //String location = e_location.getText().toString();
-                    String location = spinner.getSelectedItem().toString();
-                    String name = e_name.getText().toString();
-                    String surname = e_surname.getText().toString();
+                if(modifica==false){
+                    Log.d(TAG_LOG,"procedure registrazione");
 
-                    Calendar cal = Calendar.getInstance();
-                    cal.set(e_date.getYear(),e_date.getMonth(),e_date.getDayOfMonth());
-                    final long date = cal.getTimeInMillis();
+                    if(checkFields()){
+                        String username = e_username.getText().toString();
+                        String password = e_password.getText().toString();
+                        String email = e_email.getText().toString();
+                        //String location = e_location.getText().toString();
+                        String location = spinner.getSelectedItem().toString();
+                        String name = e_name.getText().toString();
+                        String surname = e_surname.getText().toString();
 
-                    Log.d(TAG_LOG,"fragment manda comando register a activity");
-                    error.setVisibility(View.GONE);
-                    listener.register(username,password,name, surname, location, email, date);
+                        Calendar cal = Calendar.getInstance();
+                        cal.set(e_date.getYear(),e_date.getMonth(),e_date.getDayOfMonth());
+                        final long date = cal.getTimeInMillis();
+
+                        Log.d(TAG_LOG,"fragment manda comando register a activity");
+                        error.setVisibility(View.GONE);
+                        listener.register(username,password,name, surname, location, email, date);
+                    }
+                    else{
+                        return;
+                    }
                 }
-                else{
-                    return;
+                else {
+                    Log.d(TAG_LOG,"procedure modifica");
+
+                    if(checkUpdateFields()){
+                        String username = e_username.getText().toString();
+                        String location = spinner.getSelectedItem().toString();
+                        String name = e_name.getText().toString();
+                        String surname = e_surname.getText().toString();
+
+                        /*Calendar cal = Calendar.getInstance();
+                        cal.set(e_date.getYear(),e_date.getMonth(),e_date.getDayOfMonth());
+                        final long date = cal.getTimeInMillis();*/
+                        error.setVisibility(View.GONE);
+                        listener.update(username, name, surname, location);
+                    }
+                    else {return;}
                 }
+
+
             }
         });
 
@@ -174,6 +205,7 @@ public class Fragment_Register extends Fragment {
     public interface RegisterInterface {
         public void register(String username, String password, String name, String surname,
                              String location, String email, long date);
+        public void update(String username, String name, String surname, String location);
         public void cancel();
 
         public void changePassword();
@@ -265,6 +297,49 @@ public class Fragment_Register extends Fragment {
         return true;
     }
 
+
+    private Boolean checkUpdateFields (){
+        String username = this.e_username.getText().toString();
+        String location = this.spinner.getSelectedItem().toString();
+        String name = this.e_name.getText().toString();
+        String surname = this.e_surname.getText().toString();
+
+        if(TextUtils.isEmpty(username))
+        {
+            this.error.setText(getResources().getString(R.string.user_mandatory));
+            this.error.setVisibility(View.VISIBLE);
+            this.error.requestFocus();
+            return false;
+        }
+
+
+        if(TextUtils.isEmpty(location))
+        {
+            this.error.setText(getResources().getString(R.string.location_mandatory));
+            this.error.setVisibility(View.VISIBLE);
+            this.error.requestFocus();
+
+            return false;
+        }
+        if(TextUtils.isEmpty(name))
+        {
+            this.error.setText(getResources().getString(R.string.name_mandatory));
+            this.error.setVisibility(View.VISIBLE);
+            this.error.requestFocus();
+
+            return false;
+        }
+        if(TextUtils.isEmpty(surname))
+        {
+            this.error.setText(getResources().getString(R.string.surname_mandatory));
+            this.error.setVisibility(View.VISIBLE);
+            this.error.requestFocus();
+
+            return false;
+        }
+        return true;
+    }
+
     //SETTERS
     public void setE_username(String e_username) {
         this.e_username.setText(e_username);
@@ -284,6 +359,10 @@ public class Fragment_Register extends Fragment {
 
     public void setE_email(String e_email) {
         this.e_email.setText(e_email);
+    }
+
+    public void setT_email(String e_email) {
+        this.t_email.setText(e_email);
     }
 
     public void setE_location(String e_location) {
@@ -306,9 +385,22 @@ public class Fragment_Register extends Fragment {
         this.e_password.setVisibility(v);
     }
 
+    public void setVisibilityEmail(int v){
+        this.e_email.setVisibility(v);
+    }
+
+    public void setVisibilityTextViewEmail(int v){
+        this.t_email.setVisibility(v);
+    }
+
     public void setVisibilityBtnPassword(int v){
         this.btn_changepassword.setVisibility(v);
     }
+
+    public void setVisibilityBtnEmail(int v){
+        this.btn_changeemail.setVisibility(v);
+    }
+
 
     public void setRegisterText(String text){
         this.btn_register.setText(text);
@@ -332,6 +424,10 @@ public class Fragment_Register extends Fragment {
         return this.e_email.getText().toString();
     }
 
+    public String getT_email() {
+        return this.t_email.getText().toString();
+    }
+
     public String getE_name() {
         return this.e_name.getText().toString();
     }
@@ -349,6 +445,10 @@ public class Fragment_Register extends Fragment {
         cal.set(e_date.getYear(),e_date.getMonth(),e_date.getDayOfMonth());
         long date = cal.getTimeInMillis();
         return date;
+    }
+
+    public void setModifica (boolean b){
+        modifica=b;
     }
 
 

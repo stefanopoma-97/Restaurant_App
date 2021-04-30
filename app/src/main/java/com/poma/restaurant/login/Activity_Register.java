@@ -52,24 +52,6 @@ public class Activity_Register extends AppCompatActivity implements Fragment_Reg
 
         Log.d(TAG_LOG, "on create");
 
-        /*this.db =FirebaseDatabase.getInstance("https://restaurant-app-f5ff3-default-rtdb.europe-west1.firebasedatabase.app/");
-        //FirebaseDatabase db =FirebaseDatabase.getInstance();
-        this.ref= db.getReference();
-        this.users = ref.child("users");
-        users.child("1").setValue("poma");
-
-        users.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                maxid=(snapshot.getChildrenCount());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
-
     }
 
     @Override
@@ -115,9 +97,7 @@ public class Activity_Register extends AppCompatActivity implements Fragment_Reg
                                 }
                             });
 
-
-
-
+                        //FAIL
                         }
 
                         else {
@@ -136,6 +116,10 @@ public class Activity_Register extends AppCompatActivity implements Fragment_Reg
                                 Log.d(TAG_LOG, "User exception");
                                 fragment_register.setError(getResources().getString(R.string.no_user));
                             }
+                            catch(FirebaseAuthUserCollisionException e) {
+                                Log.d(TAG_LOG, "Collision exception");
+                                fragment_register.setError(getResources().getString(R.string.user_collision));
+                            }
                             catch(Exception e) {
                                 Log.e(TAG_LOG, e.getMessage());
                             }
@@ -146,27 +130,10 @@ public class Activity_Register extends AppCompatActivity implements Fragment_Reg
                     }
                 });
 
+    }
 
-
-
-        // Add a new document with a generated ID
-        /*db.collection("users")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG_LOG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG_LOG, "Error adding document", e);
-                    }
-                });*/
-
-
-
+    @Override
+    public void update(String username, String name, String surname, String location) {
 
     }
 

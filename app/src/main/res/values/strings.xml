@@ -34,6 +34,7 @@
     <string name="save">Save</string>
     <string name="error_old_pass">Old password is wrong</string>
     <string name="password_saved">Password has been saved</string>
+    <string name="password_not_saved">Password has not been saved</string>
     <string name="email_error">Insert a real mail</string>
     <string name="email_exist">This mail already exist</string>
     <string name="password_weak">Password weak</string>
@@ -41,12 +42,15 @@
     <string name="login_wait">Sign in Please Wait...</string>
 
     <string name="no_user">There isn\'t a user with this email</string>
+    <string name="user_collision">This email already exist</string>
     <string name="no_admin">The user is not an Admin</string>
-    <string name="login_error_pass">Password error</string>
+    <string name="login_error_pass">Password incorrect</string>
+    <string name="authentication_failed">Authentication failed</string>
 
 
     <string name="back">Back</string>
     <string name="change_password">Change Password</string>
+    <string name="change_email">Change Email</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

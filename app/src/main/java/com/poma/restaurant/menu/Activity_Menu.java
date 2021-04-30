@@ -94,6 +94,7 @@ public class Activity_Menu extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        this.mAuth=FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             this.btn_logout.setVisibility(View.VISIBLE);

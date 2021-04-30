@@ -1,5 +1,6 @@
 package com.poma.restaurant.login;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -8,12 +9,25 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.opengl.Visibility;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.poma.restaurant.R;
+import com.poma.restaurant.menu.Activity_Menu;
 import com.poma.restaurant.model.User;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Activity_Account extends AppCompatActivity implements Fragment_Register.RegisterInterface {
     private static final String TAG_LOG = Activity_Account.class.getName();
@@ -24,6 +38,9 @@ public class Activity_Account extends AppCompatActivity implements Fragment_Regi
     private static final String EMAIL = "com.poma.restaurant.account.email";
     private static final String LOCATION = "com.poma.restaurant.account.location";
     private static final String DATE = "com.poma.restaurant.account.date";
+    private FirebaseAuth mAuth;
+    private Button btn_logout;
+    private User user;
 
 
     private Fragment_Register fragment;
@@ -65,6 +82,9 @@ public class Activity_Account extends AppCompatActivity implements Fragment_Regi
         super.onCreate(savedInstanceState);
         Log.d(TAG_LOG, "On create");
         setContentView(R.layout.activity_account);
+        this.fragment = (Fragment_Register)
+                getSupportFragmentManager().findFragmentById(R.id.fragment_account_register);
+        //this.fragment.setError("erroreeeeeeee");
 
 
 
@@ -93,21 +113,72 @@ public class Activity_Account extends AppCompatActivity implements Fragment_Regi
         this.fragment = (Fragment_Register)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_account_register);
 
-        //TODO controllo con db
-        fragment.setE_date(1521815495631L);
-        fragment.setE_email("email settata");
-        fragment.setE_password("password settata");
-        fragment.setE_location("location settata");
-        fragment.setE_name("name settato");
-        fragment.setE_surname("surname set");
-        fragment.setE_username("username");
-
+        fragment.setModifica(true);
         fragment.setVisibilityDate(View.GONE);
         fragment.setVisibilityBtnPassword(View.VISIBLE);
-        fragment.setVisibilityPassword(View.GONE);
+        fragment.setVisibilityTextViewEmail(View.VISIBLE);
+        fragment.setVisibilityPassword(View.INVISIBLE);
+        fragment.setVisibilityEmail(View.INVISIBLE);
 
         fragment.setRegisterText(getResources().getString(R.string.update));
         fragment.setCancelText(getResources().getString(R.string.back));
+
+        this.mAuth=FirebaseAuth.getInstance();
+        FirebaseUser currentUser = this.mAuth.getCurrentUser();
+        if(currentUser != null){
+            //Toast.makeText(Activity_Account.this, "C'è utente: "+currentUser, Toast.LENGTH_SHORT).show();
+            //PRENDO UTENTE
+            Log.d(TAG_LOG, "inizio metodo retrive user");
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Map<String, Object> data = document.getData();
+                            Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
+
+
+                            user = User.create((String) data.get("username"),(String) data.get("password"))
+                                    .withSurname((String) data.get("surname"))
+                                    .withName((String) data.get("name"))
+                                    .withLocation((String) data.get("location"))
+                                    .withEmail((String) data.get("email"))
+                                    .withDate((long) data.get("date"));
+
+                            fragment.setE_date((long) data.get("date"));
+                            fragment.setT_email((String) data.get("email"));
+                            fragment.setE_password((String) data.get("password"));
+                            fragment.setE_location((String) data.get("location"));
+                            fragment.setE_name((String) data.get("name"));
+                            fragment.setE_surname((String) data.get("surname"));
+                            fragment.setE_username((String) data.get("username"));
+
+
+
+                        } else {
+                            Log.d(TAG_LOG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG_LOG, "get failed with ", task.getException());
+                    }
+                }
+            });
+        }
+        else {
+            //finish();
+            //Toast.makeText(Activity_Account.this, "Non c'è utente: ", Toast.LENGTH_SHORT).show();
+            fragment.setE_date(1521815495631L);
+            fragment.setT_email("email settata");
+            fragment.setE_password("password settata");
+            fragment.setE_location("location settata");
+            fragment.setE_name("name settato");
+            fragment.setE_surname("surname set");
+            fragment.setE_username("username");
+        }
 
 
 
@@ -115,11 +186,39 @@ public class Activity_Account extends AppCompatActivity implements Fragment_Regi
 
     @Override
     public void register(String username, String password, String name, String surname, String location, String email, long date) {
-        //TODO controllo unicità username
-        User user;
-        user= User.create(username,password).withDate(date).withEmail(email).withLocation(location).withName(name).withSurname(surname);
-        Log.d(TAG_LOG, "update user. Username: "+user.getUsername()+", date: "+user.getDate());
-        popupMessage();
+        return;
+    }
+
+    @Override
+    public void update(String username, String name, String surname, String location) {
+        Log.d(TAG_LOG, "metodo update, attualmente utente loggato: "+this.user.getEmail());
+        FirebaseUser firebase_user = mAuth.getCurrentUser();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        //creo hash map con cui aggiornare utente
+        Map<String, Object> data = new HashMap<>();
+        if(!(this.user.getUsername().equals(username)))
+            data.put("username", username);
+        if(!(this.user.getName().equals(name)))
+            data.put("name", name);
+        if(!(this.user.getSurname().equals(surname)))
+            data.put("surname", surname);
+        if(!(this.user.getLocation().equals(location)))
+            data.put("location", location);
+
+        db.collection("users").document(firebase_user.getUid()).update(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Log.d(TAG_LOG, "Utente aggiornato");
+                    popupMessage();
+                }
+                else{
+                    Log.d(TAG_LOG, "problemi aggiornamento user");
+
+                }
+            }
+        });
     }
 
     @Override

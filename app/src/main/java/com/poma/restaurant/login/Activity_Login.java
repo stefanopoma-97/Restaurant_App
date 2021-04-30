@@ -101,8 +101,6 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
 
         Fragment_Login fragment_login = (Fragment_Login)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_login);
-        final String DUMMY_USERNAME = "stefano";
-        final String DUMMY_PASSWORD = "poma";
 
         //LOGIN UTENTE
         if(this.user){ //se ho fatto accesso a questa activity per login utente
@@ -114,8 +112,9 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 progressBarr(true);
+                                fragment_login.setError("");
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                Log.d(TAG_LOG, "signInWithEmail:success, uscita: "+ uscita);
+                                Log.d(TAG_LOG, "signInWithEmail:success");
 
 
                                 //PRENDO UTENTE
@@ -163,18 +162,18 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
 
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG_LOG, "signInWithEmail:failure", task.getException());
-                                Toast.makeText(Activity_Login.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(Activity_Login.this, getResources().getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show();
 
                                 try {
                                     throw task.getException();
-                                } catch(FirebaseAuthInvalidUserException e) {
+                                }  catch(FirebaseAuthInvalidCredentialsException e) {
+                                    Log.d(TAG_LOG, "credential exception");
+                                    fragment_login.setError(getResources().getString(R.string.login_error_pass));
+                                }
+                                catch(FirebaseAuthInvalidUserException e) {
                                     Log.d(TAG_LOG, "no user found: "+password);
                                     fragment_login.setError(getResources().getString(R.string.no_user));
 
-                                } catch(FirebaseAuthInvalidCredentialsException e) {
-                                    Log.d(TAG_LOG, "credential exception");
-                                    fragment_login.setError(getResources().getString(R.string.login_error_pass));
                                 }
 
                                 catch(Exception e) {
@@ -213,7 +212,7 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
                                                 Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
 
                                                 if((boolean)data.get("admin")){
-                                                    Toast.makeText(Activity_Login.this, "Login", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(Activity_Login.this, getResources().getString(R.string.login), Toast.LENGTH_SHORT).show();
 
 
 
@@ -256,18 +255,18 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
 
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG_LOG, "signInWithEmail:failure", task.getException());
-                                Toast.makeText(Activity_Login.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(Activity_Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
 
                                 try {
                                     throw task.getException();
-                                } catch(FirebaseAuthInvalidUserException e) {
-                                    Log.d(TAG_LOG, "no user found: "+password);
-                                    fragment_login.setError(getResources().getString(R.string.no_user));
-
                                 } catch(FirebaseAuthInvalidCredentialsException e) {
                                     Log.d(TAG_LOG, "credential exception");
                                     fragment_login.setError(getResources().getString(R.string.login_error_pass));
+                                }
+                                catch(FirebaseAuthInvalidUserException e) {
+                                    Log.d(TAG_LOG, "no user found: "+password);
+                                    fragment_login.setError(getResources().getString(R.string.no_user));
+
                                 }
 
                                 catch(Exception e) {
