@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity_Splash">
+    tools:context=".splash.Activity_Splash">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -39,8 +39,8 @@
 
             <ImageView
                 android:id="@+id/splash_imageview"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
+                android:layout_width="@dimen/splash_image_size"
+                android:layout_height="@dimen/splash_image_size"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
                 android:src="@mipmap/logo_launcher" />

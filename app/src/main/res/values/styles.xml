@@ -12,12 +12,12 @@
     </style>
 
     <style name="title" parent="TextAppearance.AppCompat.Title">
-        <item name="android:textSize">50dp</item>
+        <item name="android:textSize">@dimen/text_size_extra_large</item>
         <item name="android:textColor">@drawable/title_splash_color</item>
     </style>
 
     <style name="slogan_slash" parent="TextAppearance.AppCompat.Title">
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">@dimen/text_size_medium_large</item>
         <item name="android:textColor">@drawable/slogan_splash_color</item>
     </style>
 

@@ -15,25 +15,20 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="activity_vertical_margin_top">24dp</dimen>
-    <dimen name="activity_vertical_margin_top_small">15dp</dimen>
-    <dimen name="activity_vertical_margin_top_mini">10dp</dimen>
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">180dp</dimen>
 
-    <dimen name="cardview_elevation">4dp</dimen>
-    <dimen name="cardview_corner_radius">8dp</dimen>
 
-    <dimen name="text_size_micro">10sp</dimen>
-    <dimen name="text_size_mini">12sp</dimen>
-    <dimen name="text_size_small">14sp</dimen>
-    <dimen name="text_size_medium">18sp</dimen>
-    <dimen name="text_size_medium_large">20sp</dimen>
-    <dimen name="text_size_large">22sp</dimen>
-    <dimen name="text_size_extra_large">25sp</dimen>
 
-    <dimen name="text_area_height">245dp</dimen>
+    <!-- Text Size -->
+    <dimen name="text_size_micro">24sp</dimen>
+    <dimen name="text_size_mini">26sp</dimen>
+    <dimen name="text_size_small">30sp</dimen>
+    <dimen name="text_size_medium">35sp</dimen>
+    <dimen name="text_size_medium_large">55sp</dimen>
+    <dimen name="text_size_large">58sp</dimen>
+    <dimen name="text_size_extra_large">60sp</dimen>
 
-    <dimen name="empty_space_height">40dp</dimen>
 
 
 
@@ -42,7 +37,7 @@
 
 
     <!-- Personali-->
-    <dimen name="splash_image_size">250dp</dimen>
+    <dimen name="splash_image_size">400dp</dimen>
 
 
 

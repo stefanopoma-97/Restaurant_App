@@ -41,7 +41,7 @@
             android:name=".login.Activity_First_Access"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".Activity_Splash"
+            android:name=".splash.Activity_Splash"
             android:theme="@style/splash_theme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
