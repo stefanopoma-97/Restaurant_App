@@ -22,6 +22,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.poma.restaurant.R;
 import com.poma.restaurant.menu.Activity_Menu;
 import com.poma.restaurant.model.User;
@@ -38,14 +40,18 @@ public class Activity_Account extends AppCompatActivity implements Fragment_Regi
     private static final String EMAIL = "com.poma.restaurant.account.email";
     private static final String LOCATION = "com.poma.restaurant.account.location";
     private static final String DATE = "com.poma.restaurant.account.date";
+    private static final String CITY = "com.poma.restaurant.account.city";
+
     private FirebaseAuth mAuth;
     private Button btn_logout;
     private User user;
+    private Map<String, Object> cities;
 
 
     private Fragment_Register fragment;
 
 
+    //TODO la città e le altre info viene sovrascritta dalle informazione di onstart
     //STATE
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -55,6 +61,7 @@ public class Activity_Account extends AppCompatActivity implements Fragment_Regi
         outState.putString(PASS,this.fragment.getE_password());
         outState.putString(EMAIL,this.fragment.getE_email());
         outState.putString(LOCATION,this.fragment.getE_location());
+        outState.putString(CITY,this.fragment.getCity());
         outState.putLong(DATE,this.fragment.getE_date());
 
         super.onSaveInstanceState(outState);
@@ -70,6 +77,7 @@ public class Activity_Account extends AppCompatActivity implements Fragment_Regi
         this.fragment.setE_password(savedInstanceState.getString(PASS));
         this.fragment.setE_email(savedInstanceState.getString(EMAIL));
         this.fragment.setE_location(savedInstanceState.getString(LOCATION));
+        this.fragment.setCitySpinnerValue(savedInstanceState.getString(CITY));
         this.fragment.setE_date(savedInstanceState.getLong(DATE));
 
         Log.d(TAG_LOG,"Retrive state");
@@ -122,6 +130,7 @@ public class Activity_Account extends AppCompatActivity implements Fragment_Regi
 
         fragment.setRegisterText(getResources().getString(R.string.update));
         fragment.setCancelText(getResources().getString(R.string.back));
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         this.mAuth=FirebaseAuth.getInstance();
         FirebaseUser currentUser = this.mAuth.getCurrentUser();
@@ -130,7 +139,6 @@ public class Activity_Account extends AppCompatActivity implements Fragment_Regi
             //PRENDO UTENTE
             Log.d(TAG_LOG, "inizio metodo retrive user");
 
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
             DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -157,6 +165,31 @@ public class Activity_Account extends AppCompatActivity implements Fragment_Regi
                             fragment.setE_surname((String) data.get("surname"));
                             fragment.setE_username((String) data.get("username"));
 
+                            cities = new HashMap<>();
+
+                            db.collection("cities").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    Log.d(TAG_LOG, "2 - On complete");
+
+                                    if (task.isSuccessful()) {
+                                        Log.d(TAG_LOG, "3 -  is successfull");
+
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                            Map<String, Object> data = document.getData();
+
+                                            cities.put(document.getId(), (String)data.get("city"));
+                                        }
+                                        fragment.setCitiesSpinner(cities, user.getLocation());
+                                        Log.d(TAG_LOG, "4 - lista id città :"+cities.toString());
+
+                                    } else {
+                                        Log.d(TAG_LOG, "Error getting documents: ", task.getException());
+                                    }
+                                }
+                            });
+
 
 
                         } else {
@@ -182,6 +215,9 @@ public class Activity_Account extends AppCompatActivity implements Fragment_Regi
 
 
 
+
+
+
     }
 
     @Override
@@ -203,8 +239,22 @@ public class Activity_Account extends AppCompatActivity implements Fragment_Regi
             data.put("name", name);
         if(!(this.user.getSurname().equals(surname)))
             data.put("surname", surname);
-        if(!(this.user.getLocation().equals(location)))
+        if(!(this.user.getLocation().equals(location))){
             data.put("location", location);
+            String city_id=this.user.getCity_id();
+
+            for (Map.Entry<String, Object> entry : cities.entrySet()) {
+                if (entry.getValue().toString().equals(location)) {
+                    city_id = entry.getKey();
+                    data.put("city_id", city_id);
+                }
+            }
+
+
+            Log.d(TAG_LOG, "citta: "+location+", city_id: "+city_id);
+            Log.d(TAG_LOG, "data: "+data.toString());
+        }
+
 
         db.collection("users").document(firebase_user.getUid()).update(data).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

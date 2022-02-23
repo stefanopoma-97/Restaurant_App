@@ -19,7 +19,7 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent=".5"
+        app:layout_constraintHeight_percent=".45"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0"
@@ -64,23 +64,12 @@
         android:background="@drawable/shape_round_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent=".70"
+        app:layout_constraintHeight_percent=".60"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true"
-            >
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-
-            <fragment
+        <fragment
             android:layout_height="0dp"
             android:layout_width="match_parent"
 
@@ -94,29 +83,10 @@
 
             app:layout_constraintHeight_percent=".8"
 
-            app:layout_constraintVertical_bias=".3"
+            app:layout_constraintVertical_bias=".2"
             app:layout_constraintHorizontal_bias=".5"
             >
-            </fragment>
-
-            <!--<fragment
-            android:id="@+id/fragment_access_admin"
-            class="com.poma.restaurant.login.Fragment_Access_Admin"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-
-
-            app:layout_constraintEnd_toEndOf="@+id/fragment_access"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_access"
-            app:layout_constraintBottom_toBottomOf="parent"
-            >
-
-
-    </fragment>-->
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
+        </fragment>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

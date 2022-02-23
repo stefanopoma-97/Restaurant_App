@@ -16,6 +16,7 @@ public class User implements Parcelable {
     private String location;
     private String name;
     private String surname;
+    private String city_id;
     private boolean admin;
     public static final String USER_DATA_EXTRA = "com.poma.restaurant.model.USER_DATA_EXTRA";
 
@@ -67,6 +68,10 @@ public class User implements Parcelable {
         if(in.readByte() == PRESENT)
         {
             this.admin = in.readInt() == 1;
+        }
+        if(in.readByte() == PRESENT)
+        {
+            this.city_id = in.readString();
         }
     }
 
@@ -130,6 +135,14 @@ public class User implements Parcelable {
         } else {
             dest.writeByte(NOT_PRESENT);
         }
+
+        if(!TextUtils.isEmpty(this.city_id))
+        {
+            dest.writeByte(PRESENT);
+            dest.writeString(this.city_id);
+        } else {
+            dest.writeByte(NOT_PRESENT);
+        }
     }
 
     private User(final String username, final String password) {
@@ -174,6 +187,11 @@ public class User implements Parcelable {
         return this;
     }
 
+    public User withCity_id(String city_id) {
+        this.city_id = city_id;
+        return this;
+    }
+
     public String getUsername() {
         return this.username;
     }
@@ -204,5 +222,9 @@ public class User implements Parcelable {
 
     public boolean getAdmin() {
         return this.admin;
+    }
+
+    public String getCity_id() {
+        return this.city_id;
     }
 }

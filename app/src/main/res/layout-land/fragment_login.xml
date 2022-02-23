@@ -6,32 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".login.Fragment_Login">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        >
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
 
         <TextView
             android:id="@+id/textview_alert_message_loginform"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintWidth_percent=".8"
+            android:text="wrong pass"
+
+            android:textAlignment="center"
+            android:textColor="@color/red"
+            android:textSize="15dp"
+            android:textStyle="bold"
+
+            android:visibility="invisible"
 
             app:layout_constraintBottom_toTopOf="@+id/username_loginform"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-
-            app:layout_constraintVertical_bias=".8"
-            app:layout_constraintHorizontal_bias=".5"
-
-            android:textColor="@color/red"
-            android:text="wrong pass"
-            android:textStyle="bold"
-            android:textSize="15dp"
-            android:textAlignment="center"
-            android:visibility="invisible"/>
-
-
+            app:layout_constraintVertical_bias="0.3"
+            app:layout_constraintWidth_percent=".8" />
 
         <EditText
             android:id="@+id/username_loginform"
@@ -60,22 +64,22 @@
             android:id="@+id/email_loginform"
 
             android:layout_width="0dp"
-            app:layout_constraintWidth_percent=".8"
             android:layout_height="wrap_content"
-
-            app:layout_constraintBottom_toTopOf="@+id/password_loginform"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-
-            app:layout_constraintVertical_bias=".9"
-            app:layout_constraintHorizontal_bias=".3"
+            android:hint="@string/email"
 
             android:paddingLeft="20dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
 
-            android:hint="@string/email"/>
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintHorizontal_bias="0.301"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_alert_message_loginform"
+
+            app:layout_constraintVertical_bias="0."
+            app:layout_constraintWidth_percent=".8" />
 
         <EditText
             android:id="@+id/password_loginform"
@@ -87,9 +91,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/email_loginform"
 
-            app:layout_constraintVertical_bias=".5"
+            app:layout_constraintVertical_bias=".1"
             app:layout_constraintHorizontal_bias=".3"
 
             android:paddingLeft="20dp"
@@ -112,51 +116,52 @@
             />
 
         <androidx.appcompat.widget.AppCompatButton
-            style="@style/button_primary"
             android:id="@+id/login_confirm"
+            style="@style/button_primary"
 
             android:layout_width="0dp"
-            app:layout_constraintWidth_percent=".8"
-
             android:layout_height="wrap_content"
 
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password_loginform"
-
-            app:layout_constraintVertical_bias=".3"
-            app:layout_constraintHorizontal_bias=".5"
+            android:background="@drawable/button_primary_shape"
 
             android:text="@string/login"
-            android:background="@drawable/button_primary_shape"
-            />
-
-        <androidx.appcompat.widget.AppCompatButton
-            style="@style/button_secondary"
-            android:id="@+id/button_cancel_loginform"
-
-            android:layout_width="0dp"
-            app:layout_constraintWidth_percent=".8"
-
-            android:layout_height="wrap_content"
-
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login_confirm"
-
-            app:layout_constraintVertical_bias=".1"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias=".5"
 
-            android:text="@string/cancel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/password_loginform"
+
+            app:layout_constraintVertical_bias=".4"
+            app:layout_constraintWidth_percent=".8" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button_cancel_loginform"
+            style="@style/button_secondary"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="32dp"
             android:background="@drawable/button_secondary_shape"
-            />
+
+            android:text="@string/cancel"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_confirm"
+            app:layout_constraintVertical_bias=".1"
+            app:layout_constraintWidth_percent=".8" />
 
 
 
         />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </ScrollView>
 
 </FrameLayout>

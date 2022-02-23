@@ -7,9 +7,11 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.poma.restaurant.R;
 
@@ -96,6 +98,18 @@ public class Fragment_Access extends Fragment {
             }
         });
 
+        TextView text = (TextView) view.findViewById(R.id.access_admin);
+        text.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    listener.login_admin(false);
+                }
+                Log.i(TAG_LOG, "login admin");
+                return false;
+            }
+        });
+
 
         return view;
     }
@@ -105,6 +119,7 @@ public class Fragment_Access extends Fragment {
     public interface FirstAccessInterface {
         public void login(Boolean user);
         public void register(Boolean user);
+        public void login_admin(Boolean user);
         public void anonymous_access(Boolean user);
     }
 

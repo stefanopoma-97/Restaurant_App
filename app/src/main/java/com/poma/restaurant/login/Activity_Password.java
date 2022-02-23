@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Activity_Password extends AppCompatActivity implements Fragment_Password.PasswordInterface {
-    private static final String TAG_LOG = Activity_Account.class.getName();
+    private static final String TAG_LOG = Activity_Password.class.getName();
 
     private static final String OLD_PASS = "com.poma.restaurant.account.password.oldpassword";
     private static final String NEW_PASS = "com.poma.restaurant.account.password.newpassword";
@@ -98,6 +98,7 @@ public class Activity_Password extends AppCompatActivity implements Fragment_Pas
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+                        Log.d(TAG_LOG, "l'id del mio utente è " + document.getId());
                         Map<String, Object> data = document.getData();
                         myPassword = (String) data.get("password");
                         Log.d(TAG_LOG, "La mia attuale passwod " + myPassword);

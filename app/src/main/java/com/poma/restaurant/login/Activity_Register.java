@@ -26,13 +26,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.poma.restaurant.R;
 import com.poma.restaurant.model.User;
 import com.poma.restaurant.utilities.Action;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Activity_Register extends AppCompatActivity implements Fragment_Register.RegisterInterface {
@@ -44,6 +50,7 @@ public class Activity_Register extends AppCompatActivity implements Fragment_Reg
     private FirebaseAuth mAuth;
     private Fragment_Register fragment_register;
     private ProgressDialog progressDialog;
+    private Map<String, Object> cities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +63,7 @@ public class Activity_Register extends AppCompatActivity implements Fragment_Reg
 
     @Override
     public void register(String username, String password, String name, String surname, String location, String email, long date) {
+        Log.d(TAG_LOG, "register method");
 
         this.fragment_register = (Fragment_Register)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_register);
@@ -71,9 +79,21 @@ public class Activity_Register extends AppCompatActivity implements Fragment_Reg
 
                             Log.d(TAG_LOG, "createUserWithEmail:success");
 
+                            String city_id="1";
+
+                            for (Map.Entry<String, Object> entry : cities.entrySet()) {
+                                if (entry.getValue().toString().equals(location)) {
+                                    city_id = entry.getKey();
+                                }
+                            }
+                            Log.d(TAG_LOG, "citta: "+location+", city_id: "+city_id);
+
+
+
                             FirebaseUser user = mAuth.getCurrentUser();
                             User user_create;
-                            user_create= User.create(username,password).withDate(date).withEmail(email).withLocation(location).withName(name).withSurname(surname).withAdmin(false);
+                            user_create= User.create(username,password).withDate(date).withEmail(email)
+                                    .withLocation(location).withName(name).withSurname(surname).withAdmin(false).withCity_id(city_id);
 
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -175,6 +195,8 @@ public class Activity_Register extends AppCompatActivity implements Fragment_Reg
         Log.d(TAG_LOG, "on start");
         mAuth=FirebaseAuth.getInstance();
 
+        this.fragment_register = (Fragment_Register)
+                getSupportFragmentManager().findFragmentById(R.id.fragment_register);
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
@@ -186,5 +208,41 @@ public class Activity_Register extends AppCompatActivity implements Fragment_Reg
             //Toast.makeText(Activity_Register.this, "Non c'è utente: ", Toast.LENGTH_SHORT).show();
 
         }
+
+        Log.d(TAG_LOG, "1 - inizio metodo prendere città");
+
+        this.cities = new HashMap<>();
+
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+        db.collection("cities").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                Log.d(TAG_LOG, "2 - On complete");
+
+                if (task.isSuccessful()) {
+                    Log.d(TAG_LOG, "3 -  is successfull");
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                        Map<String, Object> data = document.getData();
+
+                        cities.put(document.getId(), (String)data.get("city"));
+                    }
+                    fragment_register.setCitiesSpinner(cities, null);
+                    Log.d(TAG_LOG, "4 - lista id città :"+cities.toString());
+
+                } else {
+                    Log.d(TAG_LOG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+
+        Log.d(TAG_LOG, "5 - inizio metodo prendere città");
+
+
+
     }
 }

@@ -32,7 +32,7 @@ import com.poma.restaurant.utilities.Action;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Activity_First_Access extends AppCompatActivity implements Fragment_Access.FirstAccessInterface, Fragment_Access_Admin.FirstAccessAdminInterface {
+public class Activity_First_Access extends AppCompatActivity implements Fragment_Access.FirstAccessInterface {
 
     private static final String TAG_LOG = Activity_First_Access.class.getName();
     private static final String USER_LOGIN_EXTRA = "com.poma.restaurant.USER_LOGIN_EXTRA ";

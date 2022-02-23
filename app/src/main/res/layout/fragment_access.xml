@@ -81,7 +81,32 @@
         android:text="@string/anonymous_access"
         android:background="@drawable/button_primary_shape">
 
+
+
     </androidx.appcompat.widget.AppCompatButton>
+
+        <TextView
+            android:id="@+id/access_admin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/admin_access"
+
+
+            android:textColor="@color/blue_link"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintHorizontal_bias=".9"
+            app:layout_constraintStart_toStartOf="parent"
+
+
+            app:layout_constraintTop_toBottomOf="@+id/login_button"
+            app:layout_constraintVertical_bias=".2"
+            app:layout_constraintWidth_percent=".3">
+
+        </TextView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

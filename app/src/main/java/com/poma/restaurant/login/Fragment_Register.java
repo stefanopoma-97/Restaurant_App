@@ -16,12 +16,16 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.poma.restaurant.R;
 
 import java.text.DateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -440,6 +444,10 @@ public class Fragment_Register extends Fragment {
         return this.e_location.getText().toString();
     }
 
+    public String getCity() {
+        return this.spinner.getSelectedItem().toString();
+    }
+
     public long  getE_date() {
         Calendar cal = Calendar.getInstance();
         cal.set(e_date.getYear(),e_date.getMonth(),e_date.getDayOfMonth());
@@ -450,6 +458,28 @@ public class Fragment_Register extends Fragment {
     public void setModifica (boolean b){
         modifica=b;
     }
+
+
+    public void setCitiesSpinner (Map<String, Object> cities, String compareValue){
+
+        String[] items = Arrays.copyOf(cities.values().toArray(), cities.values().toArray().length, String[].class);
+        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, items);
+        spinner.setAdapter(adapter);
+        if(compareValue!=null){
+            int spinnerPosition = adapter.getPosition(compareValue);
+            spinner.setSelection(spinnerPosition);
+        }
+
+
+    }
+
+    public void setCitySpinnerValue (String s){
+        ArrayAdapter adapter = (ArrayAdapter)spinner.getAdapter();
+        int spinnerPosition = adapter.getPosition(s);
+        spinner.setSelection(spinnerPosition);
+
+    }
+
 
 
 

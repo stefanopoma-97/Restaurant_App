@@ -70,6 +70,7 @@ public class Activity_Menu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent in = new Intent(Activity_Menu.this, Activity_First_Access.class);
+                in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 Log.d(TAG_LOG, "Log out");
                 mAuth.signOut();
                 Toast.makeText(Activity_Menu.this, "Log Out", Toast.LENGTH_SHORT).show();
