@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
     private DatabaseReference ref;
     private boolean uscita = false;
     private ProgressDialog progressDialog;
+    private ProgressBar progresBar;
 
 
 
@@ -55,6 +57,7 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
         TextView title = (TextView)findViewById(R.id.textview_title_login);
         View view = findViewById(R.id.view_rectangle_login);
         Button btn_login = (Button)findViewById(R.id.login_confirm);
+        progresBar = (ProgressBar)findViewById(R.id.progress_bar_login);
 
         //Auth
         mAuth = FirebaseAuth.getInstance();
@@ -98,6 +101,7 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
     public void login(String email, String password) {
 
         Log.d(TAG_LOG, "inizio metodo login, con user: "+this.user);
+        //progresBar.setVisibility(View.VISIBLE);
 
         Fragment_Login fragment_login = (Fragment_Login)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_login);

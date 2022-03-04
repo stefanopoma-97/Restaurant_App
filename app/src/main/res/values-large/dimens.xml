@@ -39,6 +39,7 @@
     <!-- Personali-->
     <dimen name="splash_image_size">400dp</dimen>
 
-
+    <!-- Button -->
+    <dimen name="button_radius">25dp</dimen>
 
 </resources>

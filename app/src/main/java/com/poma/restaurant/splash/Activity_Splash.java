@@ -34,6 +34,8 @@ public class Activity_Splash extends AppCompatActivity {
     //Key for save state
     private static final String START_TIME_KEY = "com.poma.restaurant.START_TIME_KEY";
 
+    private boolean go = true;
+
 
     //STATE
     //salva lo stato mantenendo il valore di startTime
@@ -83,7 +85,10 @@ public class Activity_Splash extends AppCompatActivity {
             @Override
             public void run() {
                 Log.d(TAG_LOG, "Go ahead ...");
-                goAhead();
+                if (go){
+                    goAhead();
+                }
+
             }
         }, 5000);
     }
@@ -123,6 +128,7 @@ public class Activity_Splash extends AppCompatActivity {
 
     //Passo a Activity_First_Access
     private void goAhead() {
+        go=false;
         final Intent intent = new Intent(this, Activity_First_Access.class);
         Log.d(TAG_LOG, "Creo intent e lo mando a Activity_First_Access. L'activity attuale viene distrutta");
         startActivity(intent);

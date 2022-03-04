@@ -7,7 +7,7 @@
     </style>
 
     <style name="title_slash" parent="TextAppearance.AppCompat.Title">
-        <item name="android:textSize">30dp</item>
+        <item name="android:textSize">@dimen/text_size_extra_large</item>
         <item name="android:textColor">@drawable/title_splash_color</item>
     </style>
 
@@ -21,11 +21,16 @@
         <item name="android:textColor">@drawable/slogan_splash_color</item>
     </style>
 
+
+
     <style name="button_primary" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!--> Text <-->
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/white</item>
-        <item name="backgroundTint">@color/red</item>
+
+        <!--> Background color <-->
+        <!--<item name="background">@drawable/button_primary_background</item>-->
     </style>
 
     <style name="button_primary_admin" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -43,6 +48,19 @@
     </style>
 
 
+    <style name="main_button_style" parent="Widget.MaterialComponents.Button">
+        <!--<item name="android:background">@drawable/button_primary_background</item>-->
+        <!--<item name="android:textColor">@drawable/button_primary_textcolor</item>-->
+        <item name="android:backgroundTint">@color/red</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">sans-serif</item>
+
+
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+
+
+    </style>
 
 
 

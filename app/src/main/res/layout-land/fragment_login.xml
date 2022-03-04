@@ -115,9 +115,10 @@
             app:layout_constraintHorizontal_bias=".8"
             />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/login_confirm"
-            style="@style/button_primary"
+            style="@style/main_button_style"
+            app:cornerRadius="@dimen/button_radius"
 
             android:layout_width="0dp"
             android:layout_height="wrap_content"
