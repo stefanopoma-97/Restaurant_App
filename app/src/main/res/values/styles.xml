@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- SPLASH -->
     <style name="splash_theme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
@@ -22,7 +23,13 @@
     </style>
 
 
+    <!-- Round logo -->
+    <style name="round_logo_external">
+        <item name="android:width">@dimen/round_logo_width_external</item>
+        <item name="android:height">@dimen/round_logo_width_external</item>
+    </style>
 
+    <!-- Button -->
     <style name="button_primary" parent="Theme.AppCompat.Light.DarkActionBar">
         <!--> Text <-->
         <item name="android:textSize">16sp</item>
@@ -56,7 +63,7 @@
         <item name="android:fontFamily">sans-serif</item>
 
 
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textStyle">bold</item>
 
 

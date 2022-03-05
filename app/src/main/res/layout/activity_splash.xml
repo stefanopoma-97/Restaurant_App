@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="70dp"
+                android:layout_marginBottom="@dimen/margin_bottom_logo"
                 android:layout_above="@id/splash_imageview"
                 android:text="@string/app_name">
             </TextView>
@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="@dimen/margin_top_slogan"
                 android:layout_below="@id/splash_imageview"
                 android:text="@string/slogan">
             </TextView>

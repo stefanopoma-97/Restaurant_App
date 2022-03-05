@@ -28,8 +28,8 @@
     </View>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="@dimen/round_logo_width_external"
+        android:layout_height="@dimen/round_logo_width_external"
         app:cardCornerRadius="250dp"
         app:cardBackgroundColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
@@ -41,14 +41,14 @@
         >
 
         <androidx.cardview.widget.CardView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="@dimen/round_logo_width_internal"
+            android:layout_height="@dimen/round_logo_width_internal"
             app:cardCornerRadius="250dp"
             android:layout_gravity="center">
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="@dimen/round_logo_width_internal"
+                android:layout_height="@dimen/round_logo_width_internal"
                 android:src="@mipmap/logo_launcher"
                 android:scaleType="centerCrop"/>
 
@@ -69,54 +69,33 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true"
-            >
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
 
-            <fragment
-            android:layout_height="0dp"
-            android:layout_width="match_parent"
+                <fragment
+                    android:layout_height="0dp"
+                    android:layout_width="match_parent"
 
-            android:id="@+id/fragment_access"
-            class="com.poma.restaurant.login.Fragment_Access"
+                    android:id="@+id/fragment_access"
+                    class="com.poma.restaurant.login.Fragment_Access"
 
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-
-            app:layout_constraintHeight_percent=".8"
-
-            app:layout_constraintVertical_bias=".3"
-            app:layout_constraintHorizontal_bias=".5"
-            >
-            </fragment>
-
-            <!--<fragment
-            android:id="@+id/fragment_access_admin"
-            class="com.poma.restaurant.login.Fragment_Access_Admin"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
 
 
-            app:layout_constraintEnd_toEndOf="@+id/fragment_access"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_access"
-            app:layout_constraintBottom_toBottomOf="parent"
-            >
+                    app:layout_constraintHeight_percent=".9"
+                    app:layout_constraintVertical_bias=".5"
+                    app:layout_constraintHorizontal_bias=".5" />
 
 
-    </fragment>-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

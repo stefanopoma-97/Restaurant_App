@@ -57,6 +57,7 @@ public class Fragment_Access extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG_LOG,"on Create Fragment");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -67,11 +68,9 @@ public class Fragment_Access extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.d(TAG_LOG,"onCreate Fragment");
+        Log.d(TAG_LOG,"on Create View Fragment");
 
         View view= (View)inflater.inflate(R.layout.fragment_access, container, false);
-
-
         Button button = (Button) view.findViewById(R.id.login_button);
         Button btn_register = (Button) view.findViewById(R.id.register_button);
         Button btn_anonymous = (Button) view.findViewById(R.id.anonymous_access_button);
@@ -80,6 +79,7 @@ public class Fragment_Access extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG_LOG,"Login method");
                 listener.login(true);
             }
         });
@@ -87,6 +87,7 @@ public class Fragment_Access extends Fragment {
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG_LOG,"register method");
                 listener.register(true);
             }
         });
@@ -94,6 +95,7 @@ public class Fragment_Access extends Fragment {
         btn_anonymous.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG_LOG,"Anonymous access");
                 listener.anonymous_access(true);
             }
         });
@@ -103,9 +105,9 @@ public class Fragment_Access extends Fragment {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    Log.d(TAG_LOG,"Login admin method");
                     listener.login_admin(false);
                 }
-                Log.i(TAG_LOG, "login admin");
                 return false;
             }
         });
@@ -113,6 +115,9 @@ public class Fragment_Access extends Fragment {
 
         return view;
     }
+
+
+
 
     //Interfaccia
     //Activity deve implementare i metodi specificati

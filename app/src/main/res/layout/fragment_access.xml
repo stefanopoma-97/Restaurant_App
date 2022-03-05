@@ -14,8 +14,9 @@
 
 
 
-    <androidx.appcompat.widget.AppCompatButton
-        style="@style/button_primary"
+    <com.google.android.material.button.MaterialButton
+        style="@style/main_button_style"
+        app:cornerRadius="@dimen/button_radius"
         android:id="@+id/register_button"
 
         android:layout_width="0dp"
@@ -32,14 +33,15 @@
         app:layout_constraintHorizontal_bias=".5"
 
         android:text="@string/register"
-        android:background="@drawable/button_primary_shape"
-
-        >
-    </androidx.appcompat.widget.AppCompatButton>
 
 
-    <androidx.appcompat.widget.AppCompatButton
-        style="@style/button_primary"
+        />
+
+
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/main_button_style"
+        app:cornerRadius="@dimen/button_radius"
         android:id="@+id/login_button"
 
         android:layout_width="0dp"
@@ -56,18 +58,17 @@
         app:layout_constraintHorizontal_bias=".5"
 
         android:text="@string/login"
-        android:background="@drawable/button_primary_shape"
-        >
-    </androidx.appcompat.widget.AppCompatButton>
+        />
 
 
-    <androidx.appcompat.widget.AppCompatButton
-        style="@style/button_primary"
+    <com.google.android.material.button.MaterialButton
+        style="@style/main_button_style"
+        app:cornerRadius="@dimen/button_radius"
+
         android:id="@+id/anonymous_access_button"
 
         android:layout_width="0dp"
         app:layout_constraintWidth_percent=".8"
-
         android:layout_height="wrap_content"
 
         app:layout_constraintStart_toStartOf="parent"
@@ -79,11 +80,10 @@
         app:layout_constraintHorizontal_bias=".5"
 
         android:text="@string/anonymous_access"
-        android:background="@drawable/button_primary_shape">
+        />
 
 
 
-    </androidx.appcompat.widget.AppCompatButton>
 
         <TextView
             android:id="@+id/access_admin"
@@ -95,6 +95,10 @@
 
             android:textColor="@color/blue_link"
             android:textStyle="bold"
+            android:fontFamily="sans-serif"
+            android:textSize="@dimen/text_size_medium"
+
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
 

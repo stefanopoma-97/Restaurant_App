@@ -20,13 +20,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Activity_Splash extends AppCompatActivity {
-    private FirebaseAuth mAuth;
-
-    //tempo che dobbiamo aspettare (1 secondo)
-    private static final long MIN_WAIT_INTERVAL = 100L;
-
-    //starting time
-    private long startTime = -1L;
 
     //Tag for log
     private static final String TAG_LOG = Activity_Splash.class.getName();
@@ -34,7 +27,15 @@ public class Activity_Splash extends AppCompatActivity {
     //Key for save state
     private static final String START_TIME_KEY = "com.poma.restaurant.START_TIME_KEY";
 
-    private boolean go = true;
+    //tempo che dobbiamo aspettare (1 secondo)
+    private static final long MIN_WAIT_INTERVAL = 100L;
+    //starting time
+    private long startTime = -1L;
+    private static boolean go = true;
+
+
+    private FirebaseAuth mAuth;
+
 
 
     //STATE
@@ -59,7 +60,13 @@ public class Activity_Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG_LOG,"on Create");
+        go=true;
         setContentView(R.layout.activity_splash);
+
+        //prendo il valore salvato
+        if(savedInstanceState != null) {
+            this.startTime = savedInstanceState.getLong(START_TIME_KEY);
+        }
 
         final ImageView logoImageView = (ImageView) findViewById(R.id.splash_imageview);
 
@@ -80,17 +87,7 @@ public class Activity_Splash extends AppCompatActivity {
             }
         });
 
-        //Dopo 5 secondi viene invocato il metodo goAhead() in automatco
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Log.d(TAG_LOG, "Go ahead ...");
-                if (go){
-                    goAhead();
-                }
 
-            }
-        }, 5000);
     }
 
     //se non è ancora impostato mette l'ora attuale
@@ -102,20 +99,28 @@ public class Activity_Splash extends AppCompatActivity {
             startTime = SystemClock.uptimeMillis();
         }
 
+        //Dopo 5 secondi viene invocato il metodo goAhead() in automatco
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Log.d(TAG_LOG, "Run timer ...");
+                if (go){
+                    Log.d(TAG_LOG, "Eseguo goAhead ...");
+                    goAhead();
+                }
 
+            }
+        }, 5000);
 
 
         //controlla che l'utente non sia loggato, nel caso effettua un logout automatico
         mAuth= FirebaseAuth.getInstance();
-        // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             //Toast.makeText(Activity_Register.this, "C'è utente: "+currentUser, Toast.LENGTH_SHORT).show();
             mAuth.signOut();
         }
-        else {
-            //Toast.makeText(Activity_Register.this, "Non c'è utente: ", Toast.LENGTH_SHORT).show();
-        }
+
 
         Log.d(TAG_LOG, "started");
     }
@@ -128,8 +133,13 @@ public class Activity_Splash extends AppCompatActivity {
 
     //Passo a Activity_First_Access
     private void goAhead() {
+        Log.d(TAG_LOG, "Metodo Go Ahead");
         go=false;
         final Intent intent = new Intent(this, Activity_First_Access.class);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         Log.d(TAG_LOG, "Creo intent e lo mando a Activity_First_Access. L'activity attuale viene distrutta");
         startActivity(intent);
         finish(); //destroy the activity

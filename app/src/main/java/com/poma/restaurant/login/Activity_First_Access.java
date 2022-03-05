@@ -36,21 +36,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Activity_First_Access extends AppCompatActivity implements Fragment_Access.FirstAccessInterface {
-
+    //Log
     private static final String TAG_LOG = Activity_First_Access.class.getName();
+
+    //extra
     private static final String USER_LOGIN_EXTRA = "com.poma.restaurant.USER_LOGIN_EXTRA ";
-    private FirebaseAuth mAuth;
-
-
     private static final int LOGIN_REQUEST_ID = 1;
     private static final int REGISTRATION_REQUEST_ID = 2;
 
+    private FirebaseAuth mAuth;
+
+
+    //TODO tutta la parte di gestione delle notifiche è da spostare
     private NotificationManager nm;
     private int SIMPLE_NOTIFICATION_ID = 1;
-
     private Timestamp time = null;
     private static List<String> cities = new ArrayList<>();
 
+    /*
     class AddStringTask extends AsyncTask<Void, String, Void> {
 
         @Override
@@ -73,28 +76,8 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
         @Override
         protected void onProgressUpdate(String... item) {
 
-            /*nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-            CharSequence contentTitle = "Notification Details...";
-            CharSequence contentText = "Browse Android Site by clicking me";
-            Intent notifyIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.android.com"));
-            Intent notifyIntent2 = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.it"));
-            PendingIntent intent = PendingIntent.getActivity(Activity_First_Access.this,0,notifyIntent,0);
-            PendingIntent deleteIntent = PendingIntent.getActivity(Activity_First_Access.this,0,notifyIntent2,0);
 
-            Notification notifyDetails = null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    notifyDetails = new Notification.Builder(getBaseContext())
-                            .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
-                            .setContentText(contentText).setContentTitle(contentTitle)
-                            .setContentIntent(intent).setDeleteIntent(deleteIntent)
-                            .build();
-                }
-            }
 
-            nm.notify(SIMPLE_NOTIFICATION_ID++,notifyDetails);*/
-
-            ////////
 
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
                 NotificationChannel channel =  new NotificationChannel("a_n","approvation_notification", NotificationManager.IMPORTANCE_DEFAULT);
@@ -121,21 +104,158 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
 
 
         }
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_first_access);
         Log.d(TAG_LOG,"Start activity");
+        setContentView(R.layout.activity_first_access);
 
-        //new AddStringTask().execute();
-        cities.add("Bergamo");
-        cities.add("Milano");
-        receiveNotifications_cities();
+        //TODO da spostare nelle activity dove serve usare le notifiche
+        //cities.add("Bergamo");
+        //cities.add("Milano");
+        //receiveNotifications_cities();
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Log.d(TAG_LOG, "on start");
+        mAuth= FirebaseAuth.getInstance();
+
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            //Toast.makeText(Activity_Register.this, "C'è utente: "+currentUser, Toast.LENGTH_SHORT).show();
+            mAuth.signOut();
+
+        }
+        else {
+            //Toast.makeText(Activity_Register.this, "Non c'è utente: ", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //doppio click su back per uscire dall'applicazione
+    private long pressedTime;
+    @Override
+    public void onBackPressed() {
+        Log.d(TAG_LOG,"Back button");
+        if (pressedTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            Log.d(TAG_LOG,"2 Back button");
+            finish();
+        } else {
+            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+        }
+        pressedTime = System.currentTimeMillis();
+    }
+
+
+    //Richiama Activity_Login e attende i risultati
+    @Override
+    public void login(Boolean user) {
+        Log.d(TAG_LOG, "Login");
+        final Intent intent = new Intent(this, Activity_Login.class);
+        intent.putExtra(USER_LOGIN_EXTRA, user);
+        startActivityForResult(intent, LOGIN_REQUEST_ID);
+        Log.d(TAG_LOG, "send Intent for result. Login with user: "+user+" True -> User");
+
+
+    }
+
+    //Richiama Activity_Register e attende i risultati
+    @Override
+    public void register(Boolean user) {
+        Log.d(TAG_LOG, "Register");
+        final Intent intent = new Intent(this, Activity_Register.class);
+        intent.putExtra(USER_LOGIN_EXTRA, user);
+        startActivityForResult(intent, REGISTRATION_REQUEST_ID);
+        Log.d(TAG_LOG, "send Intent for result. Login with user: "+user+" False -> Admin");
+
+    }
+
+    //Richiama Activity_Menu
+    @Override
+    public void anonymous_access(Boolean user) {
+        Log.d(TAG_LOG, "Anonymous access");
+        Intent mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
+        startActivity(mainIntent);
+        finish();
+        Log.d(TAG_LOG, "start menù anonymous");
+    }
+
+    //Richiama Activity_Login e attende i risultati
+    @Override
+    public void login_admin(Boolean user) {
+        Log.d(TAG_LOG, "Login Admin");
+        final Intent intent = new Intent(this, Activity_Login.class);
+        intent.putExtra(USER_LOGIN_EXTRA, user);
+        startActivityForResult(intent, LOGIN_REQUEST_ID);
+        Log.d(TAG_LOG, "send Intent for result. Login with user: "+user);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode,resultCode,data);
+        final User user;
+        final Intent mainIntent;
+
+        //risposta ad un login
+        if(requestCode == LOGIN_REQUEST_ID)
+        {
+            switch (resultCode)
+            {
+                case RESULT_OK:
+                    Log.d(TAG_LOG, "Return from login (user): OK");
+                    user = data.getParcelableExtra(User.USER_DATA_EXTRA);
+                    mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
+                    startActivity(mainIntent);
+                    Log.d(TAG_LOG, "start menù with user: "+user.getUsername());
+                    finish();
+                    break;
+                case Action.RESULT_OK_ADMIN:
+                    Log.d(TAG_LOG, "Return from login (admin): OK");
+                    user = data.getParcelableExtra(User.USER_DATA_EXTRA);
+                    mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
+                    startActivity(mainIntent);
+                    Log.d(TAG_LOG, "start menù with user:"+user.getUsername());
+                    finish();
+                    break;
+
+                case RESULT_CANCELED:
+                    Log.d(TAG_LOG, "Return from login: CANCELED");
+                    break;
+            }
+        }
+        //risposta alla registrazione
+        else if(requestCode == REGISTRATION_REQUEST_ID)
+        {
+            switch (resultCode)
+            {
+                case RESULT_OK:
+                    Log.d(TAG_LOG, "Return from register (user): OK");
+                    user = data.getParcelableExtra(User.USER_DATA_EXTRA);
+                    mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
+                    startActivity(mainIntent);
+                    Log.d(TAG_LOG, "start menù with user: "+user.getUsername());
+                    finish();
+                    break;
+                case RESULT_CANCELED:
+                    Log.d(TAG_LOG, "Return from register: CANCELED");
+                    break;
+            }
+        }
+    }
+
+
+
+    //Gestione delle notifiche (non da usare qua)
+    //TODO queta gestione è da spostare nelle activity dopo il login
     private void notify_new_city(String name){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel channel =  new NotificationChannel("a_n","approvation_notification", NotificationManager.IMPORTANCE_DEFAULT);
@@ -193,124 +313,4 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
                 });
     }
 
-
-    @Override
-    public void login(Boolean user) {
-        Log.d(TAG_LOG, "Login");
-        final Intent intent = new Intent(this, Activity_Login.class);
-        intent.putExtra(USER_LOGIN_EXTRA, user);
-        startActivityForResult(intent, LOGIN_REQUEST_ID);
-        Log.d(TAG_LOG, "send Intent for result. Login with user: "+user);
-
-
-    }
-
-    @Override
-    public void register(Boolean user) {
-        Log.d(TAG_LOG, "Register");
-        final Intent intent = new Intent(this, Activity_Register.class);
-        intent.putExtra(USER_LOGIN_EXTRA, user);
-        startActivityForResult(intent, REGISTRATION_REQUEST_ID);
-        Log.d(TAG_LOG, "send Intent for result. Login with user: "+user);
-
-    }
-
-    @Override
-    public void anonymous_access(Boolean user) {
-        Log.d(TAG_LOG, "Anonymous access");
-        Intent mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
-
-        /*FirebaseDatabase db =FirebaseDatabase.getInstance("https://restaurant-app-f5ff3-default-rtdb.europe-west1.firebasedatabase.app/");
-        //FirebaseDatabase db =FirebaseDatabase.getInstance();
-        DatabaseReference myRef = db.getReference("message");
-        myRef.setValue("Hello, World!");*/
-
-
-
-        startActivity(mainIntent);
-        Log.d(TAG_LOG, "start menù anonymous");
-    }
-
-    @Override
-    public void login_admin(Boolean user) {
-        Log.d(TAG_LOG, "Login Admin");
-        final Intent intent = new Intent(this, Activity_Login.class);
-        intent.putExtra(USER_LOGIN_EXTRA, user);
-        startActivityForResult(intent, LOGIN_REQUEST_ID);
-        Log.d(TAG_LOG, "send Intent for result. Login with user: "+user);
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode,resultCode,data);
-        final User user;
-        final Intent mainIntent;
-        if(requestCode == LOGIN_REQUEST_ID)
-        {
-            switch (resultCode)
-            {
-                case RESULT_OK:
-                    Log.d(TAG_LOG, "Return from login (user): OK");
-                    user = data.getParcelableExtra(User.USER_DATA_EXTRA);
-                    mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
-                    startActivity(mainIntent);
-                    Log.d(TAG_LOG, "start menù with user: "+user.getUsername());
-
-                    //finish();
-                    break;
-                case Action.RESULT_OK_ADMIN:
-                    Log.d(TAG_LOG, "Return from login (admin): OK");
-                    user = data.getParcelableExtra(User.USER_DATA_EXTRA);
-                    mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
-                    startActivity(mainIntent);
-                    Log.d(TAG_LOG, "start menù with user:"+user.getUsername());
-
-                    //finish();
-                    break;
-
-                case RESULT_CANCELED:
-                    Log.d(TAG_LOG, "Return from login: CANCELED");
-                    break;
-            }
-        } else if(requestCode == REGISTRATION_REQUEST_ID)
-        {
-            switch (resultCode)
-            {
-                case RESULT_OK:
-                    //TODO salvare nel db
-                    Log.d(TAG_LOG, "Return from register (user): OK");
-                    user = data.getParcelableExtra(User.USER_DATA_EXTRA);
-                    mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
-                    startActivity(mainIntent);
-                    Log.d(TAG_LOG, "start menù with user: "+user.getUsername()+"date: "+user.getDate());
-                    //finish();
-                    break;
-                case RESULT_CANCELED:
-                    Log.d(TAG_LOG, "Return from register: CANCELED");
-                    break;
-            }
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        Log.d(TAG_LOG, "on start");
-        mAuth= FirebaseAuth.getInstance();
-
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            //Toast.makeText(Activity_Register.this, "C'è utente: "+currentUser, Toast.LENGTH_SHORT).show();
-            //mAuth.signOut();
-
-        }
-        else {
-            //Toast.makeText(Activity_Register.this, "Non c'è utente: ", Toast.LENGTH_SHORT).show();
-
-        }
-    }
 }

@@ -38,8 +38,19 @@
 
     <!-- Personali-->
     <dimen name="splash_image_size">400dp</dimen>
+    <dimen name="splash_image_size_land">400dp</dimen>
 
     <!-- Button -->
     <dimen name="button_radius">25dp</dimen>
+
+    <!-- Margin -->
+    <dimen name="margin_bottom_logo">70dp</dimen>
+    <dimen name="margin_bottom_logo_land">24dp</dimen>
+    <dimen name="margin_top_slogan">50dp</dimen>
+    <dimen name="margin_top_slogan_land">24dp</dimen>
+
+    <!-- round logo -->
+    <dimen name="round_logo_width_external">200dp</dimen>
+    <dimen name="round_logo_width_internal">160dp</dimen>
 
 </resources>
