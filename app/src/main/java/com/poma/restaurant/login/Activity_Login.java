@@ -36,43 +36,48 @@ import java.util.Map;
 public class Activity_Login extends AppCompatActivity implements Fragment_Login.LoginInterface{
     private static final String TAG_LOG = Activity_Login.class.getName();
     private static final String USER_LOGIN_EXTRA = "com.poma.restaurant.USER_LOGIN_EXTRA ";
-    private FirebaseAuth mAuth;
-    private FirebaseDatabase db;
-    private DatabaseReference ref;
-    private boolean uscita = false;
-    private ProgressDialog progressDialog;
-    private ProgressBar progresBar;
+
+    private static FirebaseAuth mAuth;
+    private static FirebaseDatabase db;
+    private static DatabaseReference ref;
+    private static boolean uscita = false;
+    private static ProgressDialog progressDialog;
+    private static ProgressBar progresBar;
+    private static Fragment_Login fragment_login;
 
 
-
-    private Boolean user;
+    private static Boolean user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
         Log.d(TAG_LOG, "on create");
 
+        setContentView(R.layout.activity_login);
         TextView title = (TextView)findViewById(R.id.textview_title_login);
         View view = findViewById(R.id.view_rectangle_login);
-        Button btn_login = (Button)findViewById(R.id.login_confirm);
         progresBar = (ProgressBar)findViewById(R.id.progress_bar_login);
 
         //Auth
         mAuth = FirebaseAuth.getInstance();
 
 
-
         //Cambia vista a seconda di login utente o admin
         Intent intent = getIntent(); //receive the intent from Activity_first_access
 
-        if (intent.getBooleanExtra(USER_LOGIN_EXTRA, false)) this.user = true;
-        else this.user = false;
+        if (intent.getBooleanExtra(USER_LOGIN_EXTRA, false)) {
+            this.user = true;
+            Log.d(TAG_LOG, "Dal extra capisco che si tratta di un login Utente");
+        }
+        else {
+            this.user = false;
+            Log.d(TAG_LOG, "Dal extra capisco che si tratta di un login Admin");
+        }
 
+        //se si sta facendo un login per l'amministratore il layout viene cambiato
         if(user==false){
-            title.setText("Login - Admin");
-            title.setTextSize(35);
+            title.setText(getResources().getString(R.string.login_admin_title));
+            //title.setTextSize(35);
             view.setBackgroundColor(getResources().getColor(R.color.blue_link));
         }
 
@@ -97,13 +102,16 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
         }
     }
 
+
+
+    //Riceve email e password dal Fragment
+    //effettua il login considerando email, password e tipo di utente, in caso di problema invoca il metodo setError del Fragment
     @Override
     public void login(String email, String password) {
 
-        Log.d(TAG_LOG, "inizio metodo login, con user: "+this.user);
-        //progresBar.setVisibility(View.VISIBLE);
-
-        Fragment_Login fragment_login = (Fragment_Login)
+        Log.d(TAG_LOG, "inizio metodo login, con tipo utente: "+this.user+" (True=user, False=Admin)");
+        progressBarr(true);
+        fragment_login = (Fragment_Login)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_login);
 
         //LOGIN UTENTE
@@ -114,12 +122,8 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                progressBarr(true);
-                                fragment_login.setError("");
-                                FirebaseUser user = mAuth.getCurrentUser();
                                 Log.d(TAG_LOG, "signInWithEmail:success");
-
+                                fragment_login.setError("");
 
                                 //PRENDO UTENTE
                                 Log.d(TAG_LOG, "inizio metodo retrive user");
@@ -134,20 +138,30 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
                                             if (document.exists()) {
                                                 Map<String, Object> data = document.getData();
                                                 Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
-                                                User user = User.create((String) data.get("username"),(String) data.get("password"))
+                                                if(!(boolean)data.get("admin")){
+                                                    User user = User.create((String) data.get("username"),(String) data.get("password"))
                                                             .withSurname((String) data.get("surname"))
                                                             .withName((String) data.get("name"))
                                                             .withLocation((String) data.get("location"))
                                                             .withEmail((String) data.get("email"))
                                                             .withDate((long) data.get("date"));
 
-                                                            Log.d(TAG_LOG, "login con utente fatto");
+                                                    Log.d(TAG_LOG, "oggetto User creato con successo");
 
-                                                            Intent intent = new Intent();
-                                                            intent.putExtra(User.USER_DATA_EXTRA, user);
-                                                            setResult(RESULT_OK,intent);
-                                                            progressBarr(false);
-                                                            finish();
+                                                    Intent intent = new Intent();
+                                                    intent.putExtra(User.USER_DATA_EXTRA, user);
+                                                    setResult(RESULT_OK,intent);
+                                                    progressBarr(false);
+                                                    finish();
+                                                    //TODO piuttosto che creare l'utente si potrebbe usare una shared preference
+                                                }
+                                                else {
+                                                    Log.d(TAG_LOG, "questo utente è admin (sto facendo login per utente normale)");
+                                                    fragment_login.setError(getResources().getString(R.string.no_admin));
+                                                    progressBarr(false);
+
+                                                }
+
 
                                             } else {
                                                 Log.d(TAG_LOG, "No such document");
@@ -170,28 +184,43 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
 
                                 try {
                                     throw task.getException();
-                                }  catch(FirebaseAuthInvalidCredentialsException e) {
-                                    Log.d(TAG_LOG, "credential exception");
-                                    fragment_login.setError(getResources().getString(R.string.login_error_pass));
                                 }
                                 catch(FirebaseAuthInvalidUserException e) {
+
                                     Log.d(TAG_LOG, "no user found: "+password);
                                     fragment_login.setError(getResources().getString(R.string.no_user));
+                                    progressBarr(false);
 
                                 }
+                                catch(FirebaseAuthInvalidCredentialsException e) {
+                                    Log.d(TAG_LOG, "credential exception, error code: "+e.getErrorCode());
+                                    if (e.getErrorCode() == "ERROR_INVALID_EMAIL"){
+                                        fragment_login.setError(getResources().getString(R.string.login_error_email));
+                                        progressBarr(false);
+                                    }
+                                    else if(e.getErrorCode() == "ERROR_WRONG_PASSWORD"){
+                                        fragment_login.setError(getResources().getString(R.string.login_error_pass));
+                                        progressBarr(false);
+                                    }
+
+
+                                }
+
 
                                 catch(Exception e) {
                                     Log.e(TAG_LOG, e.getMessage());
+                                    progressBarr(false);
                                 }
 
 
                             }
+                            //progressBarr(false);
                         }
+
                     });
         }
         else { // se ho fatto accesso per login admin
-            Log.d(TAG_LOG, "utente admin");
-            progressBarr(true);
+            Log.d(TAG_LOG, "login con utente utente admin");
 
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -199,7 +228,6 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
-                                FirebaseUser user = mAuth.getCurrentUser();
 
                                 //PRENDO UTENTE
                                 Log.d(TAG_LOG, "inizio metodo retrive user");
@@ -216,9 +244,6 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
                                                 Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
 
                                                 if((boolean)data.get("admin")){
-                                                    Toast.makeText(Activity_Login.this, getResources().getString(R.string.login), Toast.LENGTH_SHORT).show();
-
-
 
                                                     User user = User.create((String) data.get("username"),(String) data.get("password"))
                                                             .withSurname((String) data.get("surname"))
@@ -227,7 +252,7 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
                                                             .withEmail((String) data.get("email"))
                                                             .withDate((long) data.get("date"));
 
-                                                    Log.d(TAG_LOG, "login con utente(Admin) fatto");
+                                                    Log.d(TAG_LOG, "login con utente(Admin) fatto, Oggetto User creato");
 
                                                     Intent intent = new Intent();
                                                     intent.putExtra(User.USER_DATA_EXTRA, user);
@@ -237,7 +262,7 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
                                                 }
                                                 else{
                                                     Log.d(TAG_LOG, "questo utente non è admin");
-                                                    fragment_login.setError(getResources().getString(R.string.no_admin));
+                                                    fragment_login.setError(getResources().getString(R.string.is_admin));
                                                     progressBarr(false);
                                                 }
 
@@ -264,27 +289,45 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
                                 try {
                                     throw task.getException();
                                 } catch(FirebaseAuthInvalidCredentialsException e) {
-                                    Log.d(TAG_LOG, "credential exception");
-                                    fragment_login.setError(getResources().getString(R.string.login_error_pass));
+                                    Log.d(TAG_LOG, "credential exception, error code: "+e.getErrorCode());
+                                    if (e.getErrorCode() == "ERROR_INVALID_EMAIL"){
+                                        fragment_login.setError(getResources().getString(R.string.login_error_email));
+                                        progressBarr(false);
+                                    }
+                                    else if(e.getErrorCode() == "ERROR_WRONG_PASSWORD"){
+                                        fragment_login.setError(getResources().getString(R.string.login_error_pass));
+                                        progressBarr(false);
+                                    }
                                 }
                                 catch(FirebaseAuthInvalidUserException e) {
                                     Log.d(TAG_LOG, "no user found: "+password);
                                     fragment_login.setError(getResources().getString(R.string.no_user));
+                                    progressBarr(false);
 
                                 }
 
                                 catch(Exception e) {
                                     Log.e(TAG_LOG, e.getMessage());
+                                    progressBarr(false);
                                 }
 
-                                progressBarr(false);
+
                             }
                         }
                     });
         }
-
+        //progressBarr(false);
     }
 
+
+    @Override
+    public void cancel() {
+        Intent intent = new Intent();
+        setResult(RESULT_CANCELED,intent);
+        finish();
+    }
+
+    //gestione progress bar
     private void progressBarr(Boolean b){
 
         if(b){
@@ -298,10 +341,4 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
 
     }
 
-    @Override
-    public void cancel() {
-        Intent intent = new Intent();
-        setResult(RESULT_CANCELED,intent);
-        finish();
-    }
 }

@@ -31,7 +31,6 @@ public class Fragment_Login extends Fragment {
     private EditText e_password;
     private EditText e_email;
     private TextView error;
-    private ProgressBar progressBar;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -67,6 +66,7 @@ public class Fragment_Login extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG_LOG,"on create fragment");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -76,19 +76,19 @@ public class Fragment_Login extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG_LOG,"on create view fragment");
         // Inflate the layout for this fragment
         View view = (View)inflater.inflate(R.layout.fragment_login, container, false);
 
         this.btn_cancel = (Button)view.findViewById(R.id.button_cancel_loginform);
         this.btn_login = (Button)view.findViewById(R.id.login_confirm);
-        this.e_username = (EditText)view.findViewById(R.id.username_loginform);
         this.e_password = (EditText)view.findViewById(R.id.password_loginform);
         this.e_email = (EditText)view.findViewById(R.id.email_loginform);
 
         this.error = (TextView)view.findViewById(R.id.textview_alert_message_loginform);
 
 
-
+        //invoca metodo "cancel()"
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,13 +96,13 @@ public class Fragment_Login extends Fragment {
             }
         });
 
+        //Invoca metodo "Login()"
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
                 if(checkFields()){
-                    String username = e_username.getText().toString();
                     String password = e_password.getText().toString();
                     String email = e_email.getText().toString();
 
@@ -145,12 +145,14 @@ public class Fragment_Login extends Fragment {
     }
 
     public void setError(String text){
+        Log.d(TAG_LOG,"Ricevuto errore e scritto");
         this.error.setText(text);
         this.error.setVisibility(View.VISIBLE);
         this.error.requestFocus();
 
     }
 
+    //Metodo per controllare il completamento della form senza usare il DB
     private Boolean checkFields (){
         String email = this.e_email.getText().toString();
         String password = this.e_password.getText().toString();
@@ -159,6 +161,8 @@ public class Fragment_Login extends Fragment {
         {
             error.setText(getResources().getString(R.string.email_mandatory));
             error.setVisibility(View.VISIBLE);
+            error.requestFocus();
+            Log.d(TAG_LOG,"email vuota");
             return false;
         }
 
@@ -166,6 +170,8 @@ public class Fragment_Login extends Fragment {
         {
             error.setText(getResources().getString(R.string.password_mandatory));
             error.setVisibility(View.VISIBLE);
+            error.requestFocus();
+            Log.d(TAG_LOG,"password vuota");
             return false;
         }
         return true;

@@ -10,106 +10,113 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        >
+        android:fillViewport="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
 
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/anonymous_access_button"
-            style="@style/button_primary"
-
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-
-            android:layout_marginTop="16dp"
-
-            android:background="@drawable/button_primary_shape"
-            android:text="@string/anonymous_access"
-            app:layout_constraintBottom_toBottomOf="parent"
-
-            app:layout_constraintEnd_toEndOf="parent"
-
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias=".2"
-            app:layout_constraintWidth_percent=".8">
-
-        </androidx.appcompat.widget.AppCompatButton>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/register_button"
-            style="@style/button_primary"
-
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-
-            android:layout_marginTop="8dp"
-
-            android:background="@drawable/button_primary_shape"
-            android:text="@string/register"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-
-            app:layout_constraintStart_toStartOf="parent"
-
-            app:layout_constraintTop_toBottomOf="@+id/anonymous_access_button"
-            app:layout_constraintVertical_bias="0.1"
-
-            app:layout_constraintWidth_percent=".8"></androidx.appcompat.widget.AppCompatButton>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/login_button"
-            style="@style/button_primary"
-
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-
-            android:background="@drawable/button_primary_shape"
-            android:text="@string/login"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-
-            app:layout_constraintHorizontal_bias=".5"
-            app:layout_constraintStart_toStartOf="parent"
-
-            app:layout_constraintTop_toBottomOf="@+id/register_button"
-            app:layout_constraintVertical_bias=".1"
-            app:layout_constraintWidth_percent=".8"></androidx.appcompat.widget.AppCompatButton>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/anonymous_access_button"
+                style="@style/main_button_style"
+                android:layout_marginTop="@dimen/activity_vertical_margin_top"
 
 
-        <TextView
-            android:id="@+id/access_admin"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/admin_access"
+                android:text="@string/anonymous_access"
+                app:cornerRadius="@dimen/button_radius"
+                app:layout_constraintBottom_toTopOf="@id/register_button"
+                app:layout_constraintEnd_toEndOf="parent"
+
+                app:layout_constraintStart_toStartOf="parent"
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent=".8"
+
+                />
 
 
-            android:textColor="@color/blue_link"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-
-            app:layout_constraintHorizontal_bias=".9"
-            app:layout_constraintStart_toStartOf="parent"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/register_button"
+                style="@style/main_button_style"
 
 
-            app:layout_constraintTop_toBottomOf="@+id/login_button"
-            app:layout_constraintVertical_bias=".5"
-            app:layout_constraintWidth_percent=".3">
 
-        </TextView>
+                android:layout_marginTop="@dimen/activity_vertical_margin_top_small"
+                android:text="@string/register"
+
+                app:cornerRadius="@dimen/button_radius"
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/anonymous_access_button"
+                app:layout_constraintWidth_percent=".8" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/login_button"
+                style="@style/main_button_style"
+
+
+
+
+                android:layout_marginTop="@dimen/activity_vertical_margin_top_small"
+                android:text="@string/login"
+                app:cornerRadius="@dimen/button_radius"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/register_button"
+                app:layout_constraintWidth_percent=".8" />
+
+            <TextView
+                android:id="@+id/access_admin"
+                android:layout_width="wrap_content"
+                android:layout_height="41dp"
+                android:fontFamily="sans-serif"
+
+
+                android:text="@string/admin_access"
+                android:textColor="@color/blue_link"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+
+                app:layout_constraintHorizontal_bias=".9"
+                app:layout_constraintStart_toStartOf="parent"
+
+
+                app:layout_constraintTop_toBottomOf="@+id/login_button"
+                app:layout_constraintVertical_bias=".3"
+                app:layout_constraintWidth_percent=".3">
+
+            </TextView>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/access_admin"
+                app:layout_constraintVertical_bias="2"
+                tools:ignore="MissingConstraints" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="20dp" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </FrameLayout>
 

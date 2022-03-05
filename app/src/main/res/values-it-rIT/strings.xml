@@ -2,4 +2,14 @@
 <resources>
     <string name="app_name">Restaurant</string>
     <string name="slogan">Slogan italiano</string>
+    <string name="register">Registrati</string>
+    <string name="login">Accedi</string>
+    <string name="login_admin">Accesso amministratore</string>
+    <string name="anonymous_access">Accesso anonimo</string>
+    <string name="admin_access">Accesso amministratore</string>
+    <string name="cancel">Annulla</string>
+    <string name="login_wait">Acesso, attendi...</string>
+    <string name="no_admin">L\'utente non è un\'amministratore</string>
+    <string name="is_admin">L\'utente è un\'amministratore</string>
+
 </resources>

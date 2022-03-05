@@ -14,7 +14,11 @@
 
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin_top">24dp</dimen>
+    <dimen name="activity_vertical_margin_top">100dp</dimen>
+    <dimen name="activity_vertical_margin_top_small">15dp</dimen>
+    <dimen name="activity_vertical_margin_top_mini">10dp</dimen>
+
+
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">180dp</dimen>
 
@@ -42,6 +46,7 @@
 
     <!-- Button -->
     <dimen name="button_radius">25dp</dimen>
+    <dimen name="padding_button">25dp</dimen>
 
     <!-- Margin -->
     <dimen name="margin_bottom_logo">70dp</dimen>

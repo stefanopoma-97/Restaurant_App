@@ -9,159 +9,165 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        >
+        android:fillViewport="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
-        <TextView
-            android:id="@+id/textview_alert_message_loginform"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="wrong pass"
 
-            android:textAlignment="center"
-            android:textColor="@color/red"
-            android:textSize="15dp"
-            android:textStyle="bold"
 
-            android:visibility="invisible"
+            <TextView
+                android:id="@+id/textview_alert_message_loginform2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="wrong pass"
+                android:visibility="invisible"
 
-            app:layout_constraintBottom_toTopOf="@+id/username_loginform"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.3"
-            app:layout_constraintWidth_percent=".8" />
+                android:textAlignment="center"
+                android:textColor="@color/red"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/login_confirm"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/password_loginform"
+                app:layout_constraintVertical_bias=".3"
+                app:layout_constraintWidth_percent=".8"
+                tools:ignore="MissingConstraints"
 
-        <EditText
-            android:id="@+id/username_loginform"
+                />
 
-            android:layout_width="0dp"
-            app:layout_constraintWidth_percent=".8"
-            android:layout_height="wrap_content"
+            <EditText
+                android:id="@+id/username_loginform"
 
-            app:layout_constraintBottom_toTopOf="@+id/password_loginform"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/username"
+                android:paddingLeft="20dp"
 
-            app:layout_constraintVertical_bias=".9"
-            app:layout_constraintHorizontal_bias=".3"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textSize="@dimen/text_size_medium"
+                android:visibility="gone"
 
-            android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/password_loginform"
+                app:layout_constraintEnd_toEndOf="parent"
 
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+                app:layout_constraintHorizontal_bias=".3"
 
-            android:hint="@string/username"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias=".9"
 
-        <EditText
-            android:id="@+id/email_loginform"
+                app:layout_constraintWidth_percent=".8" />
 
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/email"
+            <EditText
+                android:id="@+id/email_loginform"
 
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+                android:layout_width="0dp"
 
-            app:layout_constraintBottom_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:textSize="@dimen/text_size_medium"
+                android:paddingLeft="20dp"
 
-            app:layout_constraintHorizontal_bias="0.301"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_alert_message_loginform"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
 
-            app:layout_constraintVertical_bias="0."
-            app:layout_constraintWidth_percent=".8" />
+                app:layout_constraintBottom_toTopOf="@+id/password_loginform"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias=".6"
+                app:layout_constraintWidth_percent=".8" />
 
-        <EditText
-            android:id="@+id/password_loginform"
+            <EditText
+                android:id="@+id/password_loginform"
+                android:layout_width="0dp"
 
-            android:layout_width="0dp"
-            app:layout_constraintWidth_percent=".8"
-            android:layout_height="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:inputType="textPassword"
 
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/email_loginform"
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:selectAllOnFocus="true"
 
-            app:layout_constraintVertical_bias=".1"
-            app:layout_constraintHorizontal_bias=".3"
+                android:textSize="@dimen/text_size_medium"
+                app:layout_constraintBottom_toBottomOf="parent"
 
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
 
-            android:hint="@string/password"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/forget_password"
-            app:layout_constraintBottom_toTopOf="@+id/login_confirm"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password_loginform"
+                app:layout_constraintVertical_bias=".3"
+                app:layout_constraintWidth_percent=".8" />
 
-            app:layout_constraintVertical_bias=".2"
-            app:layout_constraintHorizontal_bias=".8"
+            <TextView
+                android:id="@+id/text_register_loginform"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="@string/register"
+                android:textSize="@dimen/text_size_medium"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias=".5"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button_cancel_loginform"
+                app:layout_constraintVertical_bias=".2" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/login_confirm"
+                style="@style/main_button_style"
+                android:layout_width="0dp"
+
+                android:layout_height="wrap_content"
+
+                android:text="@string/login"
+
+                app:cornerRadius="@dimen/button_radius"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias=".5"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/password_loginform"
+
+                app:layout_constraintVertical_bias=".4"
+                app:layout_constraintWidth_percent=".8" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_cancel_loginform"
+                style="@style/button_secondary"
+                android:layout_width="0dp"
+
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+
+
+                android:layout_marginBottom="32dp"
+                android:text="@string/cancel"
+
+                app:cornerRadius="@dimen/button_radius"
+                app:layout_constraintBottom_toBottomOf="parent"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias=".5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/login_confirm"
+                app:layout_constraintVertical_bias=".1"
+                app:layout_constraintWidth_percent=".8" />
+
+
             />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/login_confirm"
-            style="@style/main_button_style"
-            app:cornerRadius="@dimen/button_radius"
-
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-
-            android:background="@drawable/button_primary_shape"
-
-            android:text="@string/login"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias=".5"
-
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password_loginform"
-
-            app:layout_constraintVertical_bias=".4"
-            app:layout_constraintWidth_percent=".8" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button_cancel_loginform"
-            style="@style/button_secondary"
-
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-
-
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/button_secondary_shape"
-
-            android:text="@string/cancel"
-            app:layout_constraintBottom_toBottomOf="parent"
-
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias=".5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login_confirm"
-            app:layout_constraintVertical_bias=".1"
-            app:layout_constraintWidth_percent=".8" />
-
-
-
-        />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 

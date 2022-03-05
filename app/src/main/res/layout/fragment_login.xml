@@ -20,22 +20,22 @@
             android:id="@+id/textview_alert_message_loginform"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintWidth_percent=".8"
+            android:text="wrong pass"
 
-            app:layout_constraintBottom_toTopOf="@+id/username_loginform"
+
+            android:textAlignment="center"
+            android:textColor="@color/red"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold"
+
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/login_confirm"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-
-            app:layout_constraintVertical_bias=".3"
-            app:layout_constraintHorizontal_bias=".5"
-
-            android:textColor="@color/red"
-            android:text="wrong pass"
-            android:textStyle="bold"
-            android:textSize="15dp"
-            android:textAlignment="center"
-            android:visibility="invisible"/>
+            app:layout_constraintTop_toBottomOf="@id/password_loginform"
+            app:layout_constraintVertical_bias="0.274"
+            app:layout_constraintWidth_percent=".8" />
 
         <EditText
             android:id="@+id/username_loginform"
@@ -67,6 +67,8 @@
             app:layout_constraintWidth_percent=".8"
             android:layout_height="wrap_content"
 
+            android:textSize="@dimen/text_size_medium"
+
             app:layout_constraintBottom_toTopOf="@+id/password_loginform"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -88,6 +90,8 @@
             app:layout_constraintWidth_percent=".8"
             android:layout_height="wrap_content"
 
+            android:textSize="@dimen/text_size_medium"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -96,6 +100,9 @@
             app:layout_constraintVertical_bias=".3"
             app:layout_constraintHorizontal_bias=".3"
 
+            android:inputType="textPassword"
+            android:selectAllOnFocus="true"
+
             android:paddingLeft="20dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
@@ -103,17 +110,22 @@
             android:hint="@string/password"/>
 
         <TextView
+            android:id="@+id/text_register_loginform"
+            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/forget_password"
-            app:layout_constraintBottom_toTopOf="@+id/login_confirm"
+            android:text="@string/register"
+            android:fontFamily="sans-serif"
+            android:textSize="@dimen/text_size_medium"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password_loginform"
+            app:layout_constraintHorizontal_bias=".5"
 
-            app:layout_constraintVertical_bias=".2"
-            app:layout_constraintHorizontal_bias=".8"
-            />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_cancel_loginform"
+            app:layout_constraintVertical_bias=".2" />
+
+
 
         <com.google.android.material.button.MaterialButton
             style="@style/main_button_style"
@@ -136,9 +148,9 @@
 
             />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
             style="@style/button_secondary"
-
+            app:cornerRadius="@dimen/button_radius"
 
             android:id="@+id/button_cancel_loginform"
 
@@ -156,7 +168,6 @@
             app:layout_constraintHorizontal_bias=".5"
 
             android:text="@string/cancel"
-            android:background="@drawable/button_secondary_shape"
             />
 
 

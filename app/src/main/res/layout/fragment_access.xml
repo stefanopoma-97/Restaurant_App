@@ -19,18 +19,13 @@
         app:cornerRadius="@dimen/button_radius"
         android:id="@+id/register_button"
 
-        android:layout_width="0dp"
-        app:layout_constraintWidth_percent=".8"
-
-        android:layout_height="wrap_content"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
         app:layout_constraintVertical_bias=".5"
-        app:layout_constraintHorizontal_bias=".5"
+        app:layout_constraintWidth_percent=".8"
+
 
         android:text="@string/register"
 
@@ -44,10 +39,6 @@
         app:cornerRadius="@dimen/button_radius"
         android:id="@+id/login_button"
 
-        android:layout_width="0dp"
-        app:layout_constraintWidth_percent=".8"
-
-        android:layout_height="wrap_content"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/register_button"
 
         app:layout_constraintVertical_bias=".1"
-        app:layout_constraintHorizontal_bias=".5"
+        app:layout_constraintWidth_percent=".8"
 
         android:text="@string/login"
         />
@@ -67,17 +58,14 @@
 
         android:id="@+id/anonymous_access_button"
 
-        android:layout_width="0dp"
-        app:layout_constraintWidth_percent=".8"
-        android:layout_height="wrap_content"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/register_button"
         app:layout_constraintTop_toTopOf="parent"
 
+        app:layout_constraintWidth_percent=".8"
         app:layout_constraintVertical_bias=".9"
-        app:layout_constraintHorizontal_bias=".5"
 
         android:text="@string/anonymous_access"
         />

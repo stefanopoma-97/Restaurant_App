@@ -183,6 +183,7 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
         Log.d(TAG_LOG, "Anonymous access");
         Intent mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
         startActivity(mainIntent);
+        Toast.makeText(Activity_First_Access.this, "Anonymous access", Toast.LENGTH_SHORT).show();
         finish();
         Log.d(TAG_LOG, "start menù anonymous");
     }
@@ -216,6 +217,7 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
                     mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
                     startActivity(mainIntent);
                     Log.d(TAG_LOG, "start menù with user: "+user.getUsername());
+                    Toast.makeText(Activity_First_Access.this, "Login", Toast.LENGTH_SHORT).show();
                     finish();
                     break;
                 case Action.RESULT_OK_ADMIN:
@@ -223,6 +225,7 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
                     user = data.getParcelableExtra(User.USER_DATA_EXTRA);
                     mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
                     startActivity(mainIntent);
+                    Toast.makeText(Activity_First_Access.this, "Login", Toast.LENGTH_SHORT).show();
                     Log.d(TAG_LOG, "start menù with user:"+user.getUsername());
                     finish();
                     break;
@@ -242,6 +245,7 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
                     user = data.getParcelableExtra(User.USER_DATA_EXTRA);
                     mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
                     startActivity(mainIntent);
+                    Toast.makeText(Activity_First_Access.this, "Registered", Toast.LENGTH_SHORT).show();
                     Log.d(TAG_LOG, "start menù with user: "+user.getUsername());
                     finish();
                     break;
