@@ -46,6 +46,8 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
 
     private FirebaseAuth mAuth;
 
+    private User user;
+
 
     //TODO tutta la parte di gestione delle notifiche è da spostare
     private NotificationManager nm;
@@ -203,7 +205,7 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode,resultCode,data);
-        final User user;
+        //final User user;
         final Intent mainIntent;
 
         //risposta ad un login
@@ -213,10 +215,14 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
             {
                 case RESULT_OK:
                     Log.d(TAG_LOG, "Return from login (user): OK");
-                    user = data.getParcelableExtra(User.USER_DATA_EXTRA);
+                    //user = data.getParcelableExtra(User.USER_DATA_EXTRA);
+                    //Log.d(TAG_LOG, "start menù with user: "+user.getUsername());
+
+                    this.user = User.load(this);
+                    Log.d(TAG_LOG, "Shared preference, utente loggato con ID: "+this.user.getID());
                     mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
                     startActivity(mainIntent);
-                    Log.d(TAG_LOG, "start menù with user: "+user.getUsername());
+
                     Toast.makeText(Activity_First_Access.this, "Login", Toast.LENGTH_SHORT).show();
                     finish();
                     break;

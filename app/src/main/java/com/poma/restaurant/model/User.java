@@ -1,5 +1,7 @@
 package com.poma.restaurant.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -17,8 +19,17 @@ public class User implements Parcelable {
     private String name;
     private String surname;
     private String city_id;
+    private String id;
     private boolean admin;
     public static final String USER_DATA_EXTRA = "com.poma.restaurant.model.USER_DATA_EXTRA";
+
+    //shared preferences
+    private static final String USER_MODEL_PREFERENCES = "user_pref";
+    private static final String ADMIN_KEY = "user_pref_admin";
+    private static final String EMAIL_KEY = "user_pref_email";
+    private static final String ID_KEY = "user_pref_id";
+    private static final String PASSWORD_KEY = "user_pref_password";
+
 
     private static final byte PRESENT = 1;
     private static final byte NOT_PRESENT = 0;
@@ -72,6 +83,10 @@ public class User implements Parcelable {
         if(in.readByte() == PRESENT)
         {
             this.city_id = in.readString();
+        }
+        if(in.readByte() == PRESENT)
+        {
+            this.id = in.readString();
         }
     }
 
@@ -143,6 +158,13 @@ public class User implements Parcelable {
         } else {
             dest.writeByte(NOT_PRESENT);
         }
+        if(!TextUtils.isEmpty(this.id))
+        {
+            dest.writeByte(PRESENT);
+            dest.writeString(this.id);
+        } else {
+            dest.writeByte(NOT_PRESENT);
+        }
     }
 
     private User(final String username, final String password) {
@@ -192,6 +214,11 @@ public class User implements Parcelable {
         return this;
     }
 
+    public User withId(String id) {
+        this.id = id;
+        return this;
+    }
+
     public String getUsername() {
         return this.username;
     }
@@ -227,4 +254,45 @@ public class User implements Parcelable {
     public String getCity_id() {
         return this.city_id;
     }
+
+    public String getID() {
+        return this.id;
+    }
+
+
+    public void save(final Context ctx) {
+        final SharedPreferences prefs = ctx.getSharedPreferences(USER_MODEL_PREFERENCES,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(ADMIN_KEY,admin);
+        editor.putString(EMAIL_KEY,email);
+        editor.putString(PASSWORD_KEY,password);
+        editor.putString(ID_KEY,id);
+        editor.commit();
+
+        // using chaining:
+        // editor.putString(USERNAME_KEY,mUserName).putString(EMAIL_KEY,mEmail)....commit();
+    }
+
+    public static User load(final Context ctx) {
+        final SharedPreferences prefs = ctx.getSharedPreferences(USER_MODEL_PREFERENCES,
+                Context.MODE_PRIVATE);
+        boolean r_admin = prefs.getBoolean(ADMIN_KEY,false);
+        String r_email = prefs.getString(EMAIL_KEY,"");
+        String r_password = prefs.getString(PASSWORD_KEY,"");
+        String r_id = prefs.getString(ID_KEY,"");
+        User user = null;
+        if(r_email != "") {
+            user = User.create(r_email, r_password).withAdmin(r_admin).withId(r_id);
+            return user;
+        }
+        return user;
+    }
+
+    public void logout(final Context ctx) {
+        ctx.getSharedPreferences(USER_MODEL_PREFERENCES,
+                Context.MODE_PRIVATE).edit().clear().commit();
+    }
+
+
 }

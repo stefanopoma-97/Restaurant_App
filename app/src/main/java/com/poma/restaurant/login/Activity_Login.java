@@ -30,6 +30,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.poma.restaurant.R;
 import com.poma.restaurant.model.User;
 import com.poma.restaurant.utilities.Action;
+import com.poma.restaurant.utilities.MyApplication;
 
 import java.util.Map;
 
@@ -144,12 +145,16 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
                                                             .withName((String) data.get("name"))
                                                             .withLocation((String) data.get("location"))
                                                             .withEmail((String) data.get("email"))
-                                                            .withDate((long) data.get("date"));
+                                                            .withDate((long) data.get("date"))
+                                                            .withId(mAuth.getCurrentUser().getUid());
 
                                                     Log.d(TAG_LOG, "oggetto User creato con successo");
 
+                                                    //Shared preferences
+                                                    user.save(getApplicationContext());
+                                                    Log.d(TAG_LOG, "User ID: "+user.getID());
                                                     Intent intent = new Intent();
-                                                    intent.putExtra(User.USER_DATA_EXTRA, user);
+                                                    //intent.putExtra(User.USER_DATA_EXTRA, user);
                                                     setResult(RESULT_OK,intent);
                                                     progressBarr(false);
                                                     finish();
