@@ -197,7 +197,33 @@
                 android:hint="@string/username"/>
 
             <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spinner_registerform_location"
+            android:id="@+id/spinner_registerform_location"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent=".8"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_username"
+            android:spinnerMode="dropdown"
+            android:prompt="@string/location"
+
+            android:textSize="@dimen/text_size_medium"
+
+
+            app:layout_constraintVertical_bias=".02"
+            app:layout_constraintHorizontal_bias=".3"
+
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:visibility="invisible"
+            >
+
+        </androidx.appcompat.widget.AppCompatSpinner>
+
+            <TextView
+                android:id="@+id/textview_registerform_retrieve_cities"
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent=".8"
                 android:layout_height="wrap_content"
@@ -205,8 +231,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_username"
-                android:spinnerMode="dropdown"
-                android:prompt="@string/location"
+                android:textAlignment="center"
+
+
+                android:text="@string/loading_cities"
 
                 android:textSize="@dimen/text_size_medium"
 
@@ -218,7 +246,7 @@
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp">
 
-            </androidx.appcompat.widget.AppCompatSpinner>
+            </TextView>
 
             <EditText
                 android:id="@+id/edittext_registerform_location"

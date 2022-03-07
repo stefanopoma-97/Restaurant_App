@@ -51,6 +51,8 @@
     <string name="authentication_failed">Authentication failed</string>
     <string name="creating_account">Creating account</string>
 
+    <string name="loading_cities">Loading cities...</string>
+
 
     <string name="back">Back</string>
     <string name="change_password">Change Password</string>

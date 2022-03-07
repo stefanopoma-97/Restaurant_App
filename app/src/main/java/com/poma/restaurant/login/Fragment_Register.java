@@ -59,6 +59,7 @@ public class Fragment_Register extends Fragment {
     private Button btn_changeemail;
 
     private TextView t_email;
+    private TextView t_loading_cities;
 
     private Spinner spinner;
 
@@ -139,6 +140,7 @@ public class Fragment_Register extends Fragment {
         this.btn_changepassword = (Button) view.findViewById(R.id.button_registerform_changepassword);
         this.btn_changeemail = (Button)view.findViewById(R.id.button_registerform_changeemail);
         this.scrollView = (ScrollView) view.findViewById(R.id.registerform_scrollview);
+        this.t_loading_cities = (TextView)view.findViewById(R.id.textview_registerform_retrieve_cities);
 
         /*
         String[] items = new String[]{"Brescia", "Milano", "Bergamo"};
@@ -287,6 +289,8 @@ public class Fragment_Register extends Fragment {
                         Log.d(TAG_LOG, "città preselezionata: "+retrieve_city);
                         setCitiesSpinner(cities, retrieve_city);
                     }
+
+
 
                     Log.d(TAG_LOG, "Città 4 - lista id città :"+cities.toString());
 
@@ -579,6 +583,9 @@ public class Fragment_Register extends Fragment {
             int spinnerPosition = adapter.getPosition(compareValue);
             spinner.setSelection(spinnerPosition);
         }
+
+        this.t_loading_cities.setVisibility(View.INVISIBLE);
+        this.spinner.setVisibility(View.VISIBLE);
 
 
     }
