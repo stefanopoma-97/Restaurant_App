@@ -124,7 +124,7 @@ public class Activity_Account extends AppCompatActivity implements Fragment_Regi
         fragment.setModifica(true);
         fragment.setVisibilityDate(View.GONE);
         fragment.setVisibilityBtnPassword(View.VISIBLE);
-        fragment.setVisibilityTextViewEmail(View.VISIBLE);
+        //fragment.setVisibilityTextViewEmail(View.VISIBLE);
         fragment.setVisibilityPassword(View.INVISIBLE);
         fragment.setVisibilityEmail(View.INVISIBLE);
 
@@ -158,7 +158,7 @@ public class Activity_Account extends AppCompatActivity implements Fragment_Regi
                                     .withDate((long) data.get("date"));
 
                             fragment.setE_date((long) data.get("date"));
-                            fragment.setT_email((String) data.get("email"));
+                            //fragment.setT_email((String) data.get("email"));
                             fragment.setE_password((String) data.get("password"));
                             fragment.setE_location((String) data.get("location"));
                             fragment.setE_name((String) data.get("name"));

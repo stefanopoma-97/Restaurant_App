@@ -1,30 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.poma.restaurant">
-    <uses-permission android:name="android.permission.INTERNET"/>
 
+    <uses-sdk android:minSdkVersion="28" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <uses-feature android:name="android.hardware.type.watch" />
 
-    <uses-sdk android:minSdkVersion="28" />
-
     <application
         android:allowBackup="true"
+        android:extractNativeLibs="false"
         android:icon="@mipmap/logo_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/logo_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Restaurant.NoActionBar"
         android:usesCleartextTraffic="true">
+        <activity android:name=".notifications.Activity_Notifications"></activity>
         <activity
             android:name=".login.Activity_Password"
-            android:label="@string/title_activity__password">
-
-        </activity>
-
-
-
+            android:label="@string/title_activity__password"></activity>
         <activity
             android:name=".login.Activity_Account"
             android:label="@string/title_activity_account"
@@ -51,6 +48,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".model.Receiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.poma.restaurant.broadcastreceiversandintents.BROADCAST_LOGOUT" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".model.MyReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.devis_android.broadcastreceiversandintents.SendBroadcast" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -9,7 +9,10 @@ import androidx.core.app.NotificationManagerCompat;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +22,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,12 +33,18 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.poma.restaurant.R;
 import com.poma.restaurant.login.Activity_Account;
 import com.poma.restaurant.login.Activity_First_Access;
+import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
+import com.poma.restaurant.model.Notification;
+import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.User;
+import com.poma.restaurant.notifications.Activity_Notifications;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +59,9 @@ public class Activity_Menu extends AppCompatActivity {
     private User currentUser2;
     private NotificationManager nm;
     private int SIMPLE_NOTIFICATION_ID = 1;
+    private BroadcastReceiver broadcastReceiver;
+
+    private static ListenerRegistration listener_notification;
 
 
     //TODO Da buttare
@@ -65,20 +79,25 @@ public class Activity_Menu extends AppCompatActivity {
         //notifiche
         receiveNotifications();
 
+        //Riceve broadcast
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.poma.restaurant.broadcastreceiversandintents.BROADCAST_LOGOUT");
+        this.broadcastReceiver = new Receiver(new Broadcast_receiver_callBack_logout() {
+            @Override
+            public void onCallBack() {
+                Log.d(TAG_LOG, "Receiver onCallBack");
+                logout();
+            }
+        });
+        registerReceiver(this.broadcastReceiver, intentFilter);
+
 
 
 
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in = new Intent(Activity_Menu.this, Activity_First_Access.class);
-                in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                Log.d(TAG_LOG, "Log out");
-                mAuth.signOut();
-                Toast.makeText(Activity_Menu.this, "Log Out", Toast.LENGTH_SHORT).show();
-
-                startActivity(in);
-                finish();
+                logout();
             }
         });
 
@@ -98,28 +117,13 @@ public class Activity_Menu extends AppCompatActivity {
         btn_map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //broadcast_logout(v);
 
-                FirestoreCallBackCitiesId call = new FirestoreCallBackCitiesId() {
-                    @Override
-                    public String onCallback(List<String> list) {
-                        Log.d(TAG_LOG, "istanza int -"+" trovo id città: "+list.get(0));
-                        id_city = list.get(0);
-                        return id_city.toString();
+                Intent in = new Intent(Activity_Menu.this, Activity_Notifications.class);
+                Log.d(TAG_LOG, "click account");
 
-                    }
-                };
+                startActivity(in);
 
-                getCityIdByName(call, "Milano");
-
-
-
-                Log.d(TAG_LOG, "Bottone di test"+" -> fuori da onCallBack"+id_city);
-
-
-
-
-
-            //fine onclick
             }
         });
     }
@@ -152,6 +156,15 @@ public class Activity_Menu extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG_LOG,"on destroy");
+        super.onDestroy();
+        unregisterReceiver(this.broadcastReceiver);
+        Log.d(TAG_LOG,"un register receiver");
+        //logout();
+    }
+
     //doppio click su back per uscire dall'applicazione
     private long pressedTime;
     @Override
@@ -160,12 +173,14 @@ public class Activity_Menu extends AppCompatActivity {
         if (pressedTime + 2000 > System.currentTimeMillis()) {
             super.onBackPressed();
             Log.d(TAG_LOG,"2 Back button");
+            logout();
             finish();
         } else {
             Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
         }
         pressedTime = System.currentTimeMillis();
     }
+
 
     //controllo la presenza di un utente loggato.
     //per farlo viene utilizzato Firestore e SharedPreferences. Viene anche confrontato l'id degli utenti ricavato nei due modi
@@ -234,9 +249,32 @@ public class Activity_Menu extends AppCompatActivity {
 
     }
 
+    private void logout(){
+        Log.d(TAG_LOG, "Logout - inizio procedura");
+
+        this.mAuth.signOut();
+        this.currentUser2.logout(this);
+        this.listener_notification.remove();
+
+        Intent in = new Intent(Activity_Menu.this, Activity_First_Access.class);
+        in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Toast.makeText(Activity_Menu.this, "Log Out", Toast.LENGTH_SHORT).show();
+        startActivity(in);
+        finish();
+    }
+
+    //broadcast per logout
+    private void broadcast_logout(View view){
+        Log.d(TAG_LOG, "Logout - inizio procedura");
+        Intent intent = new Intent();
+        intent.setAction("com.poma.restaurant.broadcastreceiversandintents.BROADCAST_LOGOUT");
+        intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+        sendBroadcast(intent);
+        Log.d(TAG_LOG, "Broadcast mandato");
+    }
 
     //crea una notifica per l'utente
-    private void new_notify(String name){
+    private void new_notify(Notification n){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel channel =  new NotificationChannel("a_n","approvation_notification", NotificationManager.IMPORTANCE_DEFAULT);
             NotificationManager notificationManager = getApplicationContext().getSystemService(NotificationManager.class);
@@ -244,10 +282,10 @@ public class Activity_Menu extends AppCompatActivity {
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "a_n")
-                .setContentTitle("Notifica, id utente: "+name)
+                .setContentTitle("Notifica, id utente: "+ n.getUser_id())
                 .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
                 .setAutoCancel(true)
-                .setContentText("contenuto");
+                .setContentText("contenuto: "+n.getType());
 
 
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(getApplicationContext());
@@ -264,36 +302,64 @@ public class Activity_Menu extends AppCompatActivity {
         this.mAuth= FirebaseAuth.getInstance();
         this.currentUser = mAuth.getCurrentUser();
         if (this.currentUser!=null){
-            this.db.collection("notifications")
-                    .whereEqualTo("user_id", currentUser.getUid())
-                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable QuerySnapshot snapshots,
-                                            @Nullable FirebaseFirestoreException e) {
-                            if (e != null) {
-                                Log.w(TAG_LOG, "Listen failed.", e);
-                                return;
-                            }
+            Query query = this.db.collection("notifications")
+                    .whereEqualTo("user_id", currentUser.getUid());
+            this.listener_notification = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot snapshots,
+                                    @Nullable FirebaseFirestoreException e) {
+                    if (e != null) {
+                        Log.w(TAG_LOG, "Listen failed.", e);
+                        return;
+                    }
 
-                            for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                                switch (dc.getType()) {
-                                    case ADDED:
-                                        Log.d(TAG_LOG, "New notify: " + dc.getDocument().getString("type"));
-                                        new_notify(currentUser.getUid());
-                                        break;
-                                    case MODIFIED:
-                                        Log.d(TAG_LOG, "Modified notify: " + dc.getDocument().getData());
-                                        break;
-                                    case REMOVED:
-                                        Log.d(TAG_LOG, "Removed notify: " + dc.getDocument().getData());
-                                        break;
-                                }
-                            }
-
-
+                    for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                        switch (dc.getType()) {
+                            case ADDED:
+                                Log.d(TAG_LOG, "New notify: " + dc.getDocument().getString("type"));
+                                Notification n = createNotification(dc.getDocument());
+                                new_notify(n);
+                                //TODO farle cancellare
+                                //deleteNotification(dc.getDocument());
+                                break;
+                            case MODIFIED:
+                                Log.d(TAG_LOG, "Modified notify: " + dc.getDocument().getData());
+                                break;
+                            case REMOVED:
+                                Log.d(TAG_LOG, "Removed notify: " + dc.getDocument().getData());
+                                break;
                         }
-                    });
+                    }
+
+
+                }
+            });
         }
+
+    }
+
+    private Notification createNotification(QueryDocumentSnapshot d){
+        Log.d(TAG_LOG, "Creando una notifica");
+        Notification n = new Notification(d.getString("user_id"), d.getId(), d.getString("type"));
+        Log.d(TAG_LOG, "Notifica creata correttamente, user_id: "+n.getUser_id()+", id: "+n.getId()+", type: "+n.getType());
+        return n;
+    }
+
+    private void deleteNotification(QueryDocumentSnapshot d){
+        this.db.collection("notifications").document(d.getId())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG_LOG, "DocumentSnapshot successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG_LOG, "Error deleting document", e);
+                    }
+                });;
 
     }
 
