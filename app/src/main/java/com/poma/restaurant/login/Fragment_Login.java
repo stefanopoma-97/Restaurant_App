@@ -3,6 +3,7 @@ package com.poma.restaurant.login;
 import android.app.Activity;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
@@ -31,6 +32,10 @@ public class Fragment_Login extends Fragment {
     private EditText e_password;
     private EditText e_email;
     private TextView error;
+
+    //state
+    private static final String ERROR_STRING_KEY_FRAGMENT_LOGIN = "com.poma.restaurant.ERROR_STRING_KEY_FRAGMENT_LOGIN";
+    private static String error_state ="";
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -120,6 +125,42 @@ public class Fragment_Login extends Fragment {
         return view;
     }
 
+    //State
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+
+        savedInstanceState.putString(ERROR_STRING_KEY_FRAGMENT_LOGIN, this.error.getText().toString());
+        super.onSaveInstanceState(savedInstanceState);
+        Log.d(TAG_LOG,"Save state: "+ERROR_STRING_KEY_FRAGMENT_LOGIN+" valore: "+this.error.getText().toString());
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d(TAG_LOG,"on Activity Create");
+
+        if (savedInstanceState != null){
+            String errore = savedInstanceState.getString(ERROR_STRING_KEY_FRAGMENT_LOGIN);
+            if (errore==""){
+                this.error_state="";
+            }
+            else {
+                this.error_state=errore;
+            }
+
+            setErrorState(this.error_state);
+
+            Log.d(TAG_LOG,"Retrive state: "+ERROR_STRING_KEY_FRAGMENT_LOGIN+" valore: "+errore);
+        }
+        else {
+            Log.d(TAG_LOG,"Retrive state: "+ERROR_STRING_KEY_FRAGMENT_LOGIN+" valore: null");
+        }
+
+    }
+
+
+
     //Interfaccia
     //Activity deve implementare i metodi specificati
     public interface LoginInterface {
@@ -150,6 +191,17 @@ public class Fragment_Login extends Fragment {
         this.error.setVisibility(View.VISIBLE);
         this.error.requestFocus();
 
+    }
+
+    private void setErrorState(String text){
+        if (text == ""){
+            this.error.setText("");
+            this.error.setVisibility(View.INVISIBLE);
+        }
+        else {
+            this.error.setText(text);
+            this.error.setVisibility(View.VISIBLE);
+        }
     }
 
     //Metodo per controllare il completamento della form senza usare il DB

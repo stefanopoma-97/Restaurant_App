@@ -20,7 +20,7 @@
             android:id="@+id/textview_alert_message_loginform"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="wrong pass"
+            android:text=""
 
 
             android:textAlignment="center"
