@@ -1,6 +1,7 @@
 package com.poma.restaurant.login;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
@@ -55,6 +56,8 @@ public class Activity_Register extends AppCompatActivity implements Fragment_Reg
     private ProgressDialog progressDialog;
     private Map<String, Object> cities;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +69,8 @@ public class Activity_Register extends AppCompatActivity implements Fragment_Reg
         Log.d(TAG_LOG, "on create");
 
     }
+
+
 
     @Override
     protected void onStart() {

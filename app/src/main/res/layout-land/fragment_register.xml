@@ -4,10 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login.Fragment_Login"
-    android:background="@drawable/shape_round_white"
-
-    >
+    tools:context=".login.Fragment_Login">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -247,7 +244,7 @@
             <DatePicker
                 android:id="@+id/datepicker_registerform_date"
 
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 app:layout_constraintWidth_percent="0.9"
                 android:layout_height="wrap_content"
 

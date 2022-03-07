@@ -1,10 +1,10 @@
 package com.poma.restaurant.login;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
@@ -18,7 +18,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,6 +40,11 @@ import java.util.Map;
  */
 public class Fragment_Register extends Fragment {
     private static final String TAG_LOG = Fragment_Register.class.getName();
+    private static final String ERROR_STRING_KEY_FRAGMENT_REGISTER = "com.poma.restaurant.ERROR_STRING_KEY_FRAGMENT_REGISTER";
+    private static final String CITY_NAME_STRING_KEY_FRAGMENT_REGISTER = "com.poma.restaurant.CITY_NAME_STRING_KEY_FRAGMENT_REGISTER";
+    private static String error_state ="";;
+    private static String retrieve_city = null;
+
     private Button btn_cancel;
     private Button btn_register;
     private EditText e_username;
@@ -212,10 +216,51 @@ public class Fragment_Register extends Fragment {
         return view;
     }
 
+    //State
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+
+        savedInstanceState.putString(ERROR_STRING_KEY_FRAGMENT_REGISTER, this.error.getText().toString());
+        savedInstanceState.putString(CITY_NAME_STRING_KEY_FRAGMENT_REGISTER, getCity());
+        this.retrieve_city = null;
+        super.onSaveInstanceState(savedInstanceState);
+        Log.d(TAG_LOG,"Save state: "+ERROR_STRING_KEY_FRAGMENT_REGISTER+" valore: "+this.error.getText().toString());
+        Log.d(TAG_LOG,"Save state: "+CITY_NAME_STRING_KEY_FRAGMENT_REGISTER+" valore: "+getCity());
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d(TAG_LOG,"on Activity Create");
+
+        if (savedInstanceState != null){
+            String errore = savedInstanceState.getString(ERROR_STRING_KEY_FRAGMENT_REGISTER);
+            if (errore==""){
+                this.error_state="";
+            }
+            else {
+                this.error_state=errore;
+            }
+
+            setError(this.error_state);
+
+            this.retrieve_city = savedInstanceState.getString(CITY_NAME_STRING_KEY_FRAGMENT_REGISTER);
+
+            Log.d(TAG_LOG,"Retrive state: "+ERROR_STRING_KEY_FRAGMENT_REGISTER+" valore: "+errore);
+            Log.d(TAG_LOG,"Retrive state: "+CITY_NAME_STRING_KEY_FRAGMENT_REGISTER+" valore: "+this.retrieve_city);
+        }
+        else {
+            Log.d(TAG_LOG,"Retrive state: "+ERROR_STRING_KEY_FRAGMENT_REGISTER+" valore: null");
+        }
+
+    }
+
 
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG_LOG, "on start");
         Log.d(TAG_LOG, "Città 1 - inizio metodo prendere città");
         this.cities = new HashMap<>();
         this.db = FirebaseFirestore.getInstance();
@@ -233,7 +278,16 @@ public class Fragment_Register extends Fragment {
                         //Map<String, Object>
                         cities.put(document.getId(), (String)data.get("city"));
                     }
-                    setCitiesSpinner(cities, null);
+                    if (retrieve_city == null){
+                        Log.d(TAG_LOG, "Nessuna città preselezionata");
+                        setCitiesSpinner(cities, null);
+
+                    }
+                    else {
+                        Log.d(TAG_LOG, "città preselezionata: "+retrieve_city);
+                        setCitiesSpinner(cities, retrieve_city);
+                    }
+
                     Log.d(TAG_LOG, "Città 4 - lista id città :"+cities.toString());
 
                 } else {
