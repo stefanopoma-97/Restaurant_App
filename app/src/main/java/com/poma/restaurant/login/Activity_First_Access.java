@@ -131,12 +131,18 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            //Toast.makeText(Activity_Register.this, "C'è utente: "+currentUser, Toast.LENGTH_SHORT).show();
+            Log.d(TAG_LOG, "Trovato utente con Firestore -> Logout");
             mAuth.signOut();
 
         }
         else {
             //Toast.makeText(Activity_Register.this, "Non c'è utente: ", Toast.LENGTH_SHORT).show();
+        }
+
+        User u = User.load(this);
+        if (u!=null){
+            Log.d(TAG_LOG, "Trovato utente in SharedPreferences -> Logout");
+            u.logout(this);
         }
     }
 

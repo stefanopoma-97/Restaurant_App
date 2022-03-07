@@ -66,36 +66,7 @@ public class Activity_Menu extends AppCompatActivity {
         receiveNotifications();
 
 
-        //Controllo login (capisco se anonimo, utente o admin
-        this.currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Log.d(TAG_LOG, "C'è utente");
-            btn_logout.setVisibility(View.VISIBLE);
-            this.db = FirebaseFirestore.getInstance();
-            DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            Map<String, Object> data = document.getData();
 
-                            if((boolean)data.get("admin")){
-                                set_for_admin();
-                            }
-                            else {
-                                set_for_user();
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        else {
-            set_for_anonymous();
-            Log.d(TAG_LOG, "Non c'è utente, accesso anonimo");
-        }
 
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,18 +99,6 @@ public class Activity_Menu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                /*
-                getCityIdByName(new FirestoreCallBackCitiesId() {
-                    @Override
-                    public String onCallback(List<String> list) {
-                        Log.d(TAG_LOG, "Bottone di test"+" -> trovo id città: "+list.get(0));
-                        id_city = list.get(0);
-                        return id_city.toString();
-
-                    }
-                }, "Milano");
-                 */
-
                 FirestoreCallBackCitiesId call = new FirestoreCallBackCitiesId() {
                     @Override
                     public String onCallback(List<String> list) {
@@ -167,14 +126,17 @@ public class Activity_Menu extends AppCompatActivity {
 
     //Correzioni al layout sulla base del tipo di utente
     private void set_for_admin(){
+        this.btn_logout.setVisibility(View.VISIBLE);
         this.btn_logout.setText("LOGOUT (ADMIN)");
     }
 
     private void set_for_user(){
+        this.btn_logout.setVisibility(View.VISIBLE);
         this.btn_logout.setText("LOGOUT");
     }
 
     private void set_for_anonymous(){
+        this.btn_logout.setVisibility(View.INVISIBLE);
         this.btn_logout.setVisibility(View.GONE);
     }
 
@@ -188,41 +150,92 @@ public class Activity_Menu extends AppCompatActivity {
 
         check_user();
 
+    }
 
+    //doppio click su back per uscire dall'applicazione
+    private long pressedTime;
+    @Override
+    public void onBackPressed() {
+        Log.d(TAG_LOG,"Back button");
+        if (pressedTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            Log.d(TAG_LOG,"2 Back button");
+            finish();
+        } else {
+            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+        }
+        pressedTime = System.currentTimeMillis();
     }
 
     //controllo la presenza di un utente loggato.
     //per farlo viene utilizzato Firestore e SharedPreferences. Viene anche confrontato l'id degli utenti ricavato nei due modi
     private void check_user(){
+        Boolean anonymous_f = false;
+        Boolean anonymous_s = false;
+        Boolean anonymous = false;
         Log.d(TAG_LOG, "Controllo ci sia un utente loggato");
+
+        //Login Firestore
         this.currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             Log.d(TAG_LOG, "Trovato utente con Firestore, id: "+this.currentUser.getUid());
         }
         else {
-            Log.d(TAG_LOG, "Non trovato utente con Firestore -> finish()");
-            finish();
+            Log.d(TAG_LOG, "Non trovato utente con Firestore");
+            anonymous_f = true;
         }
+
+        //Login Shared Preferences
         this.currentUser2 = User.load(this);
         if (currentUser2 != null) {
             Log.d(TAG_LOG, "Trovato utente con Shared preferences, id: "+this.currentUser2.getID());
         }
         else {
-            Log.d(TAG_LOG, "Non trovato utente con SharedPreference -> finish()");
-            finish();
+            Log.d(TAG_LOG, "Non trovato utente con SharedPreference");
+            anonymous_s = true;
         }
 
-        if (currentUser.getUid() == currentUser2.getID()){
+        //anonimo, user, admin o errore
+        if (anonymous_f & anonymous_s){
+            set_for_anonymous();
+            Log.d(TAG_LOG, "Non c'è utente, accesso anonimo");
+        }
+        else if (anonymous_f!=anonymous_s){
+            Log.d(TAG_LOG, "ERRORE - ho trovato sulo un utente");
+            finish();
+        }
+        else if (currentUser.getUid() == currentUser2.getID()){
             Log.d(TAG_LOG, "Gli utenti coincidono");
+            this.db = FirebaseFirestore.getInstance();
+            DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Map<String, Object> data = document.getData();
+
+                            if((boolean)data.get("admin")){
+                                set_for_admin();
+                            }
+                            else {
+                                set_for_user();
+                            }
+                        }
+                    }
+                }
+            });
         }
         else {
             Log.d(TAG_LOG, "Errore - gli utenti non coincidono");
             finish();
         }
+
     }
 
 
-
+    //crea una notifica per l'utente
     private void new_notify(String name){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel channel =  new NotificationChannel("a_n","approvation_notification", NotificationManager.IMPORTANCE_DEFAULT);
@@ -245,12 +258,13 @@ public class Activity_Menu extends AppCompatActivity {
         managerCompat.notify(SIMPLE_NOTIFICATION_ID++, builder.build());
     }
 
+    //verifica l'esistenza di notifiche per l'utente loggato
     public void receiveNotifications(){
-        db = FirebaseFirestore.getInstance();
-        mAuth= FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
-        if (currentUser!=null){
-            db.collection("notifications")
+        this.db = FirebaseFirestore.getInstance();
+        this.mAuth= FirebaseAuth.getInstance();
+        this.currentUser = mAuth.getCurrentUser();
+        if (this.currentUser!=null){
+            this.db.collection("notifications")
                     .whereEqualTo("user_id", currentUser.getUid())
                     .addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
