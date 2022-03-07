@@ -33,6 +33,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.poma.restaurant.R;
 import com.poma.restaurant.login.Activity_Account;
 import com.poma.restaurant.login.Activity_First_Access;
+import com.poma.restaurant.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +45,12 @@ public class Activity_Menu extends AppCompatActivity {
     private Button btn_logout;
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
+    private User currentUser2;
     private NotificationManager nm;
     private int SIMPLE_NOTIFICATION_ID = 1;
 
+
+    //TODO Da buttare
     private String id_city ="";
 
     @Override
@@ -55,17 +59,19 @@ public class Activity_Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        mAuth= FirebaseAuth.getInstance();
-        btn_logout= (Button)findViewById(R.id.button_menu_logout);
+        this.mAuth= FirebaseAuth.getInstance();
+        this.btn_logout= (Button)findViewById(R.id.button_menu_logout);
+
+        //notifiche
         receiveNotifications();
 
 
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        //Controllo login (capisco se anonimo, utente o admin
+        this.currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            Log.d(TAG_LOG, "C'è utente, metto visibile bottone");
+            Log.d(TAG_LOG, "C'è utente");
             btn_logout.setVisibility(View.VISIBLE);
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            this.db = FirebaseFirestore.getInstance();
             DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -76,7 +82,10 @@ public class Activity_Menu extends AppCompatActivity {
                             Map<String, Object> data = document.getData();
 
                             if((boolean)data.get("admin")){
-                                btn_logout.setText("LOGOUT (ADMIN)");
+                                set_for_admin();
+                            }
+                            else {
+                                set_for_user();
                             }
                         }
                     }
@@ -84,8 +93,8 @@ public class Activity_Menu extends AppCompatActivity {
             });
         }
         else {
-            this.btn_logout.setVisibility(View.GONE);
-            Log.d(TAG_LOG, "Non c'è utente, metto invisibile bottone");
+            set_for_anonymous();
+            Log.d(TAG_LOG, "Non c'è utente, accesso anonimo");
         }
 
         btn_logout.setOnClickListener(new View.OnClickListener() {
@@ -156,61 +165,60 @@ public class Activity_Menu extends AppCompatActivity {
         });
     }
 
-    //TEST
-
-    //lista
-
-
-
-
-    public interface FirestoreCallBackCitiesId {
-        String onCallback(List<String> list);
+    //Correzioni al layout sulla base del tipo di utente
+    private void set_for_admin(){
+        this.btn_logout.setText("LOGOUT (ADMIN)");
     }
 
-    private void getCityIdByName(FirestoreCallBackCitiesId callBack, String name){
-        Log.d(TAG_LOG, "getcitybyname");
-        List<String> cities_id = new ArrayList<>();
-
-        db = FirebaseFirestore.getInstance();
-        db.collection("cities")
-                .whereEqualTo("city", name)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG_LOG, "issuccessful");
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG_LOG, "trovato id della città: "+document.getId());
-                                cities_id.add(document.getId());
-                            }
-                            callBack.onCallback(cities_id);
-                        } else {
-                            Log.w(TAG_LOG, "Error getting documents.", task.getException());
-                            cities_id.add("");
-                        }
-
-                    }
-                });
-
+    private void set_for_user(){
+        this.btn_logout.setText("LOGOUT");
     }
+
+    private void set_for_anonymous(){
+        this.btn_logout.setVisibility(View.GONE);
+    }
+
+
 
     @Override
     protected void onStart() {
         super.onStart();
-        this.mAuth=FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        //controllo la presenza di utenti loggati
+        Log.d(TAG_LOG, "Controllo ci sia un utente loggato");
+
+        check_user();
+
+
+    }
+
+    //controllo la presenza di un utente loggato.
+    //per farlo viene utilizzato Firestore e SharedPreferences. Viene anche confrontato l'id degli utenti ricavato nei due modi
+    private void check_user(){
+        Log.d(TAG_LOG, "Controllo ci sia un utente loggato");
+        this.currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            this.btn_logout.setVisibility(View.VISIBLE);
-            Toast.makeText(Activity_Menu.this, "C'è utente: "+currentUser, Toast.LENGTH_SHORT).show();
+            Log.d(TAG_LOG, "Trovato utente con Firestore, id: "+this.currentUser.getUid());
         }
         else {
-            this.btn_logout.setVisibility(View.GONE);
-            Toast.makeText(Activity_Menu.this, "Non c'è utente: ", Toast.LENGTH_SHORT).show();
-
+            Log.d(TAG_LOG, "Non trovato utente con Firestore -> finish()");
+            finish();
+        }
+        this.currentUser2 = User.load(this);
+        if (currentUser2 != null) {
+            Log.d(TAG_LOG, "Trovato utente con Shared preferences, id: "+this.currentUser2.getID());
+        }
+        else {
+            Log.d(TAG_LOG, "Non trovato utente con SharedPreference -> finish()");
+            finish();
         }
 
+        if (currentUser.getUid() == currentUser2.getID()){
+            Log.d(TAG_LOG, "Gli utenti coincidono");
+        }
+        else {
+            Log.d(TAG_LOG, "Errore - gli utenti non coincidono");
+            finish();
+        }
     }
 
 
@@ -272,6 +280,42 @@ public class Activity_Menu extends AppCompatActivity {
                         }
                     });
         }
+
+    }
+
+
+
+    //TODO DA BUTTARE
+    public interface FirestoreCallBackCitiesId {
+        String onCallback(List<String> list);
+    }
+
+    private void getCityIdByName(FirestoreCallBackCitiesId callBack, String name){
+        Log.d(TAG_LOG, "getcitybyname");
+        List<String> cities_id = new ArrayList<>();
+
+        db = FirebaseFirestore.getInstance();
+        db.collection("cities")
+                .whereEqualTo("city", name)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG_LOG, "issuccessful");
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG_LOG, "trovato id della città: "+document.getId());
+                                cities_id.add(document.getId());
+                            }
+                            callBack.onCallback(cities_id);
+                        } else {
+                            Log.w(TAG_LOG, "Error getting documents.", task.getException());
+                            cities_id.add("");
+                        }
+
+                    }
+                });
 
     }
 

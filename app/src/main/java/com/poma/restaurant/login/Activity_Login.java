@@ -164,7 +164,6 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
                                                     setResult(RESULT_OK,intent);
                                                     progressBarr(false);
                                                     finish();
-                                                    //TODO piuttosto che creare l'utente si potrebbe usare una shared preference
                                                 }
                                                 else {
                                                     Log.d(TAG_LOG, "questo utente è admin (sto facendo login per utente normale)");
