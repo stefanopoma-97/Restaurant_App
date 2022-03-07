@@ -224,11 +224,13 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
                     startActivity(mainIntent);
 
                     Toast.makeText(Activity_First_Access.this, "Login", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG_LOG, "start menù with user:"+user.getUsername());
                     finish();
                     break;
                 case Action.RESULT_OK_ADMIN:
                     Log.d(TAG_LOG, "Return from login (admin): OK");
-                    user = data.getParcelableExtra(User.USER_DATA_EXTRA);
+                    this.user = User.load(this);
+                    Log.d(TAG_LOG, "Shared preference, utente loggato con ID: "+this.user.getID());
                     mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
                     startActivity(mainIntent);
                     Toast.makeText(Activity_First_Access.this, "Login", Toast.LENGTH_SHORT).show();
