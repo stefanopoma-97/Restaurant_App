@@ -46,6 +46,9 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
     private static ProgressBar progresBar;
     private static Fragment_Login fragment_login;
 
+    private static FirebaseUser currentUser;
+    private static User currentUser2;
+
 
     private static Boolean user;
 
@@ -90,17 +93,20 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
         super.onStart();
         Log.d(TAG_LOG, "on start");
 
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        //controllo la presenza di utenti loggati
+        Log.d(TAG_LOG, "Controllo che l'utente non sia già loggato");
+        this.currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            //Toast.makeText(Activity_Login.this, "C'è utente: "+currentUser, Toast.LENGTH_SHORT).show();
-
-        }
-        else {
-            //Toast.makeText(Activity_Login.this, "Non c'è utente: ", Toast.LENGTH_SHORT).show();
+            Log.d(TAG_LOG, "Trovato utente con Firestore");
             mAuth.signOut();
-
         }
+        this.currentUser2 = User.load(this);
+        if (currentUser2 != null) {
+            Log.d(TAG_LOG, "Trovato utente con Shared preferences");
+            mAuth.signOut();
+            currentUser2.logout(this);
+        }
+        Log.d(TAG_LOG, "Ora non c'è nessun utente loggato");
     }
 
 
