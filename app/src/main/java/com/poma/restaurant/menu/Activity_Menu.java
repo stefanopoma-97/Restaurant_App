@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,12 +28,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.poma.restaurant.R;
 import com.poma.restaurant.login.Activity_Account;
 import com.poma.restaurant.login.Activity_First_Access;
 
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Activity_Menu extends AppCompatActivity {
@@ -45,6 +46,8 @@ public class Activity_Menu extends AppCompatActivity {
     private FirebaseUser currentUser;
     private NotificationManager nm;
     private int SIMPLE_NOTIFICATION_ID = 1;
+
+    private String id_city ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,18 +113,87 @@ public class Activity_Menu extends AppCompatActivity {
             }
         });
 
+
         Button btn_map = (Button)findViewById(R.id.button_menu_map);
         btn_map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String map = "http://maps.google.co.in/maps?q=" + "via ancona 13, palazzolo";
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(map));
-                startActivity(intent);
-                Log.d(TAG_LOG, "click map");
+                /*
+                getCityIdByName(new FirestoreCallBackCitiesId() {
+                    @Override
+                    public String onCallback(List<String> list) {
+                        Log.d(TAG_LOG, "Bottone di test"+" -> trovo id città: "+list.get(0));
+                        id_city = list.get(0);
+                        return id_city.toString();
 
+                    }
+                }, "Milano");
+                 */
+
+                FirestoreCallBackCitiesId call = new FirestoreCallBackCitiesId() {
+                    @Override
+                    public String onCallback(List<String> list) {
+                        Log.d(TAG_LOG, "istanza int -"+" trovo id città: "+list.get(0));
+                        id_city = list.get(0);
+                        return id_city.toString();
+
+                    }
+                };
+
+                getCityIdByName(call, "Milano");
+
+
+
+                Log.d(TAG_LOG, "Bottone di test"+" -> fuori da onCallBack"+id_city);
+
+
+
+
+
+            //fine onclick
             }
         });
+    }
+
+    //TEST
+
+    //lista
+
+
+
+
+    public interface FirestoreCallBackCitiesId {
+        String onCallback(List<String> list);
+    }
+
+    private void getCityIdByName(FirestoreCallBackCitiesId callBack, String name){
+        Log.d(TAG_LOG, "getcitybyname");
+        List<String> cities_id = new ArrayList<>();
+
+        db = FirebaseFirestore.getInstance();
+        db.collection("cities")
+                .whereEqualTo("city", name)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG_LOG, "issuccessful");
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG_LOG, "trovato id della città: "+document.getId());
+                                cities_id.add(document.getId());
+                            }
+                            callBack.onCallback(cities_id);
+                        } else {
+                            Log.w(TAG_LOG, "Error getting documents.", task.getException());
+                            cities_id.add("");
+                        }
+
+                    }
+                });
+
     }
 
     @Override

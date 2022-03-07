@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
+        android:id="@+id/registerform_scrollview"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,11 +35,13 @@
                 app:layout_constraintVertical_bias=".8"
                 app:layout_constraintHorizontal_bias=".5"
 
-                android:textColor="@color/red"
-                android:text="wrong pass"
-                android:textStyle="bold"
-                android:textSize="15dp"
                 android:textAlignment="center"
+                android:textColor="@color/red"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold"
+                android:text=""
+
+
                 android:visibility="invisible"/>
 
             <EditText
@@ -47,6 +50,7 @@
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent=".8"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_medium"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -64,32 +68,11 @@
 
                 android:hint="@string/email"/>
 
-            <TextView
-                android:id="@+id/textview_registerform_email"
 
-                android:layout_width="0dp"
-                app:layout_constraintWidth_percent=".8"
-                android:layout_height="wrap_content"
+            <com.google.android.material.button.MaterialButton
+                style="@style/button_secondary"
+                app:cornerRadius="@dimen/button_radius"
 
-                android:textAlignment="center"
-
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-
-                app:layout_constraintVertical_bias=".05"
-                app:layout_constraintHorizontal_bias=".3"
-
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-
-                android:visibility="invisible"
-
-                android:hint="@string/email"/>
-
-            <Button
                 android:id="@+id/button_registerform_changeemail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -102,11 +85,12 @@
                 app:layout_constraintVertical_bias="1"
                 app:layout_constraintHorizontal_bias=".3"
                 android:text="@string/change_password"
-                style="@style/button_secondary"
                 android:visibility="gone"/>
 
             <EditText
                 android:id="@+id/edittext_registerform_password"
+
+                android:textSize="@dimen/text_size_medium"
 
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent=".8"
@@ -126,7 +110,9 @@
 
                 android:hint="@string/password"/>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
+                style="@style/button_secondary"
+                app:cornerRadius="@dimen/button_radius"
                 android:id="@+id/button_registerform_changepassword"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -139,14 +125,13 @@
                 app:layout_constraintVertical_bias=".02"
                 app:layout_constraintHorizontal_bias=".3"
                 android:text="@string/change_password"
-                style="@style/button_secondary"
-                android:visibility="invisible">
+                android:visibility="gone"/>
 
-            </Button>
 
             <EditText
                 android:id="@+id/edittext_registerform_name"
 
+                android:textSize="@dimen/text_size_medium"
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent=".8"
                 android:layout_height="wrap_content"
@@ -167,7 +152,7 @@
 
             <EditText
                 android:id="@+id/edittext_registerform_surnamename"
-
+                android:textSize="@dimen/text_size_medium"
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent=".8"
                 android:layout_height="wrap_content"
@@ -189,6 +174,7 @@
             <EditText
                 android:id="@+id/edittext_registerform_username"
 
+                android:textSize="@dimen/text_size_medium"
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent=".8"
                 android:layout_height="wrap_content"
@@ -219,6 +205,8 @@
                 android:spinnerMode="dropdown"
                 android:prompt="@string/location"
 
+                android:textSize="@dimen/text_size_medium"
+
 
                 app:layout_constraintVertical_bias=".02"
                 app:layout_constraintHorizontal_bias=".3"
@@ -232,6 +220,8 @@
             <EditText
                 android:id="@+id/edittext_registerform_location"
                 android:visibility="gone"
+
+                android:textSize="@dimen/text_size_medium"
 
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent=".8"
@@ -254,9 +244,10 @@
             <DatePicker
                 android:id="@+id/datepicker_registerform_date"
 
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 app:layout_constraintWidth_percent="0.9"
                 android:layout_height="wrap_content"
+
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -272,16 +263,16 @@
                 android:hint="@string/location"/>
 
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.google.android.material.button.MaterialButton
+                style="@style/main_button_style"
+                app:cornerRadius="@dimen/button_radius"
                 android:id="@+id/button_registerform_register"
-                style="@style/button_primary"
 
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
 
                 android:layout_marginTop="16dp"
 
-                android:background="@drawable/button_primary_shape"
                 android:text="@string/register"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -293,9 +284,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/datepicker_registerform_date"
                 app:layout_constraintWidth_percent=".8" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/button_registerform_cancel"
+            <com.google.android.material.button.MaterialButton
                 style="@style/button_secondary"
+                app:cornerRadius="@dimen/button_radius"
+                android:id="@+id/button_registerform_cancel"
 
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -303,7 +295,6 @@
                 android:layout_marginTop="24dp"
 
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/button_secondary_shape"
                 android:text="@string/cancel"
 
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -317,7 +308,7 @@
 
 
 
-            />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

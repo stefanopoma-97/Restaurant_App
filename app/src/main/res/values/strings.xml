@@ -49,6 +49,7 @@
     <string name="login_error_email">The email address is badly formatted</string>
     <string name="login_error">Invalid credential</string>
     <string name="authentication_failed">Authentication failed</string>
+    <string name="creating_account">Creating account</string>
 
 
     <string name="back">Back</string>

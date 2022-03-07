@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
@@ -15,10 +16,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.poma.restaurant.R;
 
 import java.text.DateFormat;
@@ -52,8 +59,12 @@ public class Fragment_Register extends Fragment {
     private Spinner spinner;
 
     private TextView error;
+    private ScrollView scrollView;
 
     private static boolean modifica = false;
+
+    private Map<String, Object> cities;
+    private FirebaseFirestore db;
 
     //TODO progress bar
 
@@ -123,15 +134,12 @@ public class Fragment_Register extends Fragment {
 
         this.btn_changepassword = (Button) view.findViewById(R.id.button_registerform_changepassword);
         this.btn_changeemail = (Button)view.findViewById(R.id.button_registerform_changeemail);
-        this.t_email = (TextView)view.findViewById(R.id.textview_registerform_email);
+        this.scrollView = (ScrollView) view.findViewById(R.id.registerform_scrollview);
 
-
+        /*
         String[] items = new String[]{"Brescia", "Milano", "Bergamo"};
-        //create an adapter to describe how the items are displayed, adapters are used in several places in android.
-        //There are multiple variations of this, but this is the basic variant.
         ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, items);
-        //set the spinners adapter to the previously created one.
-        spinner.setAdapter(adapter);
+        spinner.setAdapter(adapter);*/
 
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,6 +212,40 @@ public class Fragment_Register extends Fragment {
         return view;
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG_LOG, "Città 1 - inizio metodo prendere città");
+        this.cities = new HashMap<>();
+        this.db = FirebaseFirestore.getInstance();
+        db.collection("cities").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                Log.d(TAG_LOG, "Città 2 - On complete");
+
+                if (task.isSuccessful()) {
+                    Log.d(TAG_LOG, "Città 3 -  is successfull");
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                        Map<String, Object> data = document.getData();
+                        //Map<String, Object>
+                        cities.put(document.getId(), (String)data.get("city"));
+                    }
+                    setCitiesSpinner(cities, null);
+                    Log.d(TAG_LOG, "Città 4 - lista id città :"+cities.toString());
+
+                } else {
+                    Log.d(TAG_LOG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+        Log.d(TAG_LOG, "Città 5 - fine");
+
+
+    }
+
     //Interfaccia
     //Activity deve implementare i metodi specificati
     public interface RegisterInterface {
@@ -236,10 +278,12 @@ public class Fragment_Register extends Fragment {
     public void setError(String text){
         this.error.setText(text);
         this.error.setVisibility(View.VISIBLE);
-        this.error.requestFocus();
+        //this.t_focus.requestFocus();
+        this.scrollView.smoothScrollTo(0,0);
     }
 
 
+    //Controllo inserimento campi
     private Boolean checkFields (){
         String username = this.e_username.getText().toString();
         String password = this.e_password.getText().toString();
@@ -249,11 +293,12 @@ public class Fragment_Register extends Fragment {
         String name = this.e_name.getText().toString();
         String surname = this.e_surname.getText().toString();
 
-        if(TextUtils.isEmpty(username))
+        if(TextUtils.isEmpty(email))
         {
-            this.error.setText(getResources().getString(R.string.user_mandatory));
+            this.error.setText(getResources().getString(R.string.email_mandatory));
             this.error.setVisibility(View.VISIBLE);
             this.error.requestFocus();
+
             return false;
         }
 
@@ -265,12 +310,30 @@ public class Fragment_Register extends Fragment {
             return false;
         }
 
-        if(TextUtils.isEmpty(email))
+        if(TextUtils.isEmpty(name))
         {
-            this.error.setText(getResources().getString(R.string.email_mandatory));
+            this.error.setText(getResources().getString(R.string.name_mandatory));
             this.error.setVisibility(View.VISIBLE);
             this.error.requestFocus();
 
+            return false;
+        }
+
+        if(TextUtils.isEmpty(surname))
+        {
+            this.error.setText(getResources().getString(R.string.surname_mandatory));
+            this.error.setVisibility(View.VISIBLE);
+            this.error.requestFocus();
+
+            return false;
+        }
+
+
+        if(TextUtils.isEmpty(username))
+        {
+            this.error.setText(getResources().getString(R.string.user_mandatory));
+            this.error.setVisibility(View.VISIBLE);
+            this.error.requestFocus();
             return false;
         }
 
@@ -282,25 +345,12 @@ public class Fragment_Register extends Fragment {
 
             return false;
         }
-        if(TextUtils.isEmpty(name))
-        {
-            this.error.setText(getResources().getString(R.string.name_mandatory));
-            this.error.setVisibility(View.VISIBLE);
-            this.error.requestFocus();
 
-            return false;
-        }
-        if(TextUtils.isEmpty(surname))
-        {
-            this.error.setText(getResources().getString(R.string.surname_mandatory));
-            this.error.setVisibility(View.VISIBLE);
-            this.error.requestFocus();
 
-            return false;
-        }
         return true;
-    }
 
+
+    }
 
     private Boolean checkUpdateFields (){
         String username = this.e_username.getText().toString();
@@ -343,6 +393,8 @@ public class Fragment_Register extends Fragment {
         }
         return true;
     }
+
+
 
     //SETTERS
     public void setE_username(String e_username) {
@@ -459,12 +511,16 @@ public class Fragment_Register extends Fragment {
         modifica=b;
     }
 
-
+    //Popolo spinner città
     public void setCitiesSpinner (Map<String, Object> cities, String compareValue){
-
+        //Map into array
         String[] items = Arrays.copyOf(cities.values().toArray(), cities.values().toArray().length, String[].class);
+
+        //Array adapter per lista di activity
         ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, items);
         spinner.setAdapter(adapter);
+
+        //metto un valore preciso
         if(compareValue!=null){
             int spinnerPosition = adapter.getPosition(compareValue);
             spinner.setSelection(spinnerPosition);
@@ -473,6 +529,7 @@ public class Fragment_Register extends Fragment {
 
     }
 
+    //da nome città setta la posizione dello spinner
     public void setCitySpinnerValue (String s){
         ArrayAdapter adapter = (ArrayAdapter)spinner.getAdapter();
         int spinnerPosition = adapter.getPosition(s);

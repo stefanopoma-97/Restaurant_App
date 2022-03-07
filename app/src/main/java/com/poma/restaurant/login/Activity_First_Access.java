@@ -218,6 +218,7 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
                     //user = data.getParcelableExtra(User.USER_DATA_EXTRA);
                     //Log.d(TAG_LOG, "start menù with user: "+user.getUsername());
 
+                    Log.d(TAG_LOG, "Id utente Firebase: "+mAuth.getCurrentUser().getUid());
                     this.user = User.load(this);
                     Log.d(TAG_LOG, "Shared preference, utente loggato con ID: "+this.user.getID());
                     mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
@@ -229,6 +230,7 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
                     break;
                 case Action.RESULT_OK_ADMIN:
                     Log.d(TAG_LOG, "Return from login (admin): OK");
+                    Log.d(TAG_LOG, "Id utente Firebase: "+mAuth.getCurrentUser().getUid());
                     this.user = User.load(this);
                     Log.d(TAG_LOG, "Shared preference, utente loggato con ID: "+this.user.getID());
                     mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
@@ -250,7 +252,10 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
             {
                 case RESULT_OK:
                     Log.d(TAG_LOG, "Return from register (user): OK");
-                    user = data.getParcelableExtra(User.USER_DATA_EXTRA);
+                    //user = data.getParcelableExtra(User.USER_DATA_EXTRA);
+                    Log.d(TAG_LOG, "Id utente Firebase: "+mAuth.getCurrentUser().getUid());
+                    this.user = User.load(this);
+                    Log.d(TAG_LOG, "Id utente SharedPreferences: "+this.user.getID());
                     mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
                     startActivity(mainIntent);
                     Toast.makeText(Activity_First_Access.this, "Registered", Toast.LENGTH_SHORT).show();
