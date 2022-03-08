@@ -71,6 +71,7 @@ public class Activity_Account extends AppCompatActivity {
     private User user_new;
 
     private Button btn_edit_account;
+    private Button btn_cancel;
     private TextView textView_change_password;
     private ProgressBar progressBar;
     private ImageView imageView;
@@ -81,6 +82,7 @@ public class Activity_Account extends AppCompatActivity {
     private TextView textView_date;
     private TextView textView_mail;
     private TextView textView_location;
+    private TextView textView_add_new_image;
 
     private BroadcastReceiver broadcastReceiver;
 
@@ -113,9 +115,13 @@ public class Activity_Account extends AppCompatActivity {
         this.textView_date = (TextView) findViewById(R.id.textview_account_date);
         this.textView_mail = (TextView) findViewById(R.id.textview_account_mail);
         this.textView_location = (TextView) findViewById(R.id.textview_account_location);
+        this.textView_add_new_image = (TextView) findViewById(R.id.textview_account_add_new_image);
+
+        this.btn_cancel = (Button)findViewById(R.id.btn_account_cancel);
 
 
         this.mAuth= FirebaseAuth.getInstance();
+        this.db = FirebaseFirestore.getInstance();
 
         this.progressDialog = new ProgressDialog(Activity_Account.this);
         this.progressDialog_image = new ProgressDialog(Activity_Account.this);
@@ -161,6 +167,15 @@ public class Activity_Account extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG_LOG, "on click imageView");
                 choosePicture();
+            }
+        });
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG_LOG, "on click btn cancel");
+                getBack();
+                //broadcast_logout(v);
             }
         });
 
@@ -250,6 +265,10 @@ public class Activity_Account extends AppCompatActivity {
 
     private void logout(){
         Log.d(TAG_LOG, "Logout - inizio procedura");
+        finish();
+    }
+
+    private void getBack(){
         finish();
     }
 
@@ -533,6 +552,7 @@ public class Activity_Account extends AppCompatActivity {
                             Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
 
                             if ((String)data.get("imageUrl") != null){
+                                textView_add_new_image.setVisibility(View.INVISIBLE);
                                 progressBar.setVisibility(View.VISIBLE);
                                 Uri uri = Uri.parse((String)data.get("imageUrl"));
                                 preload_imageUri = uri;

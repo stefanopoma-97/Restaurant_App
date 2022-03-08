@@ -63,7 +63,14 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
 
     private BroadcastReceiver broadcastReceiver;
 
-    /*
+    //STATO
+    private Boolean saved_state = false;
+    private String saved_city;
+    private String saved_username;
+    private String saved_name;
+    private String saved_surname;
+
+
     //TODO la città e le altre info viene sovrascritta dalle informazione di onstart
     //STATE
     @Override
@@ -71,11 +78,17 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
         outState.putString(USERNAME,this.fragment.getE_username());
         outState.putString(NAME,this.fragment.getE_name());
         outState.putString(SURNAME,this.fragment.getE_surname());
-        outState.putString(PASS,this.fragment.getE_password());
-        outState.putString(EMAIL,this.fragment.getE_email());
-        outState.putString(LOCATION,this.fragment.getE_location());
+        //outState.putString(PASS,this.fragment.getE_password());
+        //outState.putString(EMAIL,this.fragment.getE_email());
+        //outState.putString(LOCATION,this.fragment.getE_location());
         outState.putString(CITY,this.fragment.getCity());
-        outState.putLong(DATE,this.fragment.getE_date());
+        //outState.putLong(DATE,this.fragment.getE_date());
+
+        this.saved_name=null;
+        this.saved_surname=null;
+        this.saved_username=null;
+        this.saved_city=null;
+        this.saved_state=false;
 
         super.onSaveInstanceState(outState);
         Log.d(TAG_LOG,"Save state");
@@ -84,19 +97,28 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        this.fragment.setE_username(savedInstanceState.getString(USERNAME));
-        this.fragment.setE_name(savedInstanceState.getString(NAME));
-        this.fragment.setE_surname(savedInstanceState.getString(SURNAME));
-        this.fragment.setE_password(savedInstanceState.getString(PASS));
-        this.fragment.setE_email(savedInstanceState.getString(EMAIL));
-        this.fragment.setE_location(savedInstanceState.getString(LOCATION));
-        this.fragment.setCitySpinnerValue(savedInstanceState.getString(CITY));
-        this.fragment.setE_date(savedInstanceState.getLong(DATE));
+        if (savedInstanceState != null){
+            this.saved_username = (savedInstanceState.getString(USERNAME));
+            this.saved_name=(savedInstanceState.getString(NAME));
+            this.saved_surname=(savedInstanceState.getString(SURNAME));
+            //this.fragment.setE_password(savedInstanceState.getString(PASS));
+            //this.fragment.setE_email(savedInstanceState.getString(EMAIL));
+            //this.fragment.setE_location(savedInstanceState.getString(LOCATION));
+            //this.fragment.setCitySpinnerValue(savedInstanceState.getString(CITY));
+            //this.fragment.setE_date(savedInstanceState.getLong(DATE));
+            saved_state = true;
+            saved_city = savedInstanceState.getString(CITY);
+            Log.d(TAG_LOG,"Retrive state");
+            Log.d(TAG_LOG,"stato salvato con città: "+saved_city);
 
-        Log.d(TAG_LOG,"Retrive state");
+        }
+        else {
+            Log.d(TAG_LOG,"Retrive state, non presente");
+        }
+
 
     }
-    */
+
 
 
 
@@ -129,6 +151,8 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
         super.onStart();
         Log.d(TAG_LOG, "On Start");
 
+
+
         this.mAuth=FirebaseAuth.getInstance();
 
         //Controllo utenti
@@ -139,90 +163,26 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
 
 
 
-        this.currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            //Toast.makeText(Activity_Account.this, "C'è utente: "+currentUser, Toast.LENGTH_SHORT).show();
-            //PRENDO UTENTE
-            Log.d(TAG_LOG, "inizio metodo retrive user");
-
-            DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            Map<String, Object> data = document.getData();
-                            Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
-
-
-                            user_new = User.create((String) data.get("username"),(String) data.get("password"))
-                                    .withSurname((String) data.get("surname"))
-                                    .withName((String) data.get("name"))
-                                    .withLocation((String) data.get("location"))
-                                    .withEmail((String) data.get("email"))
-                                    .withDate((long) data.get("date"))
-                                    .withAdmin((Boolean) data.get("admin"))
-                                    .withCity_id((String) data.get("city_id"))
-                                    .withId(mAuth.getCurrentUser().getUid());
-
-                            fragment.setE_date((long) data.get("date"));
-                            //fragment.setT_email((String) data.get("email"));
-                            //fragment.setE_password((String) data.get("password"));
-                            fragment.setE_location((String) data.get("location"));
-                            fragment.setE_name((String) data.get("name"));
-                            fragment.setE_surname((String) data.get("surname"));
-                            fragment.setE_username((String) data.get("username"));
-
-                            cities = new HashMap<>();
-                            db.collection("cities").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    Log.d(TAG_LOG, "2 - On complete");
-
-                                    if (task.isSuccessful()) {
-                                        Log.d(TAG_LOG, "3 -  is successfull");
-
-                                        for (QueryDocumentSnapshot document : task.getResult()) {
-
-                                            Map<String, Object> data = document.getData();
-
-                                            cities.put(document.getId(), (String)data.get("city"));
-                                        }
-                                        fragment.setCitiesSpinner(cities, user_new.getLocation());
-                                        Log.d(TAG_LOG, "4 - lista id città :"+cities.toString());
-
-                                    } else {
-                                        Log.d(TAG_LOG, "Error getting documents: ", task.getException());
-                                    }
-                                }
-                            });
 
 
 
-                        } else {
-                            Log.d(TAG_LOG, "No such document");
-                        }
-                    } else {
-                        Log.d(TAG_LOG, "get failed with ", task.getException());
-                    }
-                }
-            });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG_LOG, "On Resume");
+        Log.d(TAG_LOG,"stato presente?: "+saved_state+" città presente?"+saved_city);
+
+        if (saved_state){
+            Log.d(TAG_LOG, "Retrive from state");
+            retrive_user_information_from_state();
         }
         else {
-            Log.d(TAG_LOG, "No such document");
-            finish();
-            //Toast.makeText(Activity_Account.this, "Non c'è utente: ", Toast.LENGTH_SHORT).show();
-            fragment.setE_date(1521815495631L);
-            fragment.setT_email("email settata");
-            fragment.setE_password("password settata");
-            fragment.setE_location("location settata");
-            fragment.setE_name("name settato");
-            fragment.setE_surname("surname set");
-            fragment.setE_username("username");
+            //popola la form con le informazioni dell'utente
+            Log.d(TAG_LOG, "Retrieve");
+            retrive_user_information();
         }
-
-
 
     }
 
@@ -248,22 +208,22 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
 
     @Override
     public void update(String username, String name, String surname, String location) {
-        Log.d(TAG_LOG, "metodo update, attualmente utente loggato: "+this.user_new.getEmail());
-        progressBarr(true);
+        Log.d(TAG_LOG, "metodo update, attualmente utente loggato: ");
+        progressDialog(true, getResources().getString(R.string.updating_account_wait));
         FirebaseUser firebase_user = mAuth.getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         //creo hash map con cui aggiornare utente
         Map<String, Object> data = new HashMap<>();
-        if(!(this.user_new.getUsername().equals(username)))
+        //if(!(this.user_new.getUsername().equals(username)))
             data.put("username", username);
-        if(!(this.user_new.getName().equals(name)))
+        //if(!(this.user_new.getName().equals(name)))
             data.put("name", name);
-        if(!(this.user_new.getSurname().equals(surname)))
+        //if(!(this.user_new.getSurname().equals(surname)))
             data.put("surname", surname);
-        if(!(this.user_new.getLocation().equals(location))){
+        //if(!(this.user_new.getLocation().equals(location))){
             data.put("location", location);
-            String city_id=this.user_new.getCity_id();
+            String city_id="";
 
             for (Map.Entry<String, Object> entry : cities.entrySet()) {
                 if (entry.getValue().toString().equals(location)) {
@@ -275,7 +235,7 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
 
             Log.d(TAG_LOG, "citta: "+location+", city_id: "+city_id);
             Log.d(TAG_LOG, "data: "+data.toString());
-        }
+
 
 
         db.collection("users").document(firebase_user.getUid()).update(data).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -283,13 +243,13 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
                     Log.d(TAG_LOG, "Utente aggiornato");
-                    progressBarr(false);
+                    progressDialog(false, "");
                     getBack(RESULT_OK);
                     //popupMessage();
                 }
                 else{
                     Log.d(TAG_LOG, "problemi aggiornamento user");
-                    progressBarr(false);
+                    progressDialog(false, "");
 
                 }
             }
@@ -312,12 +272,13 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
         finish();
     }
 
-    private void progressBarr(Boolean b){
+    private void progressDialog(Boolean b, String text){
 
         if(b){
             this.progressDialog = new ProgressDialog(Activity_Edit_Account.this);
-            progressDialog.setMessage(getResources().getString(R.string.updating_account_wait));
+            progressDialog.setMessage(text);
             progressDialog.show();
+
         }
         else{
             this.progressDialog.dismiss();
@@ -408,6 +369,125 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
         FirebaseFirestore db = FirebaseFirestore.getInstance();
     }
 
+    private void retrive_user_information(){
+        progressDialog(true, getResources().getString(R.string.retrieving_account_wait));
+        this.currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            //Toast.makeText(Activity_Account.this, "C'è utente: "+currentUser, Toast.LENGTH_SHORT).show();
+            //PRENDO UTENTE
+            Log.d(TAG_LOG, "inizio metodo retrive user");
+
+            DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Map<String, Object> data = document.getData();
+                            Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
+
+
+                            user_new = User.create((String) data.get("username"),(String) data.get("password"))
+                                    .withSurname((String) data.get("surname"))
+                                    .withName((String) data.get("name"))
+                                    .withLocation((String) data.get("location"))
+                                    .withEmail((String) data.get("email"))
+                                    .withDate((long) data.get("date"))
+                                    .withAdmin((Boolean) data.get("admin"))
+                                    .withCity_id((String) data.get("city_id"))
+                                    .withId(mAuth.getCurrentUser().getUid());
+
+                            //fragment.setE_date((long) data.get("date"));
+                            //fragment.setE_location((String) data.get("location"));
+                            fragment.setE_name((String) data.get("name"));
+                            fragment.setE_surname((String) data.get("surname"));
+                            fragment.setE_username((String) data.get("username"));
+
+                            cities = new HashMap<>();
+                            db.collection("cities").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    Log.d(TAG_LOG, "2 - On complete");
+
+                                    if (task.isSuccessful()) {
+                                        Log.d(TAG_LOG, "3 -  is successfull");
+
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                            Map<String, Object> data = document.getData();
+
+                                            cities.put(document.getId(), (String)data.get("city"));
+                                        }
+                                        fragment.setCitiesSpinner(cities, user_new.getLocation());
+                                        Log.d(TAG_LOG, "4 - lista id città :"+cities.toString());
+                                        progressDialog(false, "");
+
+                                    } else {
+                                        Log.d(TAG_LOG, "Error getting documents: ", task.getException());
+                                    }
+                                }
+                            });
+
+
+
+                        } else {
+                            Log.d(TAG_LOG, "No such document");
+                            progressDialog(false, "");
+                        }
+                    } else {
+                        Log.d(TAG_LOG, "get failed with ", task.getException());
+                        progressDialog(false, "");
+                    }
+                }
+            });
+        }
+        else {
+            Log.d(TAG_LOG, "No such document");
+            finish();
+
+        }
+    }
+
+    private void retrive_user_information_from_state(){
+        progressDialog(true, getResources().getString(R.string.retrieving_account_wait));
+        this.currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            this.fragment.setE_name(saved_name);
+            this.fragment.setE_surname(saved_surname);
+            this.fragment.setE_username(saved_username);
+
+            cities = new HashMap<>();
+            db.collection("cities").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    Log.d(TAG_LOG, "2 - On complete");
+
+                    if (task.isSuccessful()) {
+                        Log.d(TAG_LOG, "3 -  is successfull");
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+
+                            Map<String, Object> data = document.getData();
+
+                            cities.put(document.getId(), (String)data.get("city"));
+                        }
+                        fragment.setCitiesSpinner(cities, saved_city);
+                        Log.d(TAG_LOG, "4 - lista id città :"+saved_city);
+                        progressDialog(false, "");
+
+                    } else {
+                        Log.d(TAG_LOG, "Error getting documents: ", task.getException());
+                    }
+                }
+            });
+        }
+        else {
+            Log.d(TAG_LOG, "No such document");
+            finish();
+
+        }
+    }
     private void logout(){
         Log.d(TAG_LOG, "Logout - inizio procedura");
         finish();

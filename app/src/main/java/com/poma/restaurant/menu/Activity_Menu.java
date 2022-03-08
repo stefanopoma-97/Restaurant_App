@@ -315,7 +315,7 @@ public class Activity_Menu extends AppCompatActivity {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "a_n")
                 .setContentTitle("Notifica, id utente: "+ n.getUser_id())
-                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                .setSmallIcon(R.mipmap.logo_launcher_round)
                 .setAutoCancel(true)
                 .setContentText("contenuto: "+n.getType());
 

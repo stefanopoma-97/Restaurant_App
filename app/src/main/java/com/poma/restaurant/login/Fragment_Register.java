@@ -42,6 +42,7 @@ public class Fragment_Register extends Fragment {
     private static final String TAG_LOG = Fragment_Register.class.getName();
     private static final String ERROR_STRING_KEY_FRAGMENT_REGISTER = "com.poma.restaurant.ERROR_STRING_KEY_FRAGMENT_REGISTER";
     private static final String CITY_NAME_STRING_KEY_FRAGMENT_REGISTER = "com.poma.restaurant.CITY_NAME_STRING_KEY_FRAGMENT_REGISTER";
+    //private static final String CITY_NAME_STRING_KEY_FRAGMENT_REGISTER = "com.poma.restaurant.CITY_NAME_STRING_KEY_FRAGMENT_REGISTER";
     private static String error_state ="";;
     private static String retrieve_city = null;
 
@@ -567,6 +568,7 @@ public class Fragment_Register extends Fragment {
 
     //Popolo spinner città
     public void setCitiesSpinner (Map<String, Object> cities, String compareValue){
+        Log.d(TAG_LOG,"set cities spinner");
         //Map into array
         String[] items = Arrays.copyOf(cities.values().toArray(), cities.values().toArray().length, String[].class);
 

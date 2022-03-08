@@ -18,7 +18,7 @@ public class Receiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String detectedAction = intent.getAction();
-        Log.d("RECEIVER", "ho ricevuto un intent con action: "+intent.getAction());
+        //Log.d("RECEIVER", "ho ricevuto un intent con action: "+intent.getAction());
         if(detectedAction.equals("com.poma.restaurant.broadcastreceiversandintents.BROADCAST_LOGOUT"))
             listener.onCallBack();
 
