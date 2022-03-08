@@ -1,4 +1,4 @@
-package com.poma.restaurant.login;
+package com.poma.restaurant.account;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,17 +8,13 @@ import androidx.fragment.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.poma.restaurant.R;
-
-import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -187,14 +183,15 @@ public class Fragment_Password extends Fragment {
             return false;
         }
 
-        if(new_password.equals(old_password))
+        //TODO si potrebbe inserire questo controllo
+        /*if(new_password.equals(old_password))
         {
             this.error.setText(getResources().getString(R.string.password_same));
             this.error.setVisibility(View.VISIBLE);
             this.error.requestFocus();
 
             return false;
-        }
+        }*/
 
 
         return true;

@@ -40,6 +40,7 @@
     <string name="password_weak">Password weak</string>
     <string name="register_wait">Registering Please Wait...</string>
     <string name="login_wait">Sign in Please Wait...</string>
+    <string name="saving_wait">Saving Wait...</string>
 
     <string name="no_user">There isn\'t a user with this email</string>
     <string name="user_collision">This email already exist</string>

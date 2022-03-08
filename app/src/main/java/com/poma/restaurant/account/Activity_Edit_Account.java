@@ -324,7 +324,7 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
             Log.d(TAG_LOG, "ERRORE - ho trovato sulo un utente");
             finish();
         }
-        else if (currentUser.getUid() == currentUser2.getID()){
+        else if (currentUser.getUid().equals(currentUser2.getID())){
             Log.d(TAG_LOG, "Gli utenti coincidono");
             this.db = FirebaseFirestore.getInstance();
             DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());

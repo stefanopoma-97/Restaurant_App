@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -20,7 +22,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.poma.restaurant.R;
-import com.poma.restaurant.login.Fragment_Password;
+import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
+import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.User;
 
 import java.util.HashMap;
@@ -33,17 +36,26 @@ public class Activity_Password extends AppCompatActivity implements Fragment_Pas
     private static final String NEW_PASS = "com.poma.restaurant.account.password.newpassword";
     private static final String REPEAT_PASS = "com.poma.restaurant.account.password.repeatpassword";
     private Fragment_Password fragment;
+
     private FirebaseAuth mAuth;
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
+    private FirebaseUser currentUser;
+    private User currentUser2;
+    private User user_new;
+
     private Button btn_logout;
+
     private User user;
     private static String myPassword;
     private ProgressDialog progressDialog;
+
+    private BroadcastReceiver broadcastReceiver;
 
 
 
 
     //STATE
+    /*
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putString(OLD_PASS,this.fragment.get_old());
@@ -63,7 +75,7 @@ public class Activity_Password extends AppCompatActivity implements Fragment_Pas
 
         Log.d(TAG_LOG,"Retrive state");
 
-    }
+    }*/
 
 
     @Override
@@ -73,21 +85,35 @@ public class Activity_Password extends AppCompatActivity implements Fragment_Pas
 
         setContentView(R.layout.activity_password);
 
+        //Riceve broadcast
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.poma.restaurant.broadcastreceiversandintents.BROADCAST_LOGOUT");
+        this.broadcastReceiver = new Receiver(new Broadcast_receiver_callBack_logout() {
+            @Override
+            public void onCallBack() {
+                Log.d(TAG_LOG, "Receiver onCallBack");
+                logout();
+            }
+        });
+        registerReceiver(this.broadcastReceiver, intentFilter);
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         Log.d(TAG_LOG, "On Start");
+        this.mAuth=FirebaseAuth.getInstance();
+
+        check_user();
 
         this.fragment = (Fragment_Password)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_password_changepassword);
 
+        /*
         this.mAuth=FirebaseAuth.getInstance();
         FirebaseUser currentUser = this.mAuth.getCurrentUser();
-        if(currentUser == null){
-            finish();
-        }
+
 
         this.db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
@@ -109,8 +135,17 @@ public class Activity_Password extends AppCompatActivity implements Fragment_Pas
                     Log.d(TAG_LOG, "get failed with ", task.getException());
                 }
             }
-        });
+        });*/
 
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG_LOG,"on destroy");
+        super.onDestroy();
+        unregisterReceiver(this.broadcastReceiver);
+        Log.d(TAG_LOG,"un register receiver");
     }
 
 
@@ -124,6 +159,7 @@ public class Activity_Password extends AppCompatActivity implements Fragment_Pas
 
         final String email = current_user.getEmail();
 
+        /*
         if(!(old_password.equals(myPassword))){
             Log.d(TAG_LOG, "old password wrong");
             this.fragment.setError(getResources().getString(R.string.error_old_pass));
@@ -138,7 +174,7 @@ public class Activity_Password extends AppCompatActivity implements Fragment_Pas
             progressBarr(false);
 
             return;
-        }
+        }*/
 
 
 
@@ -169,15 +205,13 @@ public class Activity_Password extends AppCompatActivity implements Fragment_Pas
                                         if(task.isSuccessful()){
                                             Log.d(TAG_LOG, "Utente aggiornato");
                                             progressBarr(false);
-                                            Toast.makeText(Activity_Password.this, getResources().getString(R.string.password_saved), Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(Activity_Password.this, Activity_Edit_Account.class);
-                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                            startActivity(intent);
-                                            finish();
+                                            //Toast.makeText(Activity_Password.this, getResources().getString(R.string.password_saved), Toast.LENGTH_SHORT).show();
+                                            getBack(RESULT_OK);
 
                                         }
                                         else{
                                             Log.d(TAG_LOG, "problemi aggiornamento user");
+                                            progressBarr(false);
 
                                         }
                                     }
@@ -190,11 +224,12 @@ public class Activity_Password extends AppCompatActivity implements Fragment_Pas
                     });
                 }else {
                     Log.d(TAG_LOG, "Auth Fail");
+                    progressBarr(false);
 
                 }
             }
         });
-        progressBarr(false);
+
 
     }
 
@@ -203,7 +238,7 @@ public class Activity_Password extends AppCompatActivity implements Fragment_Pas
 
         if(b){
             this.progressDialog = new ProgressDialog(Activity_Password.this);
-            progressDialog.setMessage(getResources().getString(R.string.login_wait));
+            progressDialog.setMessage(getResources().getString(R.string.saving_wait));
             progressDialog.show();
         }
         else{
@@ -212,9 +247,85 @@ public class Activity_Password extends AppCompatActivity implements Fragment_Pas
 
     }
 
+    private void getBack(int result){
+        Intent intent = new Intent();
+        setResult(result,intent);
+        finish();
+    }
+
     @Override
     public void cancel() {
         Log.d(TAG_LOG, "cancel");
         finish();
+    }
+
+    private void logout(){
+        Log.d(TAG_LOG, "Logout - inizio procedura");
+        finish();
+    }
+
+    private void check_user(){
+        Boolean anonymous_f = false;
+        Boolean anonymous_s = false;
+        Boolean anonymous = false;
+        Log.d(TAG_LOG, "Controllo ci sia un utente loggato");
+
+        //Login Firestore
+        this.currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            Log.d(TAG_LOG, "Trovato utente con Firestore, id: "+this.currentUser.getUid());
+        }
+        else {
+            Log.d(TAG_LOG, "Non trovato utente con Firestore");
+            anonymous_f = true;
+        }
+
+        //Login Shared Preferences
+        this.currentUser2 = User.load(this);
+        if (currentUser2 != null) {
+            Log.d(TAG_LOG, "Trovato utente con Shared preferences, id: "+this.currentUser2.getID());
+        }
+        else {
+            Log.d(TAG_LOG, "Non trovato utente con SharedPreference");
+            anonymous_s = true;
+        }
+
+        //anonimo, user, admin o errore
+        if (anonymous_f | anonymous_s){
+            Log.d(TAG_LOG, "ERRORE - Non c'è utente, accesso anonimo");
+            finish();
+        }
+        else if (anonymous_f!=anonymous_s){
+            Log.d(TAG_LOG, "ERRORE - ho trovato sulo un utente");
+            finish();
+        }
+        else if (currentUser.getUid().equals(currentUser2.getID())){
+            Log.d(TAG_LOG, "Gli utenti coincidono");
+            this.db = FirebaseFirestore.getInstance();
+            DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Map<String, Object> data = document.getData();
+
+                            if((boolean)data.get("admin")){
+                                Log.d(TAG_LOG, "Utente Admin");
+                            }
+                            else {
+                                Log.d(TAG_LOG, "Utente Visitatore");
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        else {
+            Log.d(TAG_LOG, "Errore - gli utenti non coincidono");
+            finish();
+        }
+
     }
 }

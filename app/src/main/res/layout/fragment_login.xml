@@ -34,7 +34,7 @@
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/password_loginform"
+            app:layout_constraintTop_toBottomOf="@id/textfield_password_loginform"
             app:layout_constraintVertical_bias="0.274"
             app:layout_constraintWidth_percent=".8" />
 
@@ -45,7 +45,7 @@
             app:layout_constraintWidth_percent=".8"
             android:layout_height="wrap_content"
 
-            app:layout_constraintBottom_toTopOf="@+id/password_loginform"
+            app:layout_constraintBottom_toTopOf="@+id/textfield_password_loginform"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -70,7 +70,7 @@
 
             android:textSize="@dimen/text_size_medium"
 
-            app:layout_constraintBottom_toTopOf="@+id/password_loginform"
+            app:layout_constraintBottom_toTopOf="@+id/textfield_password_loginform"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -84,12 +84,14 @@
 
             android:hint="@string/email"/>
 
-        <EditText
-            android:id="@+id/password_loginform"
 
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
-            app:layout_constraintWidth_percent=".8"
+            android:id="@+id/textfield_password_loginform"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:boxBackgroundColor="@color/white"
 
             android:textSize="@dimen/text_size_medium"
 
@@ -101,14 +103,26 @@
             app:layout_constraintVertical_bias=".3"
             app:layout_constraintHorizontal_bias=".3"
 
-            android:inputType="textPassword"
-            android:selectAllOnFocus="true"
 
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
 
-            android:hint="@string/password"/>
+            app:layout_constraintWidth_percent=".8"
+
+
+
+            app:passwordToggleEnabled="true">
+
+            <EditText
+                android:id="@+id/password_loginform"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:autofillHints=""
+                android:textSize="@dimen/text_size_medium"
+                android:hint="@string/password"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:selectAllOnFocus="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <TextView
             android:id="@+id/text_register_loginform"
@@ -143,7 +157,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password_loginform"
+            app:layout_constraintTop_toBottomOf="@+id/textfield_password_loginform"
             app:layout_constraintVertical_bias="0.3"
             app:layout_constraintWidth_percent=".8"
 

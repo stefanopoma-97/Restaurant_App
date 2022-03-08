@@ -185,7 +185,7 @@ public class Activity_Account extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         //controllo la presenza di utenti loggati
-        Log.d(TAG_LOG, "Controllo ci sia un utente loggato");
+        Log.d(TAG_LOG, "on start");
 
         check_user();
 
@@ -230,7 +230,7 @@ public class Activity_Account extends AppCompatActivity {
             {
                 case RESULT_OK:
                     Toast.makeText(Activity_Account.this, R.string.password_has_been_successfully_updated, Toast.LENGTH_SHORT).show();
-
+                    Log.d(TAG_LOG, "Return from change password: OK");
 
                     break;
                 case RESULT_CANCELED:
@@ -316,10 +316,10 @@ public class Activity_Account extends AppCompatActivity {
             finish();
         }
         else if (anonymous_f!=anonymous_s){
-            Log.d(TAG_LOG, "ERRORE - ho trovato sulo un utente");
+            Log.d(TAG_LOG, "ERRORE - ho trovato solo un utente");
             finish();
         }
-        else if (currentUser.getUid() == currentUser2.getID()){
+        else if (this.currentUser.getUid().equals(this.currentUser2.getID())){
             Log.d(TAG_LOG, "Gli utenti coincidono");
             this.db = FirebaseFirestore.getInstance();
             DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
@@ -431,23 +431,26 @@ public class Activity_Account extends AppCompatActivity {
 
 
     private void delete_current_image(){
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl(preload_imageUri.toString());
-        Log.d(TAG_LOG, "delete current image: "+storageRef.getName());
-        //StorageReference picRef = storageRef.child(preload_imageUri.toString());
+        if (preload_imageUri != null){
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReferenceFromUrl(preload_imageUri.toString());
+            Log.d(TAG_LOG, "delete current image: "+storageRef.getName());
+            //StorageReference picRef = storageRef.child(preload_imageUri.toString());
 
 
-        storageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d(TAG_LOG, "delete on success");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Log.d(TAG_LOG, "delete failure");
-            }
-        });
+            storageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG_LOG, "delete on success");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Log.d(TAG_LOG, "delete failure");
+                }
+            });
+        }
+
 
     }
 

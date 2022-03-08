@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -261,6 +262,7 @@ public class User implements Parcelable {
 
 
     public void save(final Context ctx) {
+        Log.d("USER", "invoco save su shared preferences");
         final SharedPreferences prefs = ctx.getSharedPreferences(USER_MODEL_PREFERENCES,
                 Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -275,6 +277,7 @@ public class User implements Parcelable {
     }
 
     public static User load(final Context ctx) {
+        Log.d("USER", "invoco load su shared preferences");
         final SharedPreferences prefs = ctx.getSharedPreferences(USER_MODEL_PREFERENCES,
                 Context.MODE_PRIVATE);
         boolean r_admin = prefs.getBoolean(ADMIN_KEY,false);
@@ -290,6 +293,7 @@ public class User implements Parcelable {
     }
 
     public void logout(final Context ctx) {
+        Log.d("USER", "invoco logout su shared preferences");
         ctx.getSharedPreferences(USER_MODEL_PREFERENCES,
                 Context.MODE_PRIVATE).edit().clear().commit();
     }
