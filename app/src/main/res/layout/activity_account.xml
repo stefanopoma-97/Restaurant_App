@@ -117,14 +117,23 @@
                         android:gravity="center_horizontal"
                         android:text=""
                         android:textAlignment="center"
-                        android:textSize="@dimen/text_size_medium" />
+                        android:textSize="@dimen/text_size_small" />
 
                 </TableRow>
-
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/grey">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:visibility="invisible"/>
+                </TableRow>
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    >
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -144,8 +153,18 @@
                         android:gravity="center_horizontal"
                         android:text=""
                         android:textAlignment="center"
-                        android:textSize="@dimen/text_size_medium" />
+                        android:textSize="@dimen/text_size_small" />
 
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/grey">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:visibility="invisible"/>
                 </TableRow>
 
                 <TableRow
@@ -171,10 +190,18 @@
                         android:gravity="center_horizontal"
                         android:text=""
                         android:textAlignment="center"
-                        android:textSize="@dimen/text_size_medium" />
+                        android:textSize="@dimen/text_size_small" />
 
                 </TableRow>
-
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/grey">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:visibility="invisible"/>
+                </TableRow>
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -198,10 +225,18 @@
                         android:gravity="center_horizontal"
                         android:text=""
                         android:textAlignment="center"
-                        android:textSize="@dimen/text_size_medium" />
+                        android:textSize="@dimen/text_size_small" />
 
                 </TableRow>
-
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/grey">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:visibility="invisible"/>
+                </TableRow>
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -225,10 +260,18 @@
                         android:gravity="center_horizontal"
                         android:text=""
                         android:textAlignment="center"
-                        android:textSize="@dimen/text_size_medium" />
+                        android:textSize="@dimen/text_size_small" />
 
                 </TableRow>
-
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/grey">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:visibility="invisible"/>
+                </TableRow>
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -252,7 +295,7 @@
                         android:gravity="center_horizontal"
                         android:text=""
                         android:textAlignment="center"
-                        android:textSize="@dimen/text_size_medium" />
+                        android:textSize="@dimen/text_size_small" />
 
                 </TableRow>
 
@@ -304,6 +347,15 @@
                     android:textSize="@dimen/text_size_medium"
                     android:fontFamily="sans-serif"
                     />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/padding_top_title_large"
+                    android:paddingTop="@dimen/padding_top_title_large"
+                    >
                 </TableRow>
 
 

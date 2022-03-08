@@ -1,9 +1,14 @@
 package com.poma.restaurant.account;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -18,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -35,6 +41,7 @@ import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,6 +53,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,7 +63,7 @@ import static com.google.common.io.Files.getFileExtension;
 
 public class Activity_Account extends AppCompatActivity {
 
-    private static final String TAG_LOG = Activity_Menu.class.getName();
+    private static final String TAG_LOG = Activity_Account.class.getName();
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
@@ -75,8 +85,10 @@ public class Activity_Account extends AppCompatActivity {
     private BroadcastReceiver broadcastReceiver;
 
     private ProgressDialog progressDialog;
+    private ProgressDialog progressDialog_image;
 
     private Uri imageUri;
+    private Uri preload_imageUri;
 
 
 
@@ -105,6 +117,9 @@ public class Activity_Account extends AppCompatActivity {
 
         this.mAuth= FirebaseAuth.getInstance();
 
+        this.progressDialog = new ProgressDialog(Activity_Account.this);
+        this.progressDialog_image = new ProgressDialog(Activity_Account.this);
+
 
         //Riceve broadcast
         IntentFilter intentFilter = new IntentFilter();
@@ -119,6 +134,7 @@ public class Activity_Account extends AppCompatActivity {
         registerReceiver(this.broadcastReceiver, intentFilter);
 
 
+        this.progressBar.setVisibility(View.INVISIBLE);
 
         btn_edit_account.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,6 +156,14 @@ public class Activity_Account extends AppCompatActivity {
             }
         });
 
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG_LOG, "on click imageView");
+                choosePicture();
+            }
+        });
+
     }
 
     @Override
@@ -151,6 +175,8 @@ public class Activity_Account extends AppCompatActivity {
         check_user();
 
         retrieve_user_data();
+
+        updateImageView();
 
     }
 
@@ -188,11 +214,9 @@ public class Activity_Account extends AppCompatActivity {
             switch (resultCode)
             {
                 case RESULT_OK:
-                    if (data != null && data.getData() != null){
-                        imageUri = data.getData();
-                        this.imageView.setImageURI(imageUri);
-                        uploadPicture();
-                    }
+                    Toast.makeText(Activity_Account.this, R.string.password_has_been_successfully_updated, Toast.LENGTH_SHORT).show();
+
+
                     break;
                 case RESULT_CANCELED:
                     Log.d(TAG_LOG, "Return from change password: CANCELED");
@@ -201,11 +225,16 @@ public class Activity_Account extends AppCompatActivity {
         }
 
         else if (requestCode == LOAD_IMAGE_REQUEST_ID){
+            Log.d(TAG_LOG, "retrive intent image");
             switch (resultCode)
             {
                 case RESULT_OK:
                     Log.d(TAG_LOG, "Return from load image: OK");
-                    Toast.makeText(Activity_Account.this, R.string.password_has_been_successfully_updated, Toast.LENGTH_SHORT).show();
+                    if (data != null && data.getData() != null){
+                        imageUri = data.getData();
+                        //this.imageView.setImageURI(imageUri);
+                        uploadPicture();
+                    }
                     break;
                 case RESULT_CANCELED:
                     Log.d(TAG_LOG, "Return from load image: CANCELED");
@@ -333,7 +362,12 @@ public class Activity_Account extends AppCompatActivity {
                             textView_username.setText((String) data.get("username"));
                             textView_location.setText((String) data.get("location"));
                             textView_mail.setText((String) data.get("email"));
-                            textView_date.setText((String) data.get("email"));
+
+                            SimpleDateFormat formatter=new SimpleDateFormat("dd MM yyyy");
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTimeInMillis((long) data.get("date"));
+                            textView_date.setText(formatter.format(calendar.getTime()));
+
                             progressDialog(false, "");
 
                             //progressBar.setVisibility(View.INVISIBLE);
@@ -368,25 +402,50 @@ public class Activity_Account extends AppCompatActivity {
     }
 
     private void choosePicture() {
+        Log.d(TAG_LOG, "Chose pictures");
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, LOAD_IMAGE_REQUEST_ID);
+        Log.d(TAG_LOG, "start intent for result");
+    }
+
+
+    private void delete_current_image(){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl(preload_imageUri.toString());
+        Log.d(TAG_LOG, "delete current image: "+storageRef.getName());
+        //StorageReference picRef = storageRef.child(preload_imageUri.toString());
+
+
+        storageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG_LOG, "delete on success");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d(TAG_LOG, "delete failure");
+            }
+        });
+
     }
 
     private void uploadPicture() {
         Log.d(TAG_LOG, "upload pictures");
 
-        progressDialog(true, getResources().getString(R.string.uploading_image));
+        progressDialog_image(true, getResources().getString(R.string.uploading_image));
 
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
+        Log.d(TAG_LOG, "upload - reference storage prefe");
         // Create a reference to "mountains.jpg"
         StorageReference picRef = storageRef.child(System.currentTimeMillis() + "." + getFileExtension(this.imageUri));
 
 
-
+        Log.d(TAG_LOG, "upload - creato picRef");
         picRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -395,18 +454,34 @@ public class Activity_Account extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         Log.d(TAG_LOG, "upload - on success");
+                        delete_current_image();
 
-                        DocumentReference docRef = db.collection("Users").document(mAuth.getCurrentUser().getUid());
+                        DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
 
                         Map<String, Object> updates = new HashMap<>();
                         updates.put("imageUrl", uri.toString());
+                        Log.d(TAG_LOG, "upload - voglio aggiungere a utente: "+uri.toString());
 
-                        docRef.update(updates);
+                        docRef.set(updates, SetOptions.merge())
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    Log.d(TAG_LOG, "upload - aggiorno info utente");
 
-                        // Reload information
-                        updateImageView(mAuth.getUid());
-                        progressDialog(false, "");
-                        Toast.makeText(Activity_Account.this, "Image uploaded", Toast.LENGTH_LONG).show();
+                                    // Reload information
+                                    updateImageView();
+                                    progressDialog_image(false, "");
+                                    Toast.makeText(Activity_Account.this, "Image uploaded", Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    Log.d(TAG_LOG, "problemi aggiornamento user");
+                                    progressDialog_image(false, "");
+
+                                }
+                            }
+                        });
+
                     }
                 });
             }
@@ -414,14 +489,23 @@ public class Activity_Account extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        progressDialog(false, "");
+                        Log.d(TAG_LOG, "upload - on failure");
+                        progressDialog_image(false, "");
                     }
                 })
                 .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                        Log.d(TAG_LOG, "upload - on progress");
                         double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                        progressDialog(true, "Progress: " + (int) progressPercent + "%");
+                        if ((int)progressPercent == 100){
+                            progressDialog_image(false, "arrivato a 100");
+                        }
+                        else {
+                            progressDialog_image(true, "Progress: " + (int) progressPercent + "%");
+                        }
+
+
                     }
                 });
 
@@ -433,10 +517,10 @@ public class Activity_Account extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cr.getType(_imageUri));
     }
 
-    public void updateImageView(String userId) {
+    public void updateImageView() {
 
         if(currentUser != null){
-            Log.d(TAG_LOG, "inizio update image");
+            Log.d(TAG_LOG, "inizio update imageView");
 
             DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -448,19 +532,41 @@ public class Activity_Account extends AppCompatActivity {
                             Map<String, Object> data = document.getData();
                             Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
 
+                            if ((String)data.get("imageUrl") != null){
+                                progressBar.setVisibility(View.VISIBLE);
+                                Uri uri = Uri.parse((String)data.get("imageUrl"));
+                                preload_imageUri = uri;
+                                Log.d("firebase", "Image Url: " + preload_imageUri);
+                                Glide.with(Activity_Account.this)
+                                        .load(uri)
+                                        .listener(new RequestListener<Drawable>() {
+                                            @Override
+                                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
 
-                            Uri uri = Uri.parse((String)data.get("imageUrl"));
-                            Log.d("firebase", "Image Url: " + uri);
-                            Glide.with(Activity_Account.this).load(uri).into(imageView);
+                                                return false;
+                                            }
+                                            @Override
+                                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                                Log.d(TAG_LOG, "Glide on resource ready");
+                                                progressBar.setVisibility(View.INVISIBLE);
+                                                return false;
+                                            }
+                                        })
+                                        .into(imageView);
+                            }
+                            //progressBar.setVisibility(View.INVISIBLE);
+
 
 
                         } else {
                             Log.d(TAG_LOG, "No such document");
-                            progressDialog(false,"");
+                            //progressDialog(false,"");
+                            //progressBar.setVisibility(View.INVISIBLE);
                         }
                     } else {
                         Log.d(TAG_LOG, "get failed with ", task.getException());
-                        progressDialog(false,"");
+                        //progressDialog(false,"");
+                        //progressBar.setVisibility(View.INVISIBLE);
                     }
                 }
             });
@@ -475,13 +581,26 @@ public class Activity_Account extends AppCompatActivity {
 
     private void progressDialog(Boolean b, String text){
 
+        Log.d(TAG_LOG, "Progress dialog ("+b.toString()+") con testo: "+text);
         if(b){
-            this.progressDialog = new ProgressDialog(Activity_Account.this);
-            progressDialog.setMessage(text);
-            progressDialog.show();
+            this.progressDialog.setMessage(text);
+            this.progressDialog.show();
         }
         else{
             this.progressDialog.dismiss();
+        }
+
+    }
+
+    private void progressDialog_image(Boolean b, String text){
+
+        Log.d(TAG_LOG, "Progress dialog ("+b.toString()+") con testo: "+text);
+        if(b){
+            this.progressDialog_image.setMessage(text);
+            this.progressDialog_image.show();
+        }
+        else{
+            this.progressDialog_image.dismiss();
         }
 
     }
