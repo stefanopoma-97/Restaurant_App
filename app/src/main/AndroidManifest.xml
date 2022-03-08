@@ -18,12 +18,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Restaurant.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".notifications.Activity_Notifications"></activity>
+        <activity android:name=".account.Activity_Account"></activity>
+        <activity android:name=".notifications.Activity_Notifications" />
         <activity
             android:name=".login.Activity_Password"
-            android:label="@string/title_activity__password"></activity>
+            android:label="@string/title_activity__password" />
         <activity
-            android:name=".login.Activity_Account"
+            android:name=".account.Activity_Edit_Account"
             android:label="@string/title_activity_account"
             android:theme="@style/Theme.Restaurant.NoActionBar" />
         <activity

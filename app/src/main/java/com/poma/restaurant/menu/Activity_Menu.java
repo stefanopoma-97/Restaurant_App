@@ -10,7 +10,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
@@ -38,13 +37,15 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.poma.restaurant.R;
-import com.poma.restaurant.login.Activity_Account;
+import com.poma.restaurant.account.Activity_Edit_Account;
 import com.poma.restaurant.login.Activity_First_Access;
+import com.poma.restaurant.login.Activity_Register;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
 import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.User;
 import com.poma.restaurant.notifications.Activity_Notifications;
+import com.poma.restaurant.utilities.Action;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,8 @@ public class Activity_Menu extends AppCompatActivity {
     private BroadcastReceiver broadcastReceiver;
 
     private static ListenerRegistration listener_notification;
+
+    private static final int EDIT_REQUEST_ID = 3;
 
 
     //TODO Da buttare
@@ -105,10 +108,11 @@ public class Activity_Menu extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in = new Intent(Activity_Menu.this, Activity_Account.class);
-                Log.d(TAG_LOG, "click account");
-
-                startActivity(in);
+                Log.d(TAG_LOG, "edit account");
+                final Intent intent = new Intent(Activity_Menu.this, Activity_Edit_Account.class);
+                //intent.putExtra(USER_LOGIN_EXTRA, user);
+                startActivityForResult(intent, EDIT_REQUEST_ID);
+                Log.d(TAG_LOG, "send Intent for result. edit");
             }
         });
 
@@ -144,6 +148,30 @@ public class Activity_Menu extends AppCompatActivity {
         this.btn_logout.setVisibility(View.GONE);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode,resultCode,data);
+        //final User user;
+        final Intent mainIntent;
+
+        //risposta ad un login
+        if(requestCode == EDIT_REQUEST_ID)
+        {
+            switch (resultCode)
+            {
+                case RESULT_OK:
+                    Log.d(TAG_LOG, "Return from edit: OK");
+                    Toast.makeText(Activity_Menu.this, "Edit", Toast.LENGTH_SHORT).show();
+                    break;
+                case RESULT_CANCELED:
+                    Log.d(TAG_LOG, "Return from edit: CANCELED");
+                    break;
+            }
+        }
+
+    }
+
 
 
     @Override
@@ -162,7 +190,7 @@ public class Activity_Menu extends AppCompatActivity {
         super.onDestroy();
         unregisterReceiver(this.broadcastReceiver);
         Log.d(TAG_LOG,"un register receiver");
-        //logout();
+        this.listener_notification.remove();
     }
 
     //doppio click su back per uscire dall'applicazione

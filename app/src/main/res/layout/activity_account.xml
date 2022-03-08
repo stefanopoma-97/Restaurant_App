@@ -4,56 +4,311 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login.Activity_Account">
+    tools:context=".account.Activity_Account">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/shape_round_white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent=".80"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1">
+        android:fillViewport="true"
+        android:scrollbars="vertical">
 
-        <!--<fragment
-            android:layout_height="0dp"
+        <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            android:id="@+id/fragment_login"
-            class="com.poma.restaurant.login.Fragment_Login"
+            <TableLayout
+                android:id="@+id/tablelayout_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
 
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/red">
 
-            app:layout_constraintHeight_percent="1"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:paddingTop="@dimen/padding_top_title_large"
+                        android:paddingBottom="@dimen/padding_top_title_min"
 
-            app:layout_constraintVertical_bias="1"
-            app:layout_constraintHorizontal_bias=".5"/>-->
-
-        <fragment
-            android:layout_height="0dp"
-            android:layout_width="match_parent"
-
-            android:id="@+id/fragment_account_register"
-            class="com.poma.restaurant.login.Fragment_Register"
-
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-
-            app:layout_constraintHeight_percent="1"
-
-            app:layout_constraintVertical_bias="1"
-            app:layout_constraintHorizontal_bias=".5"/>
+                        android:fontFamily="sans-serif"
+                        android:text="@string/add_image"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_medium_large"
+                        android:textStyle="bold" />
+                </TableRow>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/red"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/padding_top_title_medium">
 
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/myCardView"
+                        android:layout_width="@dimen/account_image_size"
+                        android:layout_height="@dimen/account_image_size"
+                        app:cardCornerRadius="50dp">
+
+                        <ProgressBar
+                            android:id="@+id/progress_bar_account"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias=".5"
+
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias=".4" />
+
+                        <ImageView
+                            android:id="@+id/account_imageview"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/add_image" />
+                    </androidx.cardview.widget.CardView>
+
+                </TableRow>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingTop="@dimen/padding_top_title_medium"
+                    android:paddingBottom="@dimen/padding_top_title_medium"
+                    android:text="@string/account_information"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif"/>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:text="@string/account_name"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/text_size_medium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textview_accout_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:gravity="center_horizontal"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textSize="@dimen/text_size_medium" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:text="@string/account_surname"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/text_size_medium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textview_accout_surname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:gravity="center_horizontal"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textSize="@dimen/text_size_medium" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:text="@string/account_username"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/text_size_medium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textview_accout_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:gravity="center_horizontal"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textSize="@dimen/text_size_medium" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:text="@string/account_mail"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/text_size_medium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textview_accout_mail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:gravity="center_horizontal"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textSize="@dimen/text_size_medium" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:text="@string/account_location"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/text_size_medium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textview_accout_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:gravity="center_horizontal"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textSize="@dimen/text_size_medium" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:text="@string/account_date"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/text_size_medium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textview_accout_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:gravity="center_horizontal"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textSize="@dimen/text_size_medium" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_account_editdata"
+                        style="@style/button_secondary"
+                        android:layout_width="0dp"
+
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/padding_top_title_medium"
+                        android:layout_marginVertical="@dimen/padding_top_title_large"
+
+                        android:gravity="center"
+
+                        android:text="@string/account_edit"
+                        app:cornerRadius="@dimen/button_radius"
+
+                        app:layout_constraintBottom_toBottomOf="parent"
+
+                        app:layout_constraintHorizontal_bias=".5"
+
+
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintVertical_bias=".1" />
+                </TableRow>
+
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingTop="@dimen/padding_top_title_min"
+                    android:paddingBottom="@dimen/padding_top_title_min"
+                    android:text="@string/change_password"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/text_size_medium"
+                    android:fontFamily="sans-serif"
+                    />
+                </TableRow>
+
+
+            </TableLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

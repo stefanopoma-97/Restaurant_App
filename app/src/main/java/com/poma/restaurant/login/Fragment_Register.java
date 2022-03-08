@@ -562,7 +562,7 @@ public class Fragment_Register extends Fragment {
     }
 
     public void setModifica (boolean b){
-        modifica=b;
+        this.modifica=b;
     }
 
     //Popolo spinner città

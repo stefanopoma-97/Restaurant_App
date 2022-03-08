@@ -54,6 +54,20 @@
     <string name="loading_cities">Loading cities...</string>
 
 
+    <!-- ACCOUNT -->
+    <string name="add_image">Add a new image</string>
+    <string name="account_information">Information</string>
+
+    <string name="account_name">Name:</string>
+    <string name="account_surname">Surname:</string>
+    <string name="account_username">Username:</string>
+    <string name="account_mail">Mail:</string>
+    <string name="account_location">Location:</string>
+    <string name="account_date">Date:</string>
+    <string name="account_edit">Edit data</string>
+
+
+
     <string name="back">Back</string>
     <string name="change_password">Change Password</string>
     <string name="change_email">Change Email</string>

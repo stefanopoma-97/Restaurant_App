@@ -169,7 +169,7 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
         final Intent intent = new Intent(this, Activity_Login.class);
         intent.putExtra(USER_LOGIN_EXTRA, user);
         startActivityForResult(intent, LOGIN_REQUEST_ID);
-        Log.d(TAG_LOG, "send Intent for result. Login with user: "+user+" True -> User");
+        Log.d(TAG_LOG, "send Intent for result. Login with user: "+user+" (True -> User)");
 
 
     }

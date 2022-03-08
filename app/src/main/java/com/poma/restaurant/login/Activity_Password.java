@@ -7,13 +7,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +20,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.poma.restaurant.R;
+import com.poma.restaurant.account.Activity_Edit_Account;
 import com.poma.restaurant.model.User;
 
 import java.util.HashMap;
@@ -171,7 +170,7 @@ public class Activity_Password extends AppCompatActivity implements Fragment_Pas
                                             Log.d(TAG_LOG, "Utente aggiornato");
                                             progressBarr(false);
                                             Toast.makeText(Activity_Password.this, getResources().getString(R.string.password_saved), Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(Activity_Password.this, Activity_Account.class);
+                                            Intent intent = new Intent(Activity_Password.this, Activity_Edit_Account.class);
                                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             startActivity(intent);
                                             finish();
