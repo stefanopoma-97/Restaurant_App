@@ -361,8 +361,8 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
         this.fragment.setVisibilityDate(View.GONE);
         //this.fragment.setVisibilityBtnPassword(View.VISIBLE);
         //fragment.setVisibilityTextViewEmail(View.VISIBLE);
-        this.fragment.setVisibilityPassword(View.INVISIBLE);
-        this.fragment.setVisibilityEmail(View.INVISIBLE);
+        this.fragment.setVisibilityPassword(View.GONE);
+        this.fragment.setVisibilityEmail(View.GONE);
 
         this.fragment.setRegisterText(getResources().getString(R.string.update));
         this.fragment.setCancelText(getResources().getString(R.string.back));
