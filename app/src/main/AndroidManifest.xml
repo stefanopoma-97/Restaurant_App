@@ -21,7 +21,7 @@
         <activity android:name=".account.Activity_Account"></activity>
         <activity android:name=".notifications.Activity_Notifications" />
         <activity
-            android:name=".login.Activity_Password"
+            android:name=".account.Activity_Password"
             android:label="@string/title_activity__password" />
         <activity
             android:name=".account.Activity_Edit_Account"

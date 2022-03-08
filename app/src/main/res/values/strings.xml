@@ -65,6 +65,11 @@
     <string name="account_location">Location:</string>
     <string name="account_date">Date:</string>
     <string name="account_edit">Edit data</string>
+    <string name="data_has_been_successfully_updated">Data has been successfully updated</string>
+    <string name="password_has_been_successfully_updated">Password has been successfully updated</string>
+    <string name="updating_account_wait">Updating Please Wait...</string>
+    <string name="retrieving_account_wait">Retrieving data Please Wait...</string>
+    <string name="uploading_image">Uploading image...</string>
 
 
 

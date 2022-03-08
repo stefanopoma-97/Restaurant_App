@@ -1,4 +1,4 @@
-package com.poma.restaurant.login;
+package com.poma.restaurant.account;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +20,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.poma.restaurant.R;
-import com.poma.restaurant.account.Activity_Edit_Account;
+import com.poma.restaurant.login.Fragment_Password;
 import com.poma.restaurant.model.User;
 
 import java.util.HashMap;

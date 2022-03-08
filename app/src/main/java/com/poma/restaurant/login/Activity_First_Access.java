@@ -1,5 +1,6 @@
 package com.poma.restaurant.login;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
@@ -15,12 +16,21 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -34,6 +44,7 @@ import com.poma.restaurant.utilities.Action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Activity_First_Access extends AppCompatActivity implements Fragment_Access.FirstAccessInterface {
     //Log
@@ -119,6 +130,14 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
         //cities.add("Milano");
         //receiveNotifications_cities();
 
+        ImageView login_rapido = (ImageView) findViewById(R.id.login_rapido);
+        login_rapido.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                login_rapido();
+            }
+        });
+
     }
 
     @Override
@@ -170,6 +189,121 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
         intent.putExtra(USER_LOGIN_EXTRA, user);
         startActivityForResult(intent, LOGIN_REQUEST_ID);
         Log.d(TAG_LOG, "send Intent for result. Login with user: "+user+" (True -> User)");
+
+    }
+
+    public void login_rapido() {
+
+        String email = "stefano1997poma97@gmail.com";
+        String password = "maziamazia";
+
+        Log.d(TAG_LOG, "inizio metodo login, con tipo utente: "+this.user+" (True=user, False=Admin)");
+
+
+        //LOGIN UTENTE
+
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG_LOG, "signInWithEmail:success");
+
+                                //PRENDO UTENTE
+                                Log.d(TAG_LOG, "inizio metodo retrive user");
+
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
+                                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot document = task.getResult();
+                                            if (document.exists()) {
+                                                Map<String, Object> data = document.getData();
+                                                Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
+                                                if(!(boolean)data.get("admin")){
+                                                    User user = User.create((String) data.get("username"),(String) data.get("password"))
+                                                            .withSurname((String) data.get("surname"))
+                                                            .withName((String) data.get("name"))
+                                                            .withLocation((String) data.get("location"))
+                                                            .withEmail((String) data.get("email"))
+                                                            .withDate((long) data.get("date"))
+                                                            .withId(mAuth.getCurrentUser().getUid());
+
+                                                    Log.d(TAG_LOG, "oggetto User creato con successo");
+
+                                                    //Shared preferences
+                                                    user.save(getApplicationContext());
+                                                    final Intent mainIntent;
+                                                    mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
+                                                    startActivity(mainIntent);
+
+                                                    Toast.makeText(Activity_First_Access.this, "Login", Toast.LENGTH_SHORT).show();
+                                                    Log.d(TAG_LOG, "start menù with user:"+user.getUsername());
+                                                    finish();
+                                                }
+                                                else {
+                                                    Log.d(TAG_LOG, "questo utente è admin (sto facendo login per utente normale)");
+
+
+                                                }
+
+
+                                            } else {
+                                                Log.d(TAG_LOG, "No such document");
+                                            }
+                                        } else {
+                                            Log.d(TAG_LOG, "get failed with ", task.getException());
+                                        }
+                                    }
+                                });
+
+
+
+
+
+                            } else {
+
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG_LOG, "signInWithEmail:failure", task.getException());
+                                //Toast.makeText(Activity_Login.this, getResources().getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show();
+
+                                try {
+                                    throw task.getException();
+                                }
+                                catch(FirebaseAuthInvalidUserException e) {
+
+                                    Log.d(TAG_LOG, "no user found: "+password);
+
+
+                                }
+                                catch(FirebaseAuthInvalidCredentialsException e) {
+                                    Log.d(TAG_LOG, "credential exception, error code: "+e.getErrorCode());
+                                    if (e.getErrorCode() == "ERROR_INVALID_EMAIL"){
+
+                                    }
+                                    else if(e.getErrorCode() == "ERROR_WRONG_PASSWORD"){
+
+                                    }
+
+
+                                }
+
+
+                                catch(Exception e) {
+                                    Log.e(TAG_LOG, e.getMessage());
+
+                                }
+
+
+                            }
+                            //progressBarr(false);
+                        }
+
+                    });
+
+
 
 
     }

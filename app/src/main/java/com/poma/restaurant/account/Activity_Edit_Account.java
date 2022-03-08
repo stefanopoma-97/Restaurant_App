@@ -5,8 +5,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,9 +25,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.poma.restaurant.R;
-import com.poma.restaurant.login.Activity_Password;
-import com.poma.restaurant.login.Activity_Register;
 import com.poma.restaurant.login.Fragment_Register;
+import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
+import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.User;
 
 import java.util.HashMap;
@@ -58,6 +60,8 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
     private Fragment_Register fragment;
 
     private ProgressDialog progressDialog;
+
+    private BroadcastReceiver broadcastReceiver;
 
     /*
     //TODO la città e le altre info viene sovrascritta dalle informazione di onstart
@@ -103,6 +107,18 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
         setContentView(R.layout.activity_edit_account);
         this.fragment = (Fragment_Register)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_account_register);
+
+        //Riceve broadcast
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.poma.restaurant.broadcastreceiversandintents.BROADCAST_LOGOUT");
+        this.broadcastReceiver = new Receiver(new Broadcast_receiver_callBack_logout() {
+            @Override
+            public void onCallBack() {
+                Log.d(TAG_LOG, "Receiver onCallBack");
+                logout();
+            }
+        });
+        registerReceiver(this.broadcastReceiver, intentFilter);
 
     }
 
@@ -300,7 +316,7 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
 
         if(b){
             this.progressDialog = new ProgressDialog(Activity_Edit_Account.this);
-            progressDialog.setMessage(getResources().getString(R.string.register_wait));
+            progressDialog.setMessage(getResources().getString(R.string.updating_account_wait));
             progressDialog.show();
         }
         else{
@@ -390,6 +406,11 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
         this.fragment.setRegisterText(getResources().getString(R.string.update));
         this.fragment.setCancelText(getResources().getString(R.string.back));
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+    }
+
+    private void logout(){
+        Log.d(TAG_LOG, "Logout - inizio procedura");
+        finish();
     }
 
 }

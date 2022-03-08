@@ -50,7 +50,8 @@
                 android:layout_width="@dimen/round_logo_width_internal"
                 android:layout_height="@dimen/round_logo_width_internal"
                 android:src="@mipmap/logo_launcher"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:id="@+id/login_rapido"/>
 
         </androidx.cardview.widget.CardView>
 

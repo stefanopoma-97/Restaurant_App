@@ -37,6 +37,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.poma.restaurant.R;
+import com.poma.restaurant.account.Activity_Account;
 import com.poma.restaurant.account.Activity_Edit_Account;
 import com.poma.restaurant.login.Activity_First_Access;
 import com.poma.restaurant.login.Activity_Register;
@@ -108,11 +109,14 @@ public class Activity_Menu extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final Intent intent = new Intent(Activity_Menu.this, Activity_Account.class);
+                startActivity(intent);
+                /*
                 Log.d(TAG_LOG, "edit account");
                 final Intent intent = new Intent(Activity_Menu.this, Activity_Edit_Account.class);
                 //intent.putExtra(USER_LOGIN_EXTRA, user);
                 startActivityForResult(intent, EDIT_REQUEST_ID);
-                Log.d(TAG_LOG, "send Intent for result. edit");
+                Log.d(TAG_LOG, "send Intent for result. edit");*/
             }
         });
 
