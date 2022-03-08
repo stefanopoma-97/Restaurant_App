@@ -6,9 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".menu.Activity_Menu">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <!--<com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/appBar_menu"
         android:theme="@style/Theme.Restaurant.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
@@ -18,7 +19,7 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/Theme.Restaurant.PopupOverlay" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>-->
 
     <include layout="@layout/content_basic" />
 

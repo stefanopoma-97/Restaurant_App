@@ -39,6 +39,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.poma.restaurant.R;
 import com.poma.restaurant.account.Activity_Account;
 import com.poma.restaurant.account.Activity_Edit_Account;
+import com.poma.restaurant.databinding.ActivityMenuBinding;
 import com.poma.restaurant.login.Activity_First_Access;
 import com.poma.restaurant.login.Activity_Register;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
@@ -52,7 +53,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Activity_Menu extends AppCompatActivity {
+public class Activity_Menu extends Activity_Drawer_Menu_User {
+
+    ActivityMenuBinding activityMenuBinding;
+
     private static final String TAG_LOG = Activity_Menu.class.getName();
     private FirebaseAuth mAuth;
     private Button btn_logout;
@@ -75,7 +79,11 @@ public class Activity_Menu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG_LOG, "on create");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
+
+
+        activityMenuBinding = ActivityMenuBinding.inflate(getLayoutInflater());
+        setContentView(activityMenuBinding.getRoot());
+        allocateActivityTitle("Main");
 
         this.mAuth= FirebaseAuth.getInstance();
         this.btn_logout= (Button)findViewById(R.id.button_menu_logout);

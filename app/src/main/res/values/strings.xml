@@ -73,7 +73,6 @@
     <string name="uploading_image">Uploading image...</string>
 
 
-
     <string name="back">Back</string>
     <string name="change_password">Change Password</string>
     <string name="change_email">Change Email</string>
@@ -102,6 +101,9 @@
     values-round/strings.xml for round devices.
     -->
     <string name="hello_world">Hello Square World!</string>
+
+    <string name="drawer_open">Drawer open</string>
+    <string name="drawer_close">Drawer close</string>
 
 
 </resources>
