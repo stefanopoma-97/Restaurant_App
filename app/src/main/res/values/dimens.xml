@@ -65,4 +65,12 @@
     <dimen name="height_text">40dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 
+    <!-- List-->
+    <dimen name="image_view_list">100dp</dimen>
+
+
+    <!-- AppBar-->
+    <dimen name="icon_appBar">50dp</dimen>
+
+
 </resources>

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
@@ -45,6 +46,10 @@ public class Fragment_Notification extends Fragment {
     private String notification_id;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+
+    private Boolean dialog_box = false;
+    private static final String DIALOG_BOX_OPEN_KEY_FRAGMENT_NOTIFICATION= "com.poma.restaurant.DIALOG_BOX_OPEN_KEY_FRAGMENT_NOTIFICATION";
+
 
 
     private Button btn_back;
@@ -251,11 +256,12 @@ public class Fragment_Notification extends Fragment {
     }
 
     private void deleteNotification(){
+        this.dialog_box = true;
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(getContext())
-                .setTitle("R.string.confirm_delete")
-                .setMessage("R.string.confirm_notification_delete")
+                .setTitle(R.string.confirm_delete)
+                .setMessage(R.string.confirm_notification_delete)
                 //.setIcon(R.drawable.ic_baseline_delete_24_black)
-                .setPositiveButton("R.string.delete", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -264,29 +270,60 @@ public class Fragment_Notification extends Fragment {
                         Toast.makeText(getContext(), "Delete", Toast.LENGTH_SHORT).show();
 
 
-
+                        dialog_box = false;
                         dialog.dismiss();
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        dialog_box = false;
                     }
                 })
                 .setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
+                        dialog_box = false;
                     }
                 })
                 .create();
         myQuittingDialogBox.show();
         myQuittingDialogBox.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.WHITE);
-        myQuittingDialogBox.getButton(AlertDialog.BUTTON_POSITIVE).setBackgroundColor(Color.RED);
-
-
+        myQuittingDialogBox.getButton(AlertDialog.BUTTON_POSITIVE).setBackgroundColor(getResources().getColor(R.color.red));
 
 
     }
+
+
+    //State
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putBoolean(DIALOG_BOX_OPEN_KEY_FRAGMENT_NOTIFICATION, this.dialog_box);
+        super.onSaveInstanceState(savedInstanceState);
+        Log.d(TAG_LOG,"on Activity Create");
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d(TAG_LOG,"on Activity Create");
+
+        if (savedInstanceState != null){
+            Boolean b = savedInstanceState.getBoolean(DIALOG_BOX_OPEN_KEY_FRAGMENT_NOTIFICATION);
+            if (b){
+                deleteNotification();
+            }
+
+        }
+        else {
+            Log.d(TAG_LOG,"Retrive state: "+DIALOG_BOX_OPEN_KEY_FRAGMENT_NOTIFICATION+" valore: null");
+        }
+
+
+    }
+
+
 
 
     //Interfaccia

@@ -43,7 +43,7 @@ public class Notification {
     }
 
     public String getDateformatter() {
-        SimpleDateFormat formatter=new SimpleDateFormat("dd MM yyyy");
+        SimpleDateFormat formatter=new SimpleDateFormat("dd-MM-yyyy");
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis((long) date);
         return formatter.format(calendar.getTime());

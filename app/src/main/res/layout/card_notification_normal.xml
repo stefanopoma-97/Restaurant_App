@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_margin="2dp"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="8dp"
     app:cardElevation="8dp"
@@ -33,12 +33,24 @@
         <!--ImageVIew to display our Course Image-->
         <ImageView
             android:id="@+id/icon_notification"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/image_view_list"
+            android:layout_height="@dimen/image_view_list"
             android:layout_margin="10dp"
             android:contentDescription="@string/app_name"
             android:padding="5dp"
-            android:src="@drawable/common_google_signin_btn_icon_dark_normal" />
+            android:src="@drawable/ic_baseline_notifications_none_24"
+            />
+
+        <!--<ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/icon_new_notification"
+            android:src="@drawable/ic_baseline_fiber_new_24"
+            app:tint="@color/blue_link"
+            android:layout_marginStart="010dp"
+            >
+
+        </ImageView>-->
 
         <!--Text View to display Course Name-->
         <TextView
@@ -55,17 +67,7 @@
             android:textSize="@dimen/text_size_medium"
             android:textStyle="bold" />
 
-        <!--<ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/icon_new_notification"
-            android:src="@drawable/ic_baseline_fiber_new_24"
-            app:tint="@color/blue_link"
-            android:layout_toEndOf="@id/icon_notification"
-            android:layout_marginStart="20dp"
-            >
 
-        </ImageView>-->
 
         <!--Text VIew to display COurse Rating-->
         <!--Image used in present in drawable folder-->
@@ -83,7 +85,7 @@
             android:drawablePadding="2dp"
             android:text="Descrione fabdfffddffddfffdfddddddddddddddddf
             fffffffffffffff"
-             />
+            />
 
         <TextView
             android:id="@+id/textview_notification_date"

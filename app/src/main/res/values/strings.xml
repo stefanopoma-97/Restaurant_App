@@ -84,6 +84,15 @@
     <string name="dashboard">Dashboard</string>
 
 
+
+
+
+    <!-- Notifications -->
+    <string name="notification_title">Notification</string>
+    <string name="confirm_delete">Confirm delete?</string>
+    <string name="confirm_notification_delete">The notification will be deleted</string>
+    <string name="delete">Delete</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_basic">BasicActivity</string>

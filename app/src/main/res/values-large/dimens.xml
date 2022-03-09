@@ -69,4 +69,10 @@
     <dimen name="height_logo_menu">350dp</dimen>
     <dimen name="height_text">80dp</dimen>
 
+    <!-- List-->
+    <dimen name="image_view_list">200dp</dimen>
+
+    <!-- AppBar-->
+    <dimen name="icon_appBar">100dp</dimen>
+
 </resources>

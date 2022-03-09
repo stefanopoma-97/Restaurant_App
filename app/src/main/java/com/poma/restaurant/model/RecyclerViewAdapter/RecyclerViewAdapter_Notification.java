@@ -93,6 +93,7 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
         holder.textview_notification_description.setText(n.getContent());
         holder.textview_notification_date.setText(n.getDateformatter());
 
+
         //holder.imageView_icon_new_notification.setVisibility(View.VISIBLE);
 
         holder.cardView_notification.setOnClickListener(new View.OnClickListener() {
@@ -152,7 +153,7 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
             cardView_notification = (CardView) itemView.findViewById(R.id.cardview_notification);
 
             imageView_icon_notification = (ImageView) itemView.findViewById(R.id.icon_notification);
-            imageView_icon_new_notification = (ImageView) itemView.findViewById(R.id.icon_new_notification);
+            //imageView_icon_new_notification = (ImageView) itemView.findViewById(R.id.icon_new_notification);
 
             textview_notification_title = (TextView) itemView.findViewById(R.id.textview_single_notification_title);
             textview_notification_description = (TextView) itemView.findViewById(R.id.textview_notification_description);

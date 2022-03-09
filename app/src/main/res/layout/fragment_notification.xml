@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,13 +34,13 @@
                 app:layout_constraintTop_toTopOf="parent"
 
                 app:layout_constraintVertical_bias=".9"
-                app:layout_constraintHorizontal_bias=".3"
+                app:layout_constraintHorizontal_bias=".5"
 
                 android:paddingLeft="20dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:gravity="center"
-
+                android:textStyle="bold"
 
 
                 android:text="Titolo della notifica"
@@ -54,7 +53,6 @@
                 android:id="@+id/textview_single_notification_description"
                 android:layout_height="wrap_content"
 
-                android:layout_marginTop="8dp"
 
                 android:textSize="@dimen/text_size_medium"
 
@@ -63,8 +61,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
 
-                app:layout_constraintVertical_bias=".3"
-                app:layout_constraintHorizontal_bias=".3"
+                app:layout_constraintVertical_bias=".2"
+                app:layout_constraintHorizontal_bias=".5"
 
                 app:layout_constraintWidth_percent=".8"
                 android:text="Descrizione"
@@ -155,6 +153,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias=".5"
+                android:paddingTop="20dp"
+                android:paddingBottom="50dp"
 
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_single_notification_goback"
