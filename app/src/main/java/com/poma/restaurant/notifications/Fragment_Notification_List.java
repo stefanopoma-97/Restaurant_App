@@ -165,8 +165,8 @@ public class Fragment_Notification_List extends Fragment {
                                 break;
                             case MODIFIED:
                                 Log.d(TAG_LOG, "modify notify: " + dc.getDocument().getData());
-                                removeNotificationFromData(dc.getDocument().getId());
-                                mdata.add(createNotification(dc.getDocument()));
+                                int pos = removeNotificationFromData(dc.getDocument().getId());
+                                mdata.add(pos, createNotification(dc.getDocument()));
                                 setAdapter();
                                 break;
                             case REMOVED:
@@ -189,21 +189,28 @@ public class Fragment_Notification_List extends Fragment {
     }
 
     private void setAdapter(){
+        /*
         this.adapter = new RecyclerViewAdapter_Notification(getActivity(), this.mdata, Fragment_Notification_List.this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 
         // in below two lines we are setting layoutmanager and adapter to our recycler view.
         this.rv.setLayoutManager(linearLayoutManager);
-        this.rv.setAdapter(adapter);
+        this.rv.setAdapter(adapter);*/
+        this.adapter.notifyDataSetChanged();
+
     }
 
-    private void removeNotificationFromData(String id){
+    private int removeNotificationFromData(String id){
+        int index = 0;
         for (Notification n:this.mdata){
+
             if (n.getId().equals(id)){
                 this.mdata.remove(n);
-                return;
+                return index;
             }
+            index ++;
         }
+        return index;
     }
 
     @Override

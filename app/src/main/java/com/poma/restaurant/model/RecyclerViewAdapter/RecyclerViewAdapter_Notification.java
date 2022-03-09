@@ -1,6 +1,7 @@
 package com.poma.restaurant.model.RecyclerViewAdapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,21 +15,31 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.poma.restaurant.R;
 import com.poma.restaurant.account.Activity_Account;
+import com.poma.restaurant.menu.Activity_Menu;
 import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.User;
 import com.poma.restaurant.utilities.MyApplication;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<RecyclerViewAdapter_Notification.MyViewHolder> {
+    private static final String TAG_LOG = RecyclerViewAdapter_Notification.class.getName();
+
+
     private Context mContext;
     private Fragment mFragment;
     private ViewGroup parent;
@@ -90,7 +101,8 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
         holder.cardView_notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Click notifica con id: "+n.getId(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(v.getContext(), "Click notifica con id: "+n.getId(), Toast.LENGTH_SHORT).show();
+                setNotRead(n);
 
             }
         });
@@ -98,7 +110,8 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
         holder.imageView_icon_notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Icona", Toast.LENGTH_SHORT).show();
+
+                setRead(n);
 
             }
         });
@@ -121,7 +134,6 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
         else {
             return NOTIFICA_NON_LETTA;
         }
-
 
     }
 
@@ -148,5 +160,47 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
         }
     }
 
+    private void setRead(Notification n){
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("read", true);
 
+        DocumentReference document = db.collection("notifications").document(n.getId());
+        document.set(updates, SetOptions.merge())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Log.d(TAG_LOG, "aggiorno notifica -> read: true");
+
+                        }
+                        else{
+                            Log.d(TAG_LOG, "problemi aggiornamento notifica");
+
+                        }
+                    }
+                });
+
+    }
+
+    private void setNotRead(Notification n){
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("read", false);
+
+        DocumentReference document = db.collection("notifications").document(n.getId());
+        document.set(updates, SetOptions.merge())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Log.d(TAG_LOG, "aggiorno notifica -> read: false");
+
+                        }
+                        else{
+                            Log.d(TAG_LOG, "problemi aggiornamento notifica");
+
+                        }
+                    }
+                });
+
+    }
 }
