@@ -25,6 +25,7 @@ public class Notification {
         this.id = id;
     }
 
+
     public String getId() {
         return id;
     }
@@ -41,11 +42,15 @@ public class Notification {
         this.user_id = user_id;
     }
 
-    public String getDate() {
+    public String getDateformatter() {
         SimpleDateFormat formatter=new SimpleDateFormat("dd MM yyyy");
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis((long) date);
         return formatter.format(calendar.getTime());
+    }
+
+    public long getDate() {
+        return date;
     }
 
     public void setDate(long date) {

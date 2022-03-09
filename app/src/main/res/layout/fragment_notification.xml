@@ -17,58 +17,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
+
+
             <TextView
-                android:id="@+id/textview_alert_message_loginform"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text=""
-
-
-                android:textAlignment="center"
-                android:textColor="@color/red"
-                android:textSize="@dimen/text_size_medium"
-                android:textStyle="bold"
-
-                android:visibility="invisible"
-                app:layout_constraintBottom_toTopOf="@+id/btn_single_notification_view"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textview_single_notification_description"
-                app:layout_constraintVertical_bias="0.274"
-                app:layout_constraintWidth_percent=".8" />
-
-            <EditText
-                android:id="@+id/username_loginform"
+                android:id="@+id/textview_single_notification_title"
 
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent=".8"
                 android:layout_height="wrap_content"
 
-                app:layout_constraintBottom_toTopOf="@+id/textview_single_notification_description"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-
-                app:layout_constraintVertical_bias=".9"
-                app:layout_constraintHorizontal_bias=".3"
-                android:visibility="gone"
-
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-
-                android:hint="@string/username"/>
-
-
-            <EditText
-                android:id="@+id/email_loginform"
-
-                android:layout_width="0dp"
-                app:layout_constraintWidth_percent=".8"
-                android:layout_height="wrap_content"
-
-                android:textSize="@dimen/text_size_medium"
+                android:textSize="@dimen/text_size_large"
 
                 app:layout_constraintBottom_toTopOf="@+id/textview_single_notification_description"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -81,17 +40,21 @@
                 android:paddingLeft="20dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-
-                android:hint="@string/email"/>
-
+                android:gravity="center"
 
 
-            <com.google.android.material.textfield.TextInputLayout
+
+                android:text="Titolo della notifica"
+                />
+
+
+
+            <TextView
                 android:layout_width="0dp"
                 android:id="@+id/textview_single_notification_description"
                 android:layout_height="wrap_content"
+
                 android:layout_marginTop="8dp"
-                app:boxBackgroundColor="@color/white"
 
                 android:textSize="@dimen/text_size_medium"
 
@@ -103,42 +66,37 @@
                 app:layout_constraintVertical_bias=".3"
                 app:layout_constraintHorizontal_bias=".3"
 
-
-
                 app:layout_constraintWidth_percent=".8"
+                android:text="Descrizione"
+                android:gravity="center"
 
-
-
-                app:passwordToggleEnabled="true">
-
-                <EditText
-                    android:id="@+id/password_loginform"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:autofillHints=""
-                    android:textSize="@dimen/text_size_medium"
-                    android:hint="@string/password"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"
-                    android:selectAllOnFocus="true" />
-            </com.google.android.material.textfield.TextInputLayout>
-
+                />
 
             <TextView
-                android:id="@+id/textview_single_notification_delete"
-                android:visibility="invisible"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:id="@+id/textview_single_notification_date"
                 android:layout_height="wrap_content"
-                android:text="@string/register"
-                android:fontFamily="sans-serif"
+
+                android:layout_marginTop="8dp"
+
                 android:textSize="@dimen/text_size_medium"
+
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_single_notification_description"
+
+                app:layout_constraintVertical_bias=".1"
                 app:layout_constraintHorizontal_bias=".5"
 
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_notification_back"
-                app:layout_constraintVertical_bias=".2" />
+                app:layout_constraintWidth_percent=".8"
+                android:text="Data"
+                android:gravity="left"
+
+                />
+
+
+
 
 
 
@@ -152,12 +110,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
 
-                android:text="@string/login"
+                android:text="View"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textview_single_notification_description"
+                app:layout_constraintTop_toBottomOf="@+id/textview_single_notification_date"
                 app:layout_constraintVertical_bias="0.3"
                 app:layout_constraintWidth_percent=".8"
 
@@ -167,7 +125,7 @@
                 style="@style/button_secondary"
                 app:cornerRadius="@dimen/button_radius"
 
-                android:id="@+id/btn_notification_back"
+                android:id="@+id/btn_single_notification_goback"
 
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent=".8"
@@ -186,7 +144,21 @@
                 />
 
 
+            <TextView
+                android:id="@+id/textview_single_notification_delete"
+                android:visibility="visible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delete"
+                android:fontFamily="sans-serif"
+                android:textSize="@dimen/text_size_medium"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias=".5"
 
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_single_notification_goback"
+                app:layout_constraintVertical_bias=".2" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

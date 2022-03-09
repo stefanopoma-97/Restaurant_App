@@ -1,14 +1,13 @@
 package com.poma.restaurant.model.RecyclerViewAdapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -19,17 +18,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.storage.FirebaseStorage;
 import com.poma.restaurant.R;
-import com.poma.restaurant.account.Activity_Account;
-import com.poma.restaurant.menu.Activity_Menu;
 import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.User;
-import com.poma.restaurant.utilities.MyApplication;
+import com.poma.restaurant.notifications.Activity_Notification;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +33,8 @@ import java.util.Map;
 
 public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<RecyclerViewAdapter_Notification.MyViewHolder> {
     private static final String TAG_LOG = RecyclerViewAdapter_Notification.class.getName();
+
+    private static final String NOTIFICATION_ID_EXTRA = "com.poma.restaurant.NOTIFICATION_ID_EXTRA";
 
 
     private Context mContext;
@@ -94,15 +91,17 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
 
         holder.textview_notification_title.setText(n.getType());
         holder.textview_notification_description.setText(n.getContent());
-        holder.textview_notification_date.setText(n.getDate());
+        holder.textview_notification_date.setText(n.getDateformatter());
 
         //holder.imageView_icon_new_notification.setVisibility(View.VISIBLE);
 
         holder.cardView_notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(v.getContext(), "Click notifica con id: "+n.getId(), Toast.LENGTH_SHORT).show();
-                setNotRead(n);
+                Log.d(TAG_LOG, "Click su notifica, start activity");
+                final Intent intent = new Intent(v.getContext(), Activity_Notification.class);
+                intent.putExtra(NOTIFICATION_ID_EXTRA, n.getId());
+                v.getContext().startActivity(intent);
 
             }
         });
@@ -110,8 +109,10 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
         holder.imageView_icon_notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                setRead(n);
+                if (getItemViewType(position)==NOTIFICA_LETTA)
+                    setRead(n);
+                else
+                    setNotRead(n);
 
             }
         });
@@ -153,7 +154,7 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
             imageView_icon_notification = (ImageView) itemView.findViewById(R.id.icon_notification);
             imageView_icon_new_notification = (ImageView) itemView.findViewById(R.id.icon_new_notification);
 
-            textview_notification_title = (TextView) itemView.findViewById(R.id.textview_notification_title);
+            textview_notification_title = (TextView) itemView.findViewById(R.id.textview_single_notification_title);
             textview_notification_description = (TextView) itemView.findViewById(R.id.textview_notification_description);
             textview_notification_date = (TextView) itemView.findViewById(R.id.textview_notification_date);
 
@@ -162,7 +163,10 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
 
     private void setRead(Notification n){
         Map<String, Object> updates = new HashMap<>();
+        Log.d(TAG_LOG, "notifica get Read: "+n.getRead());
         updates.put("read", true);
+
+
 
         DocumentReference document = db.collection("notifications").document(n.getId());
         document.set(updates, SetOptions.merge())
@@ -170,7 +174,7 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
-                            Log.d(TAG_LOG, "aggiorno notifica -> read: true");
+                            Log.d(TAG_LOG, "aggiorno notific");
 
                         }
                         else{

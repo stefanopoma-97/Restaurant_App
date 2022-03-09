@@ -13,10 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.poma.restaurant.R;
 
 /**
@@ -82,8 +80,8 @@ public class Fragment_Login extends Fragment {
         // Inflate the layout for this fragment
         View view = (View)inflater.inflate(R.layout.fragment_login, container, false);
 
-        this.btn_cancel = (Button)view.findViewById(R.id.button_cancel_loginform);
-        this.btn_login = (Button)view.findViewById(R.id.login_confirm);
+        this.btn_cancel = (Button)view.findViewById(R.id.btn_notification_back);
+        this.btn_login = (Button)view.findViewById(R.id.btn_single_notification_view);
         this.e_password = (EditText)view.findViewById(R.id.password_loginform);
         this.e_email = (EditText)view.findViewById(R.id.email_loginform);
 

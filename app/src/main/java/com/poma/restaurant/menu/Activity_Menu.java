@@ -51,6 +51,8 @@ import com.poma.restaurant.notifications.Activity_Notifications;
 import com.poma.restaurant.utilities.Action;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,6 +143,25 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
                 Log.d(TAG_LOG, "click account");
 
                 startActivity(in);
+
+            }
+        });
+
+        Button btn_notifica_ristorante = (Button)findViewById(R.id.btn_menu_nuova_notifica_ristorante);
+        btn_notifica_ristorante.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG_LOG, "Click creazione notifica ristorante");
+                nuova_notifica_ristorante();
+
+            }
+        });
+
+        Button btn_notifica_recensione = (Button)findViewById(R.id.btn_menu_nuova_notifica_recensione);
+        btn_map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //nuova_notifica_recensione();
 
             }
         });
@@ -325,10 +346,10 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "a_n")
-                .setContentTitle("Notifica, id utente: "+ n.getUser_id())
+                .setContentTitle("Notifica: "+ n.getType())
                 .setSmallIcon(R.mipmap.logo_launcher_round)
                 .setAutoCancel(true)
-                .setContentText("contenuto: "+n.getType());
+                .setContentText(n.getContent());
 
 
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(getApplicationContext());
@@ -467,6 +488,38 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
                     }
                 });
 
+    }
+
+
+    private void nuova_notifica_ristorante(){
+        Log.d(TAG_LOG, "Creazione notifica");
+
+        Notification n = new Notification();
+        n.setUser_id(mAuth.getCurrentUser().getUid());
+        n.setRead(false);
+        n.setShowed(false);
+        n.setContent("è stato aggiunto un nuovo ristorante alla nostra applicazione");
+        n.setType("Nuovo ristorante");
+        Calendar calendar = Calendar.getInstance();
+        long timeMilli2 = calendar.getTimeInMillis();
+        n.setDate(timeMilli2);
+        Log.d(TAG_LOG, "notifica istanziata: "+n.getType());
+
+
+
+        db = FirebaseFirestore.getInstance();
+        db.collection("notifications").add(n).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG_LOG, "aggiunta notifica ristorante");
+                    }
+                })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG_LOG, "Error adding notifica", e);
+                        }
+                    });
     }
 
 }
