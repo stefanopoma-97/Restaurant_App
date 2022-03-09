@@ -55,7 +55,7 @@
             android:textSize="@dimen/text_size_medium"
             android:textStyle="bold" />
 
-        <!--<ImageView
+        <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:id="@+id/icon_new_notification"
@@ -65,7 +65,7 @@
             android:layout_marginStart="20dp"
             >
 
-        </ImageView>-->
+        </ImageView>
 
         <!--Text VIew to display COurse Rating-->
         <!--Image used in present in drawable folder-->

@@ -3,6 +3,7 @@ package com.poma.restaurant.notifications;
 import android.app.Activity;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,11 +12,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.poma.restaurant.R;
 import com.poma.restaurant.login.Fragment_Login;
 import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.RecyclerViewAdapter.RecyclerViewAdapter_Notification;
+import com.poma.restaurant.model.User;
 
 import java.util.ArrayList;
 
@@ -29,6 +42,14 @@ public class Fragment_Notification_List extends Fragment {
     private static final String TAG_LOG = Fragment_Notification_List.class.getName();
     private RecyclerView rv;
     private ArrayList<Notification> mdata;
+    private FirebaseAuth mAuth;
+    private Button btn_logout;
+    private FirebaseFirestore db;
+    private FirebaseUser currentUser;
+    private User currentUser2;
+    private static ListenerRegistration listener_notification;
+
+    private RecyclerViewAdapter_Notification adapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -73,6 +94,7 @@ public class Fragment_Notification_List extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG_LOG,"on create view");
         // Inflate the layout for this fragment
         View view = (View)inflater.inflate(R.layout.fragment_notification_list, container, false);
 
@@ -81,8 +103,19 @@ public class Fragment_Notification_List extends Fragment {
         this.rv = view.findViewById(R.id.RV_notification);
 
         // here we have created new array list and added data to it.
-        this.mdata = new ArrayList<>();
 
+
+
+
+
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG_LOG,"on start");
+/*
         //notifica 1
         for (int i = 0; i<100; i++){
             Notification n1 = new Notification("userid", "id", "Titolo not 1");
@@ -92,10 +125,9 @@ public class Fragment_Notification_List extends Fragment {
             this.mdata.add(n1);
         }
 
-
-
+ */     this.mdata = new ArrayList<>();
         // passo activity, array e fragment
-        RecyclerViewAdapter_Notification adapter = new RecyclerViewAdapter_Notification(getActivity(), mdata, Fragment_Notification_List.this);
+        this.adapter = new RecyclerViewAdapter_Notification(getActivity(), mdata, Fragment_Notification_List.this);
 
         // below line is for setting a layout manager for our recycler view.
         // here we are creating vertical list so we will provide orientation as vertical
@@ -106,8 +138,91 @@ public class Fragment_Notification_List extends Fragment {
         rv.setAdapter(adapter);
 
 
-        return view;
+
+        this.db = FirebaseFirestore.getInstance();
+        this.mAuth= FirebaseAuth.getInstance();
+        this.currentUser = mAuth.getCurrentUser();
+        if (this.currentUser!=null){
+            Query query = this.db.collection("notifications")
+                    .whereEqualTo("user_id", currentUser.getUid());
+
+            this.listener_notification = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot snapshots,
+                                    @Nullable FirebaseFirestoreException e) {
+                    if (e != null) {
+                        Log.w(TAG_LOG, "Listen failed.", e);
+                        return;
+                    }
+
+                    for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                        switch (dc.getType()) {
+                            case ADDED:
+                                Log.d(TAG_LOG, "New notify di tipo: " + dc.getDocument().getString("type"));
+                                mdata.add(createNotification(dc.getDocument()));
+                                setAdapter();
+
+                                break;
+                            case MODIFIED:
+                                Log.d(TAG_LOG, "modify notify: " + dc.getDocument().getData());
+                                removeNotificationFromData(dc.getDocument().getId());
+                                mdata.add(createNotification(dc.getDocument()));
+                                setAdapter();
+                                break;
+                            case REMOVED:
+                                Log.d(TAG_LOG, "Removed notify (id = "+dc.getDocument().getId()+"): " + dc.getDocument().getData());
+                                removeNotificationFromData(dc.getDocument().getId());
+                                setAdapter();
+                                break;
+                        }
+                    }
+
+
+                }
+            });
+        }
+
+
+
+
+
     }
+
+    private void setAdapter(){
+        this.adapter = new RecyclerViewAdapter_Notification(getActivity(), this.mdata, Fragment_Notification_List.this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+
+        // in below two lines we are setting layoutmanager and adapter to our recycler view.
+        this.rv.setLayoutManager(linearLayoutManager);
+        this.rv.setAdapter(adapter);
+    }
+
+    private void removeNotificationFromData(String id){
+        for (Notification n:this.mdata){
+            if (n.getId().equals(id)){
+                this.mdata.remove(n);
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG_LOG,"un register receiver");
+        this.listener_notification.remove();
+    }
+
+    private Notification createNotification(QueryDocumentSnapshot d){
+        Log.d(TAG_LOG, "Creando una notifica");
+        Notification n = new Notification(mAuth.getCurrentUser().getUid(), d.getId(), d.getString("type"));
+        //n.setDate((long)d.get("date"));
+        n.setContent((String)d.get("content"));
+        n.setRead((Boolean)d.get("read"));
+        Log.d(TAG_LOG, "Notifica creata correttamente, user_id: "+n.getUser_id()+", id: "+n.getId()+", type: "+n.getType());
+        return n;
+    }
+
 
     //Interfaccia
     //Activity deve implementare i metodi specificati

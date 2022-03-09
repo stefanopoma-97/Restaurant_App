@@ -40,6 +40,9 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
     private FirebaseUser currentUser;
     private User currentUser2;
 
+    private static int NOTIFICA_NON_LETTA = 1;
+    private static int NOTIFICA_LETTA = 0;
+
     //costruttore
     public RecyclerViewAdapter_Notification (Context context, List<Notification> mData){
         this.mContext = context;
@@ -63,7 +66,12 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
         this.mAuth= FirebaseAuth.getInstance();
         this.db = FirebaseFirestore.getInstance();
         this.parent = parent;
-        view = mInflater.inflate(R.layout.card_notification_normal, parent,false);
+
+        if (viewType == NOTIFICA_LETTA)
+            view = mInflater.inflate(R.layout.card_notification_normal, parent,false);
+        else
+            view = mInflater.inflate(R.layout.card_notification_new, parent,false);
+
         return new RecyclerViewAdapter_Notification.MyViewHolder(view);
     }
 
@@ -77,12 +85,20 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
         holder.textview_notification_description.setText(n.getContent());
         holder.textview_notification_date.setText(n.getDate());
 
-        holder.imageView_icon_new_notification.setVisibility(View.VISIBLE);
+        //holder.imageView_icon_new_notification.setVisibility(View.VISIBLE);
 
         holder.cardView_notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Click elemento posizione: "+position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "Click notifica con id: "+n.getId(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        holder.imageView_icon_notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "Icona", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -93,6 +109,20 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
     @Override
     public int getItemCount() {
         return this.mData.size();
+
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        Notification n = this.mData.get(position);
+        if (n.getRead()){
+            return NOTIFICA_LETTA;
+        }
+        else {
+            return NOTIFICA_NON_LETTA;
+        }
+
+
     }
 
     //Holder
