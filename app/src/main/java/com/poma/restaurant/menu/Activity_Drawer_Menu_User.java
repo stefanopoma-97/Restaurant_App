@@ -21,32 +21,42 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 
 public class Activity_Drawer_Menu_User extends AppCompatActivity {
 
-    DrawerLayout drawerLayout;
+
     private static final String TAG_LOG = Activity_Drawer_Menu_User.class.getName();
+
+    private DrawerLayout drawerLayout;
+    private FrameLayout container;
+    private Toolbar toolbar;
+    private NavigationView navigationView;
+    private ActionBarDrawerToggle toggle;
+
+    private TextView textView_header_user_title;
 
     @Override
     public void setContentView(View view) {
+        Log.d(TAG_LOG, "set content view");
         //setto layout del drawer
-        drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_drawer_menu_user, null);
+        this.drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_drawer_menu_user, null);
 
         //container
-        FrameLayout container = drawerLayout.findViewById(R.id.activityContainer);
+        this.container = this.drawerLayout.findViewById(R.id.activityContainer);
 
-        container.addView(view);
+        this.container.addView(view);
 
-        super.setContentView(drawerLayout);
+        super.setContentView(this.drawerLayout);
 
         //toolbar del content
-        Toolbar toolbar = drawerLayout.findViewById(R.id.toolbar);
+        this.toolbar = drawerLayout.findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         //parte a comparsa a sinistra contenente header e menu
-        NavigationView navigationView = drawerLayout.findViewById(R.id.nav_view_menu_user);
-        navigationView.setNavigationItemSelectedListener(
+        this.navigationView = this.drawerLayout.findViewById(R.id.nav_view_menu_user);
+        this.navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -69,25 +79,45 @@ public class Activity_Drawer_Menu_User extends AppCompatActivity {
 
                 });
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
+        this.toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
+        this.drawerLayout.addDrawerListener(toggle);
+        this.toggle.syncState();
     }
 
+
+
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         Log.d(TAG_LOG, "on create");
+        /*
+        dr = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_drawer_menu_user, null);
+
+        nav = dr.findViewById(R.id.nav_view_menu_user);
+
+        this.textView_header_user_title = (TextView) nav.findViewById(R.id.header_user_title);
+        Log.d(TAG_LOG, "riferimento a text view: "+this.textView_header_user_title.getText());
+        */
+
+
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         Log.d(TAG_LOG, "on start");
+        /*
+        this.textView_header_user_title = (TextView) this.navigationView .findViewById(R.id.header_user_title);
+        Log.d(TAG_LOG, "riferimento a text view: "+this.textView_header_user_title.getText());
+        */
+
     }
 
     //Metodi
     protected void allocateActivityTitle(String title){
+        Log.d(TAG_LOG, "allocate activity title");
         if (getSupportActionBar() != null){
             getSupportActionBar().setTitle(title);
             }
@@ -103,6 +133,14 @@ public class Activity_Drawer_Menu_User extends AppCompatActivity {
         sendBroadcast(intent);
         Log.d(TAG_LOG, "Broadcast mandato");
     }
+
+    protected void setTitle_header_user(String text){
+        Log.d(TAG_LOG, "Set title header");
+
+        //this.textView_header_user_title.setText(text);
+    }
+
+
 
 
 

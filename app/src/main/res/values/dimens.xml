@@ -60,4 +60,8 @@
     <dimen name="round_logo_width_external">100dp</dimen>
     <dimen name="round_logo_width_internal">80dp</dimen>
 
+    <!-- Logo menu-->
+    <dimen name="height_logo_menu">200dp</dimen>
+    <dimen name="height_text">40dp</dimen>
+
 </resources>

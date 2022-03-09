@@ -14,7 +14,7 @@
 
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin_top">100dp</dimen>
+    <dimen name="activity_vertical_margin_top">50dp</dimen>
     <dimen name="activity_vertical_margin_top_small">15dp</dimen>
     <dimen name="activity_vertical_margin_top_mini">10dp</dimen>
 
@@ -64,5 +64,9 @@
     <!-- round logo -->
     <dimen name="round_logo_width_external">200dp</dimen>
     <dimen name="round_logo_width_internal">160dp</dimen>
+
+    <!-- Logo menu-->
+    <dimen name="height_logo_menu">350dp</dimen>
+    <dimen name="height_text">80dp</dimen>
 
 </resources>

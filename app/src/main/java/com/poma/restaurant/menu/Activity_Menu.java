@@ -80,10 +80,10 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
         Log.d(TAG_LOG, "on create");
         super.onCreate(savedInstanceState);
 
-
+        //Menu laterale
         activityMenuBinding = ActivityMenuBinding.inflate(getLayoutInflater());
         setContentView(activityMenuBinding.getRoot());
-        allocateActivityTitle("Main");
+        allocateActivityTitle(getResources().getString(R.string.dashboard));
 
         this.mAuth= FirebaseAuth.getInstance();
         this.btn_logout= (Button)findViewById(R.id.button_menu_logout);
