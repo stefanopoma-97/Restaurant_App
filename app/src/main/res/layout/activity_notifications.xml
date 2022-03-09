@@ -6,12 +6,34 @@
     android:layout_height="match_parent"
     tools:context=".notifications.Activity_Notifications">
 
-    <Button
-        android:id="@+id/btn_logout"
+    <View
+        android:id="@+id/view_filter_notification"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="164dp"
-        tools:layout_editor_absoluteY="316dp"
-        tools:ignore="MissingConstraints" />
+        android:layout_height="0dp"
+        android:background="@color/red"
+        android:scaleType="centerCrop"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent=".2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintWidth_percent="0.">
+
+    </View>
+
+    <fragment
+        android:id="@+id/fragment_notification_list"
+        class="com.poma.restaurant.notifications.Fragment_Notification_List"
+
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_filter_notification"
+        tools:ignore="MissingConstraints"
+        ></fragment>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,14 +1,23 @@
 package com.poma.restaurant.notifications;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.poma.restaurant.R;
+import com.poma.restaurant.login.Fragment_Login;
+import com.poma.restaurant.model.Notification;
+import com.poma.restaurant.model.RecyclerViewAdapter.RecyclerViewAdapter_Notification;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +25,10 @@ import com.poma.restaurant.R;
  * create an instance of this fragment.
  */
 public class Fragment_Notification_List extends Fragment {
+
+    private static final String TAG_LOG = Fragment_Notification_List.class.getName();
+    private RecyclerView rv;
+    private ArrayList<Notification> mdata;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +74,62 @@ public class Fragment_Notification_List extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notification_list, container, false);
+        View view = (View)inflater.inflate(R.layout.fragment_notification_list, container, false);
+
+
+        //RV
+        this.rv = view.findViewById(R.id.RV_notification);
+
+        // here we have created new array list and added data to it.
+        this.mdata = new ArrayList<>();
+
+        //notifica 1
+        for (int i = 0; i<100; i++){
+            Notification n1 = new Notification("userid", "id", "Titolo not 1");
+            n1.setContent("Descrizione delle notifica 1");
+            long l = new Long(8407);
+            n1.setDate(l);
+            this.mdata.add(n1);
+        }
+
+
+
+        // passo activity, array e fragment
+        RecyclerViewAdapter_Notification adapter = new RecyclerViewAdapter_Notification(getActivity(), mdata, Fragment_Notification_List.this);
+
+        // below line is for setting a layout manager for our recycler view.
+        // here we are creating vertical list so we will provide orientation as vertical
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+
+        // in below two lines we are setting layoutmanager and adapter to our recycler view.
+        rv.setLayoutManager(linearLayoutManager);
+        rv.setAdapter(adapter);
+
+
+        return view;
+    }
+
+    //Interfaccia
+    //Activity deve implementare i metodi specificati
+    public interface NotificationListInterface {
+        public void click_notification(String id);
+        public void cancel();
+    }
+
+    private Fragment_Notification_List.NotificationListInterface listener;
+
+    //check if activity implement the interface
+    @Override
+    public void onAttach(Activity activity){
+        Log.d(TAG_LOG,"onAttach fragment");
+
+        super.onAttach(activity);
+        if(activity instanceof Fragment_Notification_List.NotificationListInterface){
+            listener = (Fragment_Notification_List.NotificationListInterface) activity;
+        }
+        else {
+            throw new ClassCastException(activity.toString() +
+                    "Does not implement the interface");
+        }
     }
 }

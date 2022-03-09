@@ -1,10 +1,13 @@
 package com.poma.restaurant.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class Notification {
 
     private String id;
     private String user_id;
-    private String date;
+    private long date;
     private String time;
     private String type;
     private String content;
@@ -39,10 +42,13 @@ public class Notification {
     }
 
     public String getDate() {
-        return date;
+        SimpleDateFormat formatter=new SimpleDateFormat("dd MM yyyy");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis((long) date);
+        return formatter.format(calendar.getTime());
     }
 
-    public void setDate(String date) {
+    public void setDate(long date) {
         this.date = date;
     }
 

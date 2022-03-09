@@ -63,5 +63,6 @@
     <!-- Logo menu-->
     <dimen name="height_logo_menu">200dp</dimen>
     <dimen name="height_text">40dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 
 </resources>

@@ -348,7 +348,7 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
             Query query = this.db.collection("notifications")
                     .whereEqualTo("user_id", currentUser.getUid())
                     .whereEqualTo("showed", false).whereEqualTo("read", false);
-            
+
             this.listener_notification = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
                 @Override
                 public void onEvent(@Nullable QuerySnapshot snapshots,
