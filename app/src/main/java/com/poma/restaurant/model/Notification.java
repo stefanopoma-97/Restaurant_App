@@ -8,6 +8,9 @@ public class Notification {
     private String time;
     private String type;
     private String content;
+    private Boolean showed;
+    private Boolean read;
+
 
 
     public Notification() {
@@ -65,5 +68,21 @@ public class Notification {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Boolean getRead() {
+        return read;
+    }
+
+    public void setRead(Boolean read) {
+        this.read = read;
+    }
+
+    public Boolean getShowed() {
+        return showed;
+    }
+
+    public void setShowed(Boolean showed) {
+        this.showed = showed;
     }
 }

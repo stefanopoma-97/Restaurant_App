@@ -36,6 +36,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.poma.restaurant.R;
 import com.poma.restaurant.account.Activity_Account;
 import com.poma.restaurant.account.Activity_Edit_Account;
@@ -50,6 +51,7 @@ import com.poma.restaurant.notifications.Activity_Notifications;
 import com.poma.restaurant.utilities.Action;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -314,6 +316,7 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
     }
 
     //crea una notifica per l'utente
+    //TODO da personalizzare con intent che rimanda alla pagina della notifica
     private void new_notify(Notification n){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel channel =  new NotificationChannel("a_n","approvation_notification", NotificationManager.IMPORTANCE_DEFAULT);
@@ -336,14 +339,16 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
         managerCompat.notify(SIMPLE_NOTIFICATION_ID++, builder.build());
     }
 
-    //verifica l'esistenza di notifiche per l'utente loggato
+    //verifica l'esistenza di notifiche per l'utente loggato (con l'id dell'utente, non mostrate, non lette)
     public void receiveNotifications(){
         this.db = FirebaseFirestore.getInstance();
         this.mAuth= FirebaseAuth.getInstance();
         this.currentUser = mAuth.getCurrentUser();
         if (this.currentUser!=null){
             Query query = this.db.collection("notifications")
-                    .whereEqualTo("user_id", currentUser.getUid());
+                    .whereEqualTo("user_id", currentUser.getUid())
+                    .whereEqualTo("showed", false).whereEqualTo("read", false);
+            
             this.listener_notification = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
                 @Override
                 public void onEvent(@Nullable QuerySnapshot snapshots,
@@ -360,7 +365,7 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
                                 Notification n = createNotification(dc.getDocument());
                                 new_notify(n);
                                 //TODO farle cancellare
-                                //deleteNotification(dc.getDocument());
+                                deleteNotification(dc.getDocument());
                                 break;
                             case MODIFIED:
                                 Log.d(TAG_LOG, "Modified notify: " + dc.getDocument().getData());
@@ -378,6 +383,7 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
 
     }
 
+    //TODO da personalizzare sulla base del tipo di notifica
     private Notification createNotification(QueryDocumentSnapshot d){
         Log.d(TAG_LOG, "Creando una notifica");
         Notification n = new Notification(d.getString("user_id"), d.getId(), d.getString("type"));
@@ -385,7 +391,29 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
         return n;
     }
 
+    //Imposta la notifica come "mostrata" in questo modo non verrà più presentata
     private void deleteNotification(QueryDocumentSnapshot d){
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("showed", true);
+
+        DocumentReference document = this.db.collection("notifications").document(d.getId());
+        document.set(updates, SetOptions.merge())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Log.d(TAG_LOG, "aggiorno notifica -> showed: true");
+
+                        }
+                        else{
+                            Log.d(TAG_LOG, "problemi aggiornamento notifica");
+
+                        }
+                    }
+                });
+
+
+        /*
         this.db.collection("notifications").document(d.getId())
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -400,6 +428,8 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
                         Log.w(TAG_LOG, "Error deleting document", e);
                     }
                 });;
+
+         */
 
     }
 
