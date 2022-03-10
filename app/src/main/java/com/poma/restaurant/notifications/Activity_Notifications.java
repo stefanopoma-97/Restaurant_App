@@ -35,7 +35,7 @@ import com.poma.restaurant.model.User;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Activity_Notifications extends AppCompatActivity implements Fragment_Notification_List.NotificationListInterface {
+public class Activity_Notifications extends AppCompatActivity implements Fragment_Notification_List.NotificationListInterface, OnNotificationClickListener, Fragment_Notification.NotificationInterface {
     private static final String TAG_LOG = Activity_Menu.class.getName();
     private Button btn_logout;
     private FirebaseAuth mAuth;
@@ -43,10 +43,14 @@ public class Activity_Notifications extends AppCompatActivity implements Fragmen
     private FirebaseUser currentUser;
     private User currentUser2;
 
+    private static final String NOTIFICATION_ID_EXTRA = "com.poma.restaurant.NOTIFICATION_ID_EXTRA";
+    private static final String USEFUL_ID_EXTRA = "com.poma.restaurant.USEFUL_ID_EXTRA";
+
 
     private BroadcastReceiver broadcastReceiver;
 
     private static Fragment_Notification_List fragment_notification_list;
+    private static Fragment_Notification fragment_notification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,6 +175,49 @@ public class Activity_Notifications extends AppCompatActivity implements Fragmen
 
     @Override
     public void cancel() {
+
+    }
+
+    //in ascolto sul click su una notifica
+    @Override
+    public void onNotificationClick(Notification n) {
+
+        boolean dual_pane = getResources().getBoolean(R.bool.dual_pane);
+        if (dual_pane==false){
+            Log.d(TAG_LOG, "lister su activity, fa partire intent");
+            final Intent intent = new Intent(Activity_Notifications.this, Activity_Notification.class);
+            intent.putExtra(NOTIFICATION_ID_EXTRA, n.getId());
+            startActivity(intent);
+        }
+        else{
+            this.fragment_notification = (Fragment_Notification)getSupportFragmentManager()
+                    .findFragmentById(R.id.fragment_notification_land);
+            this.fragment_notification.setNotification_id(n.getId());
+        }
+
+    }
+
+
+    //Interfaccia fragment singola notifica
+    public void goBack() {
+        Log.d(TAG_LOG, "Go Back");
+        finish();
+    }
+
+
+
+
+    @Override
+    public void view(Notification n) {
+        redirect_to_notification(n);
+        finish();
+    }
+
+    private void redirect_to_notification(Notification n){
+        //TODO in base al tipo di notifica vanno creati intent differenti
+        final Intent intent = new Intent(Activity_Notifications.this, Activity_Menu.class);
+        intent.putExtra(USEFUL_ID_EXTRA, n.getUseful_id());
+        startActivity(intent);
 
     }
 }

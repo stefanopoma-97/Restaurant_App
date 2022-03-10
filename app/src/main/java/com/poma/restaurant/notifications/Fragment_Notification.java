@@ -41,7 +41,7 @@ import java.util.Map;
 public class Fragment_Notification extends Fragment {
     private static final String TAG_LOG = Fragment_Notification_List.class.getName();
 
-    private String notification_id;
+    private String notification_id=null;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
@@ -113,6 +113,13 @@ public class Fragment_Notification extends Fragment {
         this.textView_delete = (TextView)view.findViewById(R.id.textview_single_notification_delete);
         this.textView_date = (TextView)view.findViewById(R.id.textview_single_notification_date);
 
+        this.btn_back.setVisibility(View.GONE);
+        this.btn_view.setVisibility(View.GONE);
+        this.textView_title.setVisibility(View.GONE);
+        this.textView_description.setVisibility(View.GONE);
+        this.textView_delete.setVisibility(View.GONE);
+        this.textView_date.setVisibility(View.GONE);
+
         this.mAuth= FirebaseAuth.getInstance();
         this.db = FirebaseFirestore.getInstance();
 
@@ -147,14 +154,18 @@ public class Fragment_Notification extends Fragment {
     public void onStart() {
         super.onStart();
         Log.d(TAG_LOG,"on start");
-        retrive_notification_info();
-        set_read_true();
+        if(this.notification_id != null){
+            retrive_notification_info();
+        }
+
 
     }
 
     //Metodi
 
     private void retrive_notification_info(){
+
+
         DocumentReference docRef = this.db.collection("notifications").document(this.notification_id);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -192,6 +203,13 @@ public class Fragment_Notification extends Fragment {
                 }
             }
         });
+        set_read_true();
+        this.btn_back.setVisibility(View.VISIBLE);
+        this.btn_view.setVisibility(View.VISIBLE);
+        this.textView_title.setVisibility(View.VISIBLE);
+        this.textView_description.setVisibility(View.VISIBLE);
+        this.textView_delete.setVisibility(View.VISIBLE);
+        this.textView_date.setVisibility(View.VISIBLE);
     }
 
     private void set_read_true(){
@@ -237,6 +255,8 @@ public class Fragment_Notification extends Fragment {
 
         this.notification_id=id;
         Log.d(TAG_LOG, "Set id notification: "+this.notification_id);
+        retrive_notification_info();
+        set_read_true();
     }
 
     private void goBack(){

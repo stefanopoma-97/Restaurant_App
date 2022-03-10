@@ -36,6 +36,7 @@ import com.poma.restaurant.account.Activity_Account;
 import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.User;
 import com.poma.restaurant.notifications.Activity_Notification;
+import com.poma.restaurant.notifications.OnNotificationClickListener;
 
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +64,9 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
     private static int NOTIFICA_NON_LETTA = 1;
     private static int NOTIFICA_LETTA = 0;
 
+    //listener per notifica
+    private OnNotificationClickListener onNotificationClickListener;
+
     //costruttore
     public RecyclerViewAdapter_Notification (Context context, List<Notification> mData){
         this.mContext = context;
@@ -74,6 +78,8 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
         this.mContext = context;
         this.mData = mData;
         this.mFragment = mFragment;
+
+        this.onNotificationClickListener = (OnNotificationClickListener) context;
     }
 
     @NonNull
@@ -112,10 +118,14 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
         holder.cardView_notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                onNotificationClickListener.onNotificationClick(n);
+                /*
                 Log.d(TAG_LOG, "Click su notifica, start activity");
                 final Intent intent = new Intent(v.getContext(), Activity_Notification.class);
                 intent.putExtra(NOTIFICATION_ID_EXTRA, n.getId());
                 v.getContext().startActivity(intent);
+                */
+
 
             }
         });

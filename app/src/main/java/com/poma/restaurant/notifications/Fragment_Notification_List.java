@@ -265,11 +265,11 @@ public class Fragment_Notification_List extends Fragment {
     //ordinamento
     private void orderRecycler() {
         if (this.order){
-            Collections.sort(this.mdata);
+            Collections.sort(this.mdata, Collections.reverseOrder());
             this.order = false;
         }
         else {
-            Collections.sort(this.mdata, Collections.reverseOrder());
+            Collections.sort(this.mdata);
             this.order = true;
         }
 
