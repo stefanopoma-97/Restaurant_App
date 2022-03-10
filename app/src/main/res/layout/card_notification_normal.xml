@@ -41,6 +41,21 @@
             android:src="@drawable/ic_baseline_notifications_none_24"
             />
 
+        <ProgressBar
+            android:id="@+id/progress_bar_notification_card"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignStart="@+id/icon_notification"
+            android:layout_alignTop="@+id/icon_notification"
+            android:layout_alignEnd="@+id/icon_notification"
+            android:layout_alignBottom="@+id/icon_notification"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:visibility="invisible" />
+
         <!--<ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"

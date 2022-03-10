@@ -3,10 +3,12 @@ package com.poma.restaurant.notifications;
 import android.app.Activity;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
@@ -31,6 +35,7 @@ import com.poma.restaurant.model.RecyclerViewAdapter.RecyclerViewAdapter_Notific
 import com.poma.restaurant.model.User;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,6 +53,7 @@ public class Fragment_Notification_List extends Fragment {
     private FirebaseUser currentUser;
     private User currentUser2;
     private static ListenerRegistration listener_notification;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private RecyclerViewAdapter_Notification adapter;
 
@@ -104,6 +110,15 @@ public class Fragment_Notification_List extends Fragment {
 
         // here we have created new array list and added data to it.
 
+        this.swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_notificationlist);
+        this.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateRecycler();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
 
 
 
@@ -115,17 +130,8 @@ public class Fragment_Notification_List extends Fragment {
     public void onStart() {
         super.onStart();
         Log.d(TAG_LOG,"on start");
-/*
-        //notifica 1
-        for (int i = 0; i<100; i++){
-            Notification n1 = new Notification("userid", "id", "Titolo not 1");
-            n1.setContent("Descrizione delle notifica 1");
-            long l = new Long(8407);
-            n1.setDate(l);
-            this.mdata.add(n1);
-        }
 
- */     this.mdata = new ArrayList<>();
+        this.mdata = new ArrayList<>();
         // passo activity, array e fragment
         this.adapter = new RecyclerViewAdapter_Notification(getActivity(), mdata, Fragment_Notification_List.this);
 
@@ -186,6 +192,31 @@ public class Fragment_Notification_List extends Fragment {
 
 
 
+    }
+
+    //Aggiornamento manuale
+    private void updateRecycler() {
+        this.mdata = new ArrayList<>();
+        this.db = FirebaseFirestore.getInstance();
+        this.mAuth = FirebaseAuth.getInstance();
+        this.currentUser = mAuth.getCurrentUser();
+        if (this.currentUser != null) {
+            this.db.collection("notifications")
+                    .whereEqualTo("user_id", currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+
+                            mdata.add(createNotification(document));
+                            setAdapter();
+                        }
+                    }
+                }
+            });
+
+        }
     }
 
     private void setAdapter(){

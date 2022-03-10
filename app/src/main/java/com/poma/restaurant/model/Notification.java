@@ -13,6 +13,7 @@ public class Notification {
     private String content;
     private Boolean showed;
     private Boolean read;
+    private String useful_id;
 
 
 
@@ -95,5 +96,13 @@ public class Notification {
 
     public void setShowed(Boolean showed) {
         this.showed = showed;
+    }
+
+    public String getUseful_id() {
+        return useful_id;
+    }
+
+    public void setUseful_id(String useful_id) {
+        this.useful_id = useful_id;
     }
 }

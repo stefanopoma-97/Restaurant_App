@@ -4,11 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".notifications.Fragment_Notification_List">
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/swipe_refresh_notificationlist">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RV_notification"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/card_notification_normal"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </FrameLayout>

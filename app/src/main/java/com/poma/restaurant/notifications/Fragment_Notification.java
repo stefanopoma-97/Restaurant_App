@@ -21,14 +21,12 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.poma.restaurant.R;
+import com.poma.restaurant.model.Notification;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -58,6 +56,7 @@ public class Fragment_Notification extends Fragment {
     private TextView textView_title;
     private TextView textView_description;
     private TextView textView_date;
+    private Notification notification;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -117,6 +116,8 @@ public class Fragment_Notification extends Fragment {
         this.mAuth= FirebaseAuth.getInstance();
         this.db = FirebaseFirestore.getInstance();
 
+        this.notification = new Notification();
+
 
         this.btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,8 +150,6 @@ public class Fragment_Notification extends Fragment {
         retrive_notification_info();
         set_read_true();
 
-
-
     }
 
     //Metodi
@@ -166,20 +165,15 @@ public class Fragment_Notification extends Fragment {
                         Map<String, Object> data = document.getData();
                         Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
 
-                        /*
-                        user_new = User.create((String) data.get("username"),(String) data.get("password"))
-                                .withSurname((String) data.get("surname"))
-                                .withName((String) data.get("name"))
-                                .withLocation((String) data.get("location"))
-                                .withEmail((String) data.get("email"))
-                                .withDate((long) data.get("date"))
-                                .withAdmin((Boolean) data.get("admin"))
-                                .withCity_id((String) data.get("city_id"))
-                                .withId(mAuth.getCurrentUser().getUid());*/
+
+                        notification.setUser_id((String) data.get("user_id"));
+                        notification.setType((String) data.get("type"));
+                        notification.setContent((String) data.get("content"));
+                        notification.setUseful_id((String) data.get("useful_id"));
+
 
                         textView_title.setText((String) data.get("type"));
                         textView_description.setText((String) data.get("content"));
-
                         SimpleDateFormat formatter=new SimpleDateFormat("dd-MM-yyyy");
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTimeInMillis((long) data.get("date"));
@@ -246,12 +240,15 @@ public class Fragment_Notification extends Fragment {
     }
 
     private void goBack(){
-        Toast.makeText(getContext(), "Go back", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "Go back", Toast.LENGTH_SHORT).show();
+        Log.d(TAG_LOG, "Go back");
+        listener.goBack();
         return;
     }
 
     private void view(){
-        Toast.makeText(getContext(), "View", Toast.LENGTH_SHORT).show();
+        Log.d(TAG_LOG, "View");
+        listener.view(this.notification);
         return;
     }
 
@@ -266,7 +263,7 @@ public class Fragment_Notification extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
 
                         delete();
-                        listener.back();
+                        listener.goBack();
                         Toast.makeText(getContext(), "Delete", Toast.LENGTH_SHORT).show();
 
 
@@ -329,8 +326,8 @@ public class Fragment_Notification extends Fragment {
     //Interfaccia
     //Activity deve implementare i metodi specificati
     public interface NotificationInterface {
-        public void back();
-        public void view();
+        public void goBack();
+        public void view(Notification n);
     }
 
     private Fragment_Notification.NotificationInterface listener;

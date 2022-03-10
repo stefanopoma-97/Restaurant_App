@@ -500,6 +500,7 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
         n.setShowed(false);
         n.setContent("è stato aggiunto un nuovo ristorante alla nostra applicazione");
         n.setType("Nuovo ristorante");
+        n.setUseful_id("id ristorante");
         Calendar calendar = Calendar.getInstance();
         long timeMilli2 = calendar.getTimeInMillis();
         n.setDate(timeMilli2);

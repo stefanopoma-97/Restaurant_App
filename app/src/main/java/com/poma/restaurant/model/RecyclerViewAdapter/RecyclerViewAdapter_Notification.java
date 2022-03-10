@@ -2,26 +2,37 @@ package com.poma.restaurant.model.RecyclerViewAdapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.poma.restaurant.R;
+import com.poma.restaurant.account.Activity_Account;
 import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.User;
 import com.poma.restaurant.notifications.Activity_Notification;
@@ -47,6 +58,7 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
     private User currentUser2;
+    private Uri imageUri;
 
     private static int NOTIFICA_NON_LETTA = 1;
     private static int NOTIFICA_LETTA = 0;
@@ -92,6 +104,7 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
         holder.textview_notification_title.setText(n.getType());
         holder.textview_notification_description.setText(n.getContent());
         holder.textview_notification_date.setText(n.getDateformatter());
+        //holder.progressBar.setVisibility(View.VISIBLE);
 
 
         //holder.imageView_icon_new_notification.setVisibility(View.VISIBLE);
@@ -117,6 +130,9 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
 
             }
         });
+
+        if (getItemViewType(position) == NOTIFICA_NON_LETTA)
+            updateImageView(holder, n);
 
     }
 
@@ -145,7 +161,7 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
         TextView textview_notification_title, textview_notification_description, textview_notification_date;
         CardView cardView_notification;
         ImageView imageView_icon_notification;
-        ImageView imageView_icon_new_notification;
+        ProgressBar progressBar;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -158,6 +174,8 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
             textview_notification_title = (TextView) itemView.findViewById(R.id.textview_single_notification_title);
             textview_notification_description = (TextView) itemView.findViewById(R.id.textview_notification_description);
             textview_notification_date = (TextView) itemView.findViewById(R.id.textview_notification_date);
+
+            progressBar = (ProgressBar)itemView.findViewById(R.id.progress_bar_notification_card);
 
         }
     }
@@ -206,6 +224,64 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
                         }
                     }
                 });
+
+    }
+
+    //Caricamento asincrono imageview
+    public void updateImageView(RecyclerViewAdapter_Notification.MyViewHolder holder, Notification n) {
+
+            Log.d(TAG_LOG, "inizio update imageView");
+            holder.progressBar.setVisibility(View.VISIBLE);
+
+            DocumentReference docRef = db.collection("users").document("EzgFTtDJASXvESC9FZunuJ6uFFQ2");
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG_LOG, "task successfull");
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Map<String, Object> data = document.getData();
+                            Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
+
+                            if ((String)data.get("imageUrl") != null){
+                                Uri uri = Uri.parse((String)data.get("imageUrl"));
+                                Log.d("firebase", "Image Url: " + uri);
+                                Glide.with(mContext)
+                                        .load(uri)
+                                        .listener(new RequestListener<Drawable>() {
+                                            @Override
+                                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                                holder.progressBar.setVisibility(View.INVISIBLE);
+                                                return false;
+                                            }
+                                            @Override
+                                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                                Log.d(TAG_LOG, "Glide on resource ready");
+                                                holder.progressBar.setVisibility(View.INVISIBLE);
+                                                return false;
+                                            }
+                                        })
+                                        .into(holder.imageView_icon_notification);
+                            }
+                            //progressBar.setVisibility(View.INVISIBLE);
+
+
+
+                        } else {
+                            Log.d(TAG_LOG, "No such document");
+                            holder.progressBar.setVisibility(View.INVISIBLE);
+                            //progressDialog(false,"");
+                            //progressBar.setVisibility(View.INVISIBLE);
+                        }
+                    } else {
+                        Log.d(TAG_LOG, "get failed with ", task.getException());
+                        holder.progressBar.setVisibility(View.INVISIBLE);
+                        //progressDialog(false,"");
+                        //progressBar.setVisibility(View.INVISIBLE);
+                    }
+                }
+            });
 
     }
 }
