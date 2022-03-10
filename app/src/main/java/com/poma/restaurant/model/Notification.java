@@ -3,7 +3,7 @@ package com.poma.restaurant.model;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class Notification {
+public class Notification implements Comparable<Notification>{
 
     private String id;
     private String user_id;
@@ -104,5 +104,15 @@ public class Notification {
 
     public void setUseful_id(String useful_id) {
         this.useful_id = useful_id;
+    }
+
+    @Override
+    public int compareTo(Notification o) {
+        if (this.read==true && o.getRead()==false)
+            return 1;
+        else if (this.read==false && o.getRead()==true)
+            return -1;
+        else
+            return 0;
     }
 }

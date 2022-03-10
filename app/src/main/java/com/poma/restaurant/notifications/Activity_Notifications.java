@@ -1,12 +1,15 @@
 package com.poma.restaurant.notifications;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 
@@ -78,6 +81,16 @@ public class Activity_Notifications extends AppCompatActivity implements Fragmen
         sendBroadcast(intent);
         Log.d(TAG_LOG, "Broadcast mandato");
     }
+
+    //SEARCH
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search_notifications, menu);
+        return(super.onCreateOptionsMenu(menu));
+    }
+
+
 
     @Override
     public void click_notification(String id) {

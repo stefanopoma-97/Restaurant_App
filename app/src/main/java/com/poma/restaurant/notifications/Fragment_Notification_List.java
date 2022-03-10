@@ -5,7 +5,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -15,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,13 +33,12 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.poma.restaurant.R;
-import com.poma.restaurant.login.Fragment_Login;
 import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.RecyclerViewAdapter.RecyclerViewAdapter_Notification;
 import com.poma.restaurant.model.User;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.Collections;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,8 +57,11 @@ public class Fragment_Notification_List extends Fragment {
     private User currentUser2;
     private static ListenerRegistration listener_notification;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private Boolean order = false;
 
     private RecyclerViewAdapter_Notification adapter;
+    private TextView textView_filter;
+    private SearchView searchView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -104,9 +110,12 @@ public class Fragment_Notification_List extends Fragment {
         // Inflate the layout for this fragment
         View view = (View)inflater.inflate(R.layout.fragment_notification_list, container, false);
 
+        setHasOptionsMenu(true);
 
         //RV
         this.rv = view.findViewById(R.id.RV_notification);
+        this.textView_filter = view.findViewById(R.id.textview_filter_notifications_list);
+        this.searchView = view.findViewById(R.id.search_view_notifications);
 
         // here we have created new array list and added data to it.
 
@@ -116,6 +125,41 @@ public class Fragment_Notification_List extends Fragment {
             public void onRefresh() {
                 updateRecycler();
                 swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+        this.textView_filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                orderRecycler();
+            }
+        });
+
+        this.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                Log.d(TAG_LOG,"on query submit");
+                if (s.length() > 0) {
+                    Log.d(TAG_LOG,"stringa > 0");
+                    filter(String.valueOf(s));
+                    searchView.clearFocus();
+                } else {
+                    Log.d(TAG_LOG,"stringa < 0");
+                    getAllNotifications();
+                }
+                return true;
+            }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                Log.d(TAG_LOG,"on query text change");
+                if (s.length() > 0) {
+                    Log.d(TAG_LOG,"stringa > 0");
+                    filter(String.valueOf(s));
+                } else {
+                    Log.d(TAG_LOG,"stringa < 0");
+                    getAllNotifications();
+                }
+                return true;
             }
         });
 
@@ -131,6 +175,16 @@ public class Fragment_Notification_List extends Fragment {
         super.onStart();
         Log.d(TAG_LOG,"on start");
 
+        this.db = FirebaseFirestore.getInstance();
+        this.mAuth= FirebaseAuth.getInstance();
+        this.currentUser = mAuth.getCurrentUser();
+
+        getAllNotifications();
+
+
+    }
+
+    private void getAllNotifications(){
         this.mdata = new ArrayList<>();
         // passo activity, array e fragment
         this.adapter = new RecyclerViewAdapter_Notification(getActivity(), mdata, Fragment_Notification_List.this);
@@ -143,11 +197,6 @@ public class Fragment_Notification_List extends Fragment {
         rv.setLayoutManager(linearLayoutManager);
         rv.setAdapter(adapter);
 
-
-
-        this.db = FirebaseFirestore.getInstance();
-        this.mAuth= FirebaseAuth.getInstance();
-        this.currentUser = mAuth.getCurrentUser();
         if (this.currentUser!=null){
             Query query = this.db.collection("notifications")
                     .whereEqualTo("user_id", currentUser.getUid());
@@ -166,19 +215,19 @@ public class Fragment_Notification_List extends Fragment {
                             case ADDED:
                                 Log.d(TAG_LOG, "New notify di tipo: " + dc.getDocument().getString("type"));
                                 mdata.add(createNotification(dc.getDocument()));
-                                setAdapter();
+                                setAdapterChange();
 
                                 break;
                             case MODIFIED:
                                 Log.d(TAG_LOG, "modify notify: " + dc.getDocument().getData());
                                 int pos = removeNotificationFromData(dc.getDocument().getId());
                                 mdata.add(pos, createNotification(dc.getDocument()));
-                                setAdapter();
+                                setAdapterChange();
                                 break;
                             case REMOVED:
                                 Log.d(TAG_LOG, "Removed notify (id = "+dc.getDocument().getId()+"): " + dc.getDocument().getData());
                                 removeNotificationFromData(dc.getDocument().getId());
-                                setAdapter();
+                                setAdapterChange();
                                 break;
                         }
                     }
@@ -187,13 +236,7 @@ public class Fragment_Notification_List extends Fragment {
                 }
             });
         }
-
-
-
-
-
     }
-
     //Aggiornamento manuale
     private void updateRecycler() {
         this.mdata = new ArrayList<>();
@@ -210,7 +253,7 @@ public class Fragment_Notification_List extends Fragment {
                         for (QueryDocumentSnapshot document : task.getResult()) {
 
                             mdata.add(createNotification(document));
-                            setAdapter();
+                            setAdapterChange();
                         }
                     }
                 }
@@ -219,14 +262,24 @@ public class Fragment_Notification_List extends Fragment {
         }
     }
 
-    private void setAdapter(){
-        /*
-        this.adapter = new RecyclerViewAdapter_Notification(getActivity(), this.mdata, Fragment_Notification_List.this);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+    //ordinamento
+    private void orderRecycler() {
+        if (this.order){
+            Collections.sort(this.mdata);
+            this.order = false;
+        }
+        else {
+            Collections.sort(this.mdata, Collections.reverseOrder());
+            this.order = true;
+        }
 
-        // in below two lines we are setting layoutmanager and adapter to our recycler view.
-        this.rv.setLayoutManager(linearLayoutManager);
-        this.rv.setAdapter(adapter);*/
+
+        setAdapterChange();
+    }
+
+    private void setAdapterChange(){
+        Log.d(TAG_LOG,"set Adapter");
+
         this.adapter.notifyDataSetChanged();
 
     }
@@ -285,4 +338,39 @@ public class Fragment_Notification_List extends Fragment {
                     "Does not implement the interface");
         }
     }
+
+
+
+    private void filter(String text) {
+        Log.d(TAG_LOG,"filter");
+        this.listener_notification.remove();
+        ArrayList<Notification> filteredList = new ArrayList<>();
+
+
+        for (Notification item : this.mdata) {
+
+            if (item.getType().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(item);
+            } else if (item.getContent().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(item);
+            }
+            if (filteredList.isEmpty()) {
+                //Toast.makeText(getActivity(), "No data found...", Toast.LENGTH_SHORT).show();
+                Log.d(TAG_LOG,"filter list empty: "+filteredList.size());
+            }
+            else {
+                Log.d(TAG_LOG,"filter list not empty: "+filteredList.size());
+            }
+
+
+            this.adapter = new RecyclerViewAdapter_Notification(getActivity(), filteredList, Fragment_Notification_List.this);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            rv.setLayoutManager(linearLayoutManager);
+            rv.setAdapter(adapter);
+
+
+            setAdapterChange();
+        }
+    }
+
 }

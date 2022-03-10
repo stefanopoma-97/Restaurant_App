@@ -131,8 +131,8 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
             }
         });
 
-        if (getItemViewType(position) == NOTIFICA_NON_LETTA)
-            updateImageView(holder, n);
+       /* if (getItemViewType(position) == NOTIFICA_NON_LETTA)
+            updateImageView(holder, n);*/
 
     }
 
