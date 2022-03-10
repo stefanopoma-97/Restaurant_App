@@ -138,7 +138,7 @@
                 app:layout_constraintVertical_bias=".1"
                 app:layout_constraintHorizontal_bias=".5"
 
-                android:text="@string/cancel"
+                android:text="@string/back"
                 />
 
 

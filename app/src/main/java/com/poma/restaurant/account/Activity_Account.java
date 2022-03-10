@@ -410,15 +410,6 @@ public class Activity_Account extends AppCompatActivity {
 
     }
 
-    private void retrieve_image(){
-        /*
-        if (uriS != "") {
-            Uri uri = Uri.parse(String.valueOf(task.getResult().child("imageUrl").getValue()));
-            Log.d("firebase", "Image Url: " + uri);
-            Glide.with(this).load(uri).into(imageView);
-        }*/
-
-    }
 
     private void choosePicture() {
         Log.d(TAG_LOG, "Chose pictures");
