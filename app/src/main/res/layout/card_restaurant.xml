@@ -205,7 +205,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/textview_card_restaurant_number_review"
             android:gravity="left"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="10dp"
             android:layout_marginBottom="30dp"
             app:icon="@drawable/ic_baseline_directions_24"
             style="?attr/materialButtonOutlinedStyle"
@@ -214,6 +214,7 @@
             app:strokeColor="@color/red"
             android:textSize="@dimen/text_size_medium"
             app:iconSize="@dimen/star"
+            android:textAllCaps="false"
             >
 
         </com.google.android.material.button.MaterialButton>
@@ -233,7 +234,8 @@
             app:strokeColor="@color/red"
             app:strokeWidth="3dp"
             android:textSize="@dimen/text_size_medium"
-            app:iconSize="@dimen/star">
+            app:iconSize="@dimen/star"
+            android:textAllCaps="false">
 
         </com.google.android.material.button.MaterialButton>
 
