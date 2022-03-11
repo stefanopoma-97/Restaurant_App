@@ -11,6 +11,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.poma.restaurant.R;
+import com.poma.restaurant.databinding.ActivityMenuBinding;
+import com.poma.restaurant.databinding.ActivityNotificationBinding;
 import com.poma.restaurant.menu.Activity_Menu;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
 import com.poma.restaurant.model.Notification;
@@ -42,6 +44,9 @@ public class Activity_Notification extends AppCompatActivity implements Fragment
     private User currentUser2;
     private BroadcastReceiver broadcastReceiver;
 
+    //Menu laterale
+    ActivityNotificationBinding activityNotificationBinding;
+
 
     private static Fragment_Notification fragment_notification;
 
@@ -51,6 +56,11 @@ public class Activity_Notification extends AppCompatActivity implements Fragment
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
+
+
+
+
+
         Log.d(TAG_LOG, "on create");
         this.fragment_notification = (Fragment_Notification)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_notification);

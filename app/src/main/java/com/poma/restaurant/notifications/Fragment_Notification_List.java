@@ -61,7 +61,7 @@ public class Fragment_Notification_List extends Fragment {
 
     private RecyclerViewAdapter_Notification adapter;
     private TextView textView_filter;
-    private SearchView searchView;
+    private SearchView searchView = null;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -135,38 +135,6 @@ public class Fragment_Notification_List extends Fragment {
             }
         });
 
-        this.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                Log.d(TAG_LOG,"on query submit");
-                if (s.length() > 0) {
-                    Log.d(TAG_LOG,"stringa > 0");
-                    filter(String.valueOf(s));
-                    searchView.clearFocus();
-                } else {
-                    Log.d(TAG_LOG,"stringa < 0");
-                    getAllNotifications();
-                }
-                return true;
-            }
-            @Override
-            public boolean onQueryTextChange(String s) {
-                Log.d(TAG_LOG,"on query text change");
-                if (s.length() > 0) {
-                    Log.d(TAG_LOG,"stringa > 0");
-                    filter(String.valueOf(s));
-                } else {
-                    Log.d(TAG_LOG,"stringa < 0");
-                    getAllNotifications();
-                }
-                return true;
-            }
-        });
-
-
-
-
-
         return view;
     }
 
@@ -179,12 +147,52 @@ public class Fragment_Notification_List extends Fragment {
         this.mAuth= FirebaseAuth.getInstance();
         this.currentUser = mAuth.getCurrentUser();
 
+        this.mdata = new ArrayList<>();
         getAllNotifications();
+
+        setSearchView();
+
+
 
 
     }
 
+   private void setSearchView(){
+        //al cambio di orientazione la searchview viene resettata
+       searchView.setQuery("", false);
+       searchView.clearFocus();
+       searchView.setIconified(true);
+       this.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+           @Override
+           public boolean onQueryTextSubmit(String s) {
+               Log.d(TAG_LOG,"on query submit");
+               if (s.length() > 0) {
+                   //Log.d(TAG_LOG,"stringa > 0");
+                   filter(String.valueOf(s));
+                   searchView.clearFocus();
+               } else {
+                   //Log.d(TAG_LOG,"stringa < 0");
+                   getAllNotifications();
+               }
+               return true;
+           }
+           @Override
+           public boolean onQueryTextChange(String s) {
+               Log.d(TAG_LOG,"on query text change");
+               if (s.length() > 0) {
+                   //Log.d(TAG_LOG,"stringa > 0");
+                   filter(String.valueOf(s));
+               } else {
+                   //Log.d(TAG_LOG,"stringa < 0");
+                   getAllNotifications();
+               }
+               return true;
+           }
+       });
+    }
+
     private void getAllNotifications(){
+        Log.d(TAG_LOG,"get all notification");
         this.mdata = new ArrayList<>();
         // passo activity, array e fragment
         this.adapter = new RecyclerViewAdapter_Notification(getActivity(), mdata, Fragment_Notification_List.this);
@@ -239,6 +247,11 @@ public class Fragment_Notification_List extends Fragment {
     }
     //Aggiornamento manuale
     private void updateRecycler() {
+        searchView.setQuery("", false);
+        searchView.clearFocus();
+        searchView.setIconified(true);
+        //getAllNotifications();
+        /*
         this.mdata = new ArrayList<>();
         this.db = FirebaseFirestore.getInstance();
         this.mAuth = FirebaseAuth.getInstance();
@@ -255,11 +268,12 @@ public class Fragment_Notification_List extends Fragment {
                             mdata.add(createNotification(document));
                             setAdapterChange();
                         }
+                        Log.d(TAG_LOG,"aggiunto info a mdata, size: "+mdata.size());
                     }
                 }
             });
 
-        }
+        }*/
     }
 
     //ordinamento
@@ -356,10 +370,10 @@ public class Fragment_Notification_List extends Fragment {
             }
             if (filteredList.isEmpty()) {
                 //Toast.makeText(getActivity(), "No data found...", Toast.LENGTH_SHORT).show();
-                Log.d(TAG_LOG,"filter list empty: "+filteredList.size());
+                //Log.d(TAG_LOG,"filter list empty: "+filteredList.size());
             }
             else {
-                Log.d(TAG_LOG,"filter list not empty: "+filteredList.size());
+                //Log.d(TAG_LOG,"filter list not empty: "+filteredList.size());
             }
 
 

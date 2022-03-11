@@ -24,7 +24,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.poma.restaurant.R;
+import com.poma.restaurant.databinding.ActivityMenuBinding;
+import com.poma.restaurant.databinding.ActivityNotificationBinding;
+import com.poma.restaurant.databinding.ActivityNotificationsBinding;
 import com.poma.restaurant.login.Fragment_Login;
+import com.poma.restaurant.menu.Activity_Drawer_Menu_User;
 import com.poma.restaurant.menu.Activity_Menu;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
 import com.poma.restaurant.model.Notification;
@@ -35,7 +39,7 @@ import com.poma.restaurant.model.User;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Activity_Notifications extends AppCompatActivity implements Fragment_Notification_List.NotificationListInterface, OnNotificationClickListener, Fragment_Notification.NotificationInterface {
+public class Activity_Notifications extends Activity_Drawer_Menu_User implements Fragment_Notification_List.NotificationListInterface, OnNotificationClickListener, Fragment_Notification.NotificationInterface {
     private static final String TAG_LOG = Activity_Menu.class.getName();
     private Button btn_logout;
     private FirebaseAuth mAuth;
@@ -52,10 +56,23 @@ public class Activity_Notifications extends AppCompatActivity implements Fragmen
     private static Fragment_Notification_List fragment_notification_list;
     private static Fragment_Notification fragment_notification;
 
+
+    //Menu laterale
+    ActivityNotificationsBinding activityNotificationsBinding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notifications);
+        //setContentView(R.layout.activity_notifications);
+
+
+
+        //Menu laterale
+        activityNotificationsBinding = ActivityNotificationsBinding.inflate(getLayoutInflater());
+        setContentView(activityNotificationsBinding.getRoot());
+        allocateActivityTitle(getResources().getString(R.string.notification_title));
+
+
         Log.d(TAG_LOG, "on create");
 
         this.fragment_notification_list = (Fragment_Notification_List)
@@ -167,7 +184,7 @@ public class Activity_Notifications extends AppCompatActivity implements Fragmen
 
 
 
-
+    //Intefaccia frament notifications list
     @Override
     public void click_notification(String id) {
 
@@ -201,11 +218,10 @@ public class Activity_Notifications extends AppCompatActivity implements Fragmen
     //Interfaccia fragment singola notifica
     public void goBack() {
         Log.d(TAG_LOG, "Go Back");
-        finish();
+        this.fragment_notification = (Fragment_Notification)getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_notification_land);
+        this.fragment_notification.clearFragment();
     }
-
-
-
 
     @Override
     public void view(Notification n) {

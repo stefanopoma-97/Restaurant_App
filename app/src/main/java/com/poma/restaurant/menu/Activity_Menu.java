@@ -46,6 +46,7 @@ import com.poma.restaurant.login.Activity_Register;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
 import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.Receiver;
+import com.poma.restaurant.model.Restaurant;
 import com.poma.restaurant.model.User;
 import com.poma.restaurant.notifications.Activity_Notifications;
 import com.poma.restaurant.utilities.Action;
@@ -88,6 +89,7 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
         activityMenuBinding = ActivityMenuBinding.inflate(getLayoutInflater());
         setContentView(activityMenuBinding.getRoot());
         allocateActivityTitle(getResources().getString(R.string.dashboard));
+
 
         this.mAuth= FirebaseAuth.getInstance();
         this.btn_logout= (Button)findViewById(R.id.button_menu_logout);
@@ -158,10 +160,11 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
         });
 
         Button btn_notifica_recensione = (Button)findViewById(R.id.btn_menu_nuova_notifica_recensione);
-        btn_map.setOnClickListener(new View.OnClickListener() {
+        btn_notifica_recensione.setText("Nuovo ristorante");
+        btn_notifica_recensione.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //nuova_notifica_recensione();
+                nuovo_ristorante();
 
             }
         });
@@ -487,6 +490,41 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
 
                     }
                 });
+
+    }
+
+    private void nuovo_ristorante(){
+        Restaurant r = new Restaurant();
+
+        r.setName("Ristorante 1");
+        r.setDescription("Descrizione ristorante");
+        r.setEmail("mail@mail.it");
+        r.setAddress("Via ancona 13");
+        r.setCity("Brescia");
+        r.setPhone("345664433");
+        r.setCategory("Pizzeria");
+        r.setImageUrl("https://firebasestorage.googleapis.com/v0/b/restaurant-app-f5ff3.appspot.com/o/1646757849636.jpg?alt=media&token=6ec76b56-bdb2-4df4-ae08-d4c240144eee");
+        r.setAdmin_id("TcD9ubVpgdfgmIBn26R5W7SHFPG3");
+        List<String> array = new ArrayList<String>();
+        array.add("tag1");
+        array.add("tag2");
+        r.setTags(array);
+
+        db = FirebaseFirestore.getInstance();
+        db.collection("restaurants").add(r).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Log.d(TAG_LOG, "aggiunta ristorante");
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG_LOG, "Error adding ristorante", e);
+                    }
+                });
+
+
 
     }
 

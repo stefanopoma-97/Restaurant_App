@@ -15,7 +15,8 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="16dp"
         tools:ignore="BottomAppBar"
-        app:title="Notification">
+        app:title="Notification"
+        android:visibility="gone">
         <TextView
             android:id="@+id/textview_notifications_title"
             style="@style/sub_title"

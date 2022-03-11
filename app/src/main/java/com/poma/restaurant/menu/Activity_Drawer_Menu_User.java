@@ -65,11 +65,14 @@ public class Activity_Drawer_Menu_User extends AppCompatActivity {
                         switch (item.getItemId()){
                             case R.id.nav_user_notifications:
                                 Intent in = new Intent(getApplicationContext(), Activity_Notifications.class);
+                                in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(in);
                                 break;
                             case R.id.nav_user_profile:
                                 Log.d(TAG_LOG, "click su profilo");
-                                startActivity(new Intent(getApplicationContext(), Activity_Account.class));
+                                Intent in2 = new Intent(getApplicationContext(), Activity_Account.class);
+                                in2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(in2);
                                 break;
                             case R.id.nav_user_logout:
                                 Log.d(TAG_LOG, "click su logout");
