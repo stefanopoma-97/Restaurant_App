@@ -84,7 +84,7 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
         this.db = FirebaseFirestore.getInstance();
         this.parent = parent;
 
-        view = mInflater.inflate(R.layout.card_notification_normal, parent,false);
+        view = mInflater.inflate(R.layout.card_restaurant, parent,false);
 
         return new RecyclerViewAdapter_Restaurant.MyViewHolder(view);
     }
@@ -98,14 +98,14 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
         holder.textview_card_restaurant_title.setText(n.getName());
         holder.textview_card_restaurant_category.setText(n.getCategory());
         holder.textview_card_restaurant_adress.setText(n.getAddress()+" - "+n.getCity());
-        holder.textview_card_restaurant_review.setText(n.getN_reviews() +"Reviews");
+        holder.textview_card_restaurant_review.setText(n.getN_reviews() +" Reviews");
 
         ArrayList<String> tags = (ArrayList<String>)n.getTags();
         String tag = "";
         for (String s : tags){
             tag = tag+s+" ";
         }
-        holder.textview_card_restaurant_review.setText(tag);
+        holder.textview_card_restaurant_tag1.setText(tag);
 
 
         //carico immagine
@@ -247,7 +247,7 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
 
     private void direction(Restaurant r){
         Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse("http://maps.google.com/maps?daddr="+r.getAddress()+" "+r.getCity()));
-        MyApplication.getAppContext().startActivity(intent);
+        this.mContext.startActivity(intent);
     }
 
     private void call(Restaurant r){
@@ -255,36 +255,60 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
         Uri num = Uri.parse("tel:" + number);
         Intent dial = new Intent(Intent.ACTION_DIAL);
         dial.setData(num);
-        MyApplication.getAppContext().startActivity(dial);
+        this.mContext.startActivity(dial);
 
     }
 
     private void populated_star(RecyclerViewAdapter_Restaurant.MyViewHolder holder, Restaurant r){
+        Log.d(TAG_LOG, "Populated stars");
+        Log.d(TAG_LOG, "voto ristorante: "+r.getName()+" Voto:"+r.getVote());
         int stelle = (int) Math.round(r.getVote());
+        Log.d(TAG_LOG, "Roud: "+stelle);
         if (stelle==4){
             holder.star5.setImageResource(R.drawable.ic_baseline_star_border_24);
+            holder.star5.setColorFilter(R.color.grey);
         }
         if (stelle==3){
             holder.star5.setImageResource(R.drawable.ic_baseline_star_border_24);
             holder.star4.setImageResource(R.drawable.ic_baseline_star_border_24);
+
+            holder.star5.setColorFilter(R.color.grey);
+            holder.star4.setColorFilter(R.color.grey);
         }
         if (stelle==2){
             holder.star5.setImageResource(R.drawable.ic_baseline_star_border_24);
             holder.star4.setImageResource(R.drawable.ic_baseline_star_border_24);
             holder.star3.setImageResource(R.drawable.ic_baseline_star_border_24);
+
+            holder.star5.setColorFilter(R.color.grey);
+            holder.star4.setColorFilter(R.color.grey);
+            holder.star3.setColorFilter(R.color.grey);
         }
         if (stelle==1){
             holder.star5.setImageResource(R.drawable.ic_baseline_star_border_24);
             holder.star4.setImageResource(R.drawable.ic_baseline_star_border_24);
             holder.star3.setImageResource(R.drawable.ic_baseline_star_border_24);
-            holder.star2.setImageResource(R.drawable.ic_baseline_star_border_24); }
+            holder.star2.setImageResource(R.drawable.ic_baseline_star_border_24);
+
+            holder.star5.setColorFilter(R.color.grey);
+            holder.star4.setColorFilter(R.color.grey);
+            holder.star3.setColorFilter(R.color.grey);
+            holder.star2.setColorFilter(R.color.grey);
+
+        }
         if (stelle==0){
             holder.star5.setImageResource(R.drawable.ic_baseline_star_border_24);
             holder.star4.setImageResource(R.drawable.ic_baseline_star_border_24);
             holder.star3.setImageResource(R.drawable.ic_baseline_star_border_24);
             holder.star2.setImageResource(R.drawable.ic_baseline_star_border_24);
             holder.star1.setImageResource(R.drawable.ic_baseline_star_border_24);
+
+            holder.star5.setColorFilter(R.color.grey);
+            holder.star4.setColorFilter(R.color.grey);
+            holder.star3.setColorFilter(R.color.grey);
+            holder.star2.setColorFilter(R.color.grey);
             holder.star1.setColorFilter(R.color.grey);
+
         }
     }
 }

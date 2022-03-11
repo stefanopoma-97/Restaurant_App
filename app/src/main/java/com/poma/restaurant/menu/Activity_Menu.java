@@ -506,7 +506,7 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
         array.add("tag2");
         r.setTags(array);
         r.setN_reviews(100);
-        r.setVote(4.3);
+        r.setVote(4);
 
         db = FirebaseFirestore.getInstance();
         db.collection("restaurants").add(r).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

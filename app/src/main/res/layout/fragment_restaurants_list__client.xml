@@ -4,24 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".notifications.Fragment_Notification_List">
+    tools:context=".restaurant.Fragment_Restaurants_List_Client">
 
 
-    <TextView
-        android:id="@+id/textview_filter_notifications_list"
-        style="@style/TextAppearance.AppCompat.Title"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:paddingStart="20dp"
-        android:paddingEnd="50dp"
-        android:text="Ordina"
-        app:layout_constraintEnd_toEndOf="@+id/swipe_refresh_fragment_restaurants_list"
-        app:layout_constraintHorizontal_bias="0.05"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"
-        tools:ignore="MissingConstraints"></TextView>
+
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_view_fragment_restaurants_list"
@@ -33,10 +19,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
 
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.00"
-        app:layout_constraintStart_toEndOf="@+id/textview_filter_notifications_list"
+        app:layout_constraintHorizontal_bias="0.099"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="0.009"
         app:showAsAction="ifRoom|collapseActionView" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -55,10 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
-            tools:listitem="@layout/card_notification_normal" />
+            tools:listitem="@layout/card_restaurant" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

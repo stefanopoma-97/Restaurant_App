@@ -3,11 +3,9 @@ package com.poma.restaurant.notifications;
 import android.app.Activity;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -18,10 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
@@ -110,16 +105,14 @@ public class Fragment_Notification_List extends Fragment {
         // Inflate the layout for this fragment
         View view = (View)inflater.inflate(R.layout.fragment_notification_list, container, false);
 
-        setHasOptionsMenu(true);
 
         //RV
-        this.rv = view.findViewById(R.id.RV_notification);
+        this.rv = view.findViewById(R.id.RV_fragment_restaurants_list);
         this.textView_filter = view.findViewById(R.id.textview_filter_notifications_list);
-        this.searchView = view.findViewById(R.id.search_view_notifications);
+        this.searchView = view.findViewById(R.id.search_view_fragment_restaurants_list);
 
-        // here we have created new array list and added data to it.
 
-        this.swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_notificationlist);
+        this.swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_fragment_restaurants_list);
         this.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -151,8 +144,6 @@ public class Fragment_Notification_List extends Fragment {
         getAllNotifications();
 
         setSearchView();
-
-
 
 
     }

@@ -82,9 +82,7 @@
 
     <!-- Menu laterale-->
     <string name="dashboard">Dashboard</string>
-
-
-
+    <string name="restaurant">Restaurant</string>
 
 
     <!-- Notifications -->

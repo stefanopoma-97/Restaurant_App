@@ -7,7 +7,7 @@ public class Restaurant implements Comparable<Restaurant>{
     private String name, description, email, address, city, phone, admin_id,
             imageUrl, category, category_id;
     private int n_reviews;
-    private double vote;
+    private int vote;
 
     public int getN_reviews() {
         return n_reviews;
@@ -21,7 +21,7 @@ public class Restaurant implements Comparable<Restaurant>{
         return vote;
     }
 
-    public void setVote(double vote) {
+    public void setVote(int vote) {
         this.vote = vote;
     }
 

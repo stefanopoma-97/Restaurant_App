@@ -12,6 +12,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.poma.restaurant.R;
 import com.poma.restaurant.account.Activity_Account;
 import com.poma.restaurant.notifications.Activity_Notifications;
+import com.poma.restaurant.restaurant.Activity_Restaurants_List_Client;
 import com.poma.restaurant.utilities.MyApplication;
 
 
@@ -77,6 +78,12 @@ public class Activity_Drawer_Menu_User extends AppCompatActivity {
                             case R.id.nav_user_logout:
                                 Log.d(TAG_LOG, "click su logout");
                                 broadcast_logout();
+                                break;
+                            case R.id.nav_user_restaurant:
+                                Log.d(TAG_LOG, "click su restaurant");
+                                Intent in3 = new Intent(getApplicationContext(), Activity_Restaurants_List_Client.class);
+                                in3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(in3);
                                 break;
                         }
                         return false;
