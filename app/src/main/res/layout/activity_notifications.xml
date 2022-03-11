@@ -9,7 +9,7 @@
 
 
     <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
+        android:id="@+id/appbar_activity_restaurant"
         style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,6 +46,6 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bottomAppBar"
+        app:layout_constraintTop_toBottomOf="@+id/appbar_activity_restaurant"
         tools:ignore="MissingConstraints"></fragment>
 </androidx.constraintlayout.widget.ConstraintLayout>

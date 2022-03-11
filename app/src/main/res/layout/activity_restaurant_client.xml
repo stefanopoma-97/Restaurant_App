@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".notifications.Activity_Notifications">
+    tools:context=".restaurant.Activity_Restaurant_Client">
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/appbar_activity_restaurant"
         style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
@@ -18,13 +18,13 @@
         <ImageView
             android:layout_width="@dimen/icon_appBar"
             android:layout_height="@dimen/icon_appBar"
-            android:id="@+id/arrow_back_notification"
+            android:id="@+id/arrow_back_restaurant_client"
             android:src="@drawable/ic_baseline_arrow_back_24"/>
     </com.google.android.material.bottomappbar.BottomAppBar>
 
     <fragment
-        android:id="@+id/fragment_notification"
-        class="com.poma.restaurant.notifications.Fragment_Notification"
+        android:id="@+id/fragment_restaurant_client"
+        class="com.poma.restaurant.restaurant.Fragment_Restaurant_Client"
 
         android:layout_width="0dp"
         android:layout_height="0dp"

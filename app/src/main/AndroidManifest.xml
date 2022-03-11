@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Restaurant.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".restaurant.Activity_Restaurants_List_Client"></activity>
+        <activity android:name=".restaurant.Activity_Restaurant_Client"></activity>
+        <activity android:name=".restaurant.Activity_Restaurants_List_Client" />
         <activity android:name=".notifications.Activity_Notification" />
         <activity android:name=".menu.Activity_Drawer_Menu_User" />
         <activity android:name=".account.Activity_Account" />

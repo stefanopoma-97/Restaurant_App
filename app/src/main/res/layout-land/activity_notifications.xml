@@ -7,7 +7,7 @@
     tools:context=".notifications.Activity_Notifications">
 
     <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
+        android:id="@+id/appbar_activity_restaurant"
         style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/fragment_notification_land"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bottomAppBar"
+        app:layout_constraintTop_toBottomOf="@+id/appbar_activity_restaurant"
         tools:ignore="MissingConstraints"></fragment>
 
     <fragment
@@ -57,7 +57,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/fragment_notification_list"
-        app:layout_constraintTop_toBottomOf="@+id/bottomAppBar"
+        app:layout_constraintTop_toBottomOf="@+id/appbar_activity_restaurant"
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints"></fragment>
 </androidx.constraintlayout.widget.ConstraintLayout>
