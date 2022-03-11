@@ -6,6 +6,24 @@ public class Restaurant implements Comparable<Restaurant>{
     private String id;
     private String name, description, email, address, city, phone, admin_id,
             imageUrl, category, category_id;
+    private int n_reviews;
+    private double vote;
+
+    public int getN_reviews() {
+        return n_reviews;
+    }
+
+    public void setN_reviews(int n_reviews) {
+        this.n_reviews = n_reviews;
+    }
+
+    public double getVote() {
+        return vote;
+    }
+
+    public void setVote(double vote) {
+        this.vote = vote;
+    }
 
     //TODO capire se gestire i Tags
     private List<String> tags;

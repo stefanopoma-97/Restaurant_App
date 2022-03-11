@@ -1,18 +1,12 @@
 package com.poma.restaurant.notifications;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 
@@ -24,19 +18,15 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.poma.restaurant.R;
-import com.poma.restaurant.databinding.ActivityMenuBinding;
-import com.poma.restaurant.databinding.ActivityNotificationBinding;
 import com.poma.restaurant.databinding.ActivityNotificationsBinding;
-import com.poma.restaurant.login.Fragment_Login;
 import com.poma.restaurant.menu.Activity_Drawer_Menu_User;
 import com.poma.restaurant.menu.Activity_Menu;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
 import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.Receiver;
-import com.poma.restaurant.model.RecyclerViewAdapter.RecyclerViewAdapter_Notification;
+import com.poma.restaurant.model.RecyclerViewAdapter.OnNotificationClickListener;
 import com.poma.restaurant.model.User;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class Activity_Notifications extends Activity_Drawer_Menu_User implements Fragment_Notification_List.NotificationListInterface, OnNotificationClickListener, Fragment_Notification.NotificationInterface {

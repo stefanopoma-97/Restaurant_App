@@ -139,12 +139,8 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
         btn_map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //broadcast_logout(v);
-
-                Intent in = new Intent(Activity_Menu.this, Activity_Notifications.class);
-                Log.d(TAG_LOG, "click account");
-
-                startActivity(in);
+                //direction();
+                call();
 
             }
         });
@@ -509,6 +505,8 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
         array.add("tag1");
         array.add("tag2");
         r.setTags(array);
+        r.setN_reviews(100);
+        r.setVote(4.3);
 
         db = FirebaseFirestore.getInstance();
         db.collection("restaurants").add(r).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -559,6 +557,21 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
                             Log.w(TAG_LOG, "Error adding notifica", e);
                         }
                     });
+    }
+
+
+    private void direction(){
+        Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse("http://maps.google.com/maps?daddr=via ancona 13 - palazzolo sull'oglio"));
+        startActivity(intent);
+    }
+
+    private void call(){
+        String number = "1234567890";
+        Uri num = Uri.parse("tel:" + number);
+        Intent dial = new Intent(Intent.ACTION_DIAL);
+        dial.setData(num);
+        startActivity(dial);
+
     }
 
 }

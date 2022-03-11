@@ -1,7 +1,6 @@
 package com.poma.restaurant.model.RecyclerViewAdapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
@@ -32,11 +31,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.poma.restaurant.R;
-import com.poma.restaurant.account.Activity_Account;
 import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.User;
-import com.poma.restaurant.notifications.Activity_Notification;
-import com.poma.restaurant.notifications.OnNotificationClickListener;
 
 import java.util.HashMap;
 import java.util.List;
@@ -176,16 +172,16 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            cardView_notification = (CardView) itemView.findViewById(R.id.cardview_notification);
+            cardView_notification = (CardView) itemView.findViewById(R.id.cardview_restaurant);
 
-            imageView_icon_notification = (ImageView) itemView.findViewById(R.id.icon_notification);
+            imageView_icon_notification = (ImageView) itemView.findViewById(R.id.icon_card_restaurant);
             //imageView_icon_new_notification = (ImageView) itemView.findViewById(R.id.icon_new_notification);
 
-            textview_notification_title = (TextView) itemView.findViewById(R.id.textview_single_notification_title);
-            textview_notification_description = (TextView) itemView.findViewById(R.id.textview_notification_description);
-            textview_notification_date = (TextView) itemView.findViewById(R.id.textview_notification_date);
+            textview_notification_title = (TextView) itemView.findViewById(R.id.textview_card_restaurant_title);
+            textview_notification_description = (TextView) itemView.findViewById(R.id.textview_card_restaurant_adress);
+            textview_notification_date = (TextView) itemView.findViewById(R.id.textview_card_restaurant_tag1);
 
-            progressBar = (ProgressBar)itemView.findViewById(R.id.progress_bar_notification_card);
+            progressBar = (ProgressBar)itemView.findViewById(R.id.progress_bar_card_restaurant);
 
         }
     }

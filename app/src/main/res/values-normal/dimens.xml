@@ -75,5 +75,8 @@
     <!-- AppBar-->
     <dimen name="icon_appBar">50dp</dimen>
 
+    <!-- star-->
+    <dimen name="star">20dp</dimen>
+
 
 </resources>

@@ -1,4 +1,4 @@
-package com.poma.restaurant.notifications;
+package com.poma.restaurant.model.RecyclerViewAdapter;
 
 import com.poma.restaurant.model.Notification;
 

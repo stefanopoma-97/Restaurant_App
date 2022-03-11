@@ -20,7 +20,7 @@
 
 
             <TextView
-                android:id="@+id/textview_single_notification_title"
+                android:id="@+id/textview_card_restaurant_title"
 
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent=".8"
