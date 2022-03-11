@@ -25,6 +25,7 @@ public class Fragment_Restaurant_Client extends Fragment {
 
     private static final String TAG_LOG = Fragment_Restaurant_Client.class.getName();
     private Boolean user_access = true;
+    private Boolean favourite_access = false;
     private String restaurant_id = null;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -88,6 +89,14 @@ public class Fragment_Restaurant_Client extends Fragment {
 
     public void setAdmin(){
         this.user_access=false;
+    }
+
+    public void setFavouriteAccess(){
+        this.favourite_access=true;
+    }
+
+    public void setNotFavouriteAccess(){
+        this.favourite_access=false;
     }
 
 
