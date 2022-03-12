@@ -16,8 +16,6 @@ import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
 import com.poma.restaurant.model.Favourite;
 import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.RecyclerViewAdapter.OnFavouriteClickListener;
-import com.poma.restaurant.model.RecyclerViewAdapter.OnRestaurantClickListener;
-import com.poma.restaurant.model.Restaurant;
 import com.poma.restaurant.model.User;
 
 import android.content.BroadcastReceiver;
@@ -28,7 +26,7 @@ import android.util.Log;
 
 import java.util.Map;
 
-public class Activity_Favourite extends Activity_Drawer_Menu_User implements Fragment_Favourite.FavouriteListInterfaceClient, OnFavouriteClickListener {
+public class Activity_Favourites extends Activity_Drawer_Menu_User implements Fragment_Favourites.FavouriteListInterfaceClient, OnFavouriteClickListener {
     ActivityFavouriteBinding activityFavouriteBinding;
     private static final String RESTAURANT_ID_EXTRA = "com.poma.restaurant.RESTAURANT_ID_EXTRA";
 
@@ -40,7 +38,7 @@ public class Activity_Favourite extends Activity_Drawer_Menu_User implements Fra
 
     private BroadcastReceiver broadcastReceiver;
 
-    private static Fragment_Favourite fragment_restaurants_list_favourite;
+    private static Fragment_Favourites fragment_restaurants_list_favourite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +51,7 @@ public class Activity_Favourite extends Activity_Drawer_Menu_User implements Fra
         allocateActivityTitle("Favourite");
 
         this.mAuth= FirebaseAuth.getInstance();
-        this.fragment_restaurants_list_favourite = (Fragment_Favourite)
+        this.fragment_restaurants_list_favourite = (Fragment_Favourites)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_restaurants_list_favourite);
 
 
@@ -165,7 +163,7 @@ public class Activity_Favourite extends Activity_Drawer_Menu_User implements Fra
 
     @Override
     public void onRestaurantClick(Favourite n) {
-        final Intent intent = new Intent(Activity_Favourite.this, Activity_Restaurant_Client.class);
+        final Intent intent = new Intent(Activity_Favourites.this, Activity_Favourite_Restaurant.class);
         intent.putExtra(RESTAURANT_ID_EXTRA, n.getRestaurant_id());
         startActivity(intent);
     }

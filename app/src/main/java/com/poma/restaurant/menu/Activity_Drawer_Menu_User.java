@@ -12,14 +12,12 @@ import com.google.android.material.navigation.NavigationView;
 import com.poma.restaurant.R;
 import com.poma.restaurant.account.Activity_Account;
 import com.poma.restaurant.notifications.Activity_Notifications;
-import com.poma.restaurant.restaurant.Activity_Favourite;
+import com.poma.restaurant.restaurant.Activity_Favourites;
 import com.poma.restaurant.restaurant.Activity_Restaurants_List_Client;
-import com.poma.restaurant.utilities.MyApplication;
 
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -94,7 +92,7 @@ public class Activity_Drawer_Menu_User extends AppCompatActivity {
                                 break;
                             case R.id.nav_user_favourite:
                                 Log.d(TAG_LOG, "click su favourite");
-                                Intent in5 = new Intent(getApplicationContext(), Activity_Favourite.class);
+                                Intent in5 = new Intent(getApplicationContext(), Activity_Favourites.class);
                                 in5.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(in5);
                                 break;

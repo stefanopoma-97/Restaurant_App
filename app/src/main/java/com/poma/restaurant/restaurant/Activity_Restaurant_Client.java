@@ -57,6 +57,7 @@ public class Activity_Restaurant_Client extends AppCompatActivity implements Fra
         Log.d(TAG_LOG, "Ricavo il seguente ID del ristorante: "+id_restaurant);
         this.fragment_restaurant_client.setUser();
         this.fragment_restaurant_client.setRestaurant_id(id_restaurant);
+        this.fragment_restaurant_client.setNotFavouriteAccess();
 
         //Riceve broadcast
         IntentFilter intentFilter = new IntentFilter();
@@ -99,40 +100,22 @@ public class Activity_Restaurant_Client extends AppCompatActivity implements Fra
     }
 
     private void check_user(){
-        Boolean anonymous_f = false;
-        Boolean anonymous_s = false;
-        Boolean anonymous = false;
+
         Log.d(TAG_LOG, "Controllo ci sia un utente loggato");
 
         //Login Firestore
         this.currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Log.d(TAG_LOG, "Trovato utente con Firestore, id: "+this.currentUser.getUid());
-        }
-        else {
+        if(currentUser == null){
             Log.d(TAG_LOG, "Non trovato utente con Firestore");
-            anonymous_f = true;
+            finish();
         }
 
         //Login Shared Preferences
         this.currentUser2 = User.load(this);
-        if (currentUser2 != null) {
-            Log.d(TAG_LOG, "Trovato utente con Shared preferences, id: "+this.currentUser2.getID());
-        }
-        else {
+        if (currentUser2 == null) {
             Log.d(TAG_LOG, "Non trovato utente con SharedPreference");
-            anonymous_s = true;
         }
 
-        //anonimo, user, admin o errore
-        if (anonymous_f | anonymous_s){
-            Log.d(TAG_LOG, "ERRORE - Non c'è utente, accesso anonimo");
-            finish();
-        }
-        else if (anonymous_f!=anonymous_s){
-            Log.d(TAG_LOG, "ERRORE - ho trovato solo un utente");
-            finish();
-        }
         else if (this.currentUser.getUid().equals(this.currentUser2.getID())){
             Log.d(TAG_LOG, "Gli utenti coincidono");
             this.db = FirebaseFirestore.getInstance();
@@ -146,7 +129,8 @@ public class Activity_Restaurant_Client extends AppCompatActivity implements Fra
                             Map<String, Object> data = document.getData();
 
                             if((boolean)data.get("admin")){
-                                Log.d(TAG_LOG, "Utente Admin");
+                                Log.d(TAG_LOG, "Errore - Utente Admin");
+                                finish();
                             }
                             else {
                                 Log.d(TAG_LOG, "Utente Visitatore");
@@ -169,7 +153,7 @@ public class Activity_Restaurant_Client extends AppCompatActivity implements Fra
     }
 
     @Override
-    public void edit_restaurant(Restaurant n) {
+    public void edit_restaurant(String restaurant_id) {
         //TODO mandare a pagina di edit
     }
 }

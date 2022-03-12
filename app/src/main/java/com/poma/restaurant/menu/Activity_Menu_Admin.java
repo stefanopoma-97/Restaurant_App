@@ -2,7 +2,6 @@ package com.poma.restaurant.menu;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -36,7 +35,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.poma.restaurant.R;
 import com.poma.restaurant.databinding.ActivityMenuAdminBinding;
-import com.poma.restaurant.databinding.ActivityMenuBinding;
 import com.poma.restaurant.login.Activity_First_Access;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
 import com.poma.restaurant.model.Notification;
@@ -98,7 +96,7 @@ public class Activity_Menu_Admin extends Activity_Drawer_Menu_Admin {
         //controllo la presenza di utenti loggati
         Log.d(TAG_LOG, "Controllo ci sia un utente loggato");
 
-        check_user();
+        check_user_admin();
 
     }
 
@@ -120,7 +118,7 @@ public class Activity_Menu_Admin extends Activity_Drawer_Menu_Admin {
             super.onBackPressed();
             Log.d(TAG_LOG,"2 Back button");
             logout();
-            finish();
+            //finish();
         } else {
             Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
         }
@@ -129,10 +127,8 @@ public class Activity_Menu_Admin extends Activity_Drawer_Menu_Admin {
 
     //controllo la presenza di un utente loggato.
     //per farlo viene utilizzato Firestore e SharedPreferences. Viene anche confrontato l'id degli utenti ricavato nei due modi
-    private void check_user(){
-        Boolean anonymous_f = false;
-        Boolean anonymous_s = false;
-        Boolean anonymous = false;
+    private void check_user_admin(){
+
         Log.d(TAG_LOG, "Controllo ci sia un utente loggato");
 
         //Login Firestore

@@ -233,7 +233,7 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
                             Map<String, Object> data = document.getData();
                             Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
 
-                            if ((String)data.get("imageUrl") != null){
+                            if ((String)data.get("imageUrl") != null && (String)data.get("imageUrl")!= ""){
                                 Uri uri = Uri.parse((String)data.get("imageUrl"));
                                 Log.d("firebase", "Image Url: " + uri);
                                 Glide.with(mContext)
@@ -242,6 +242,7 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
                                             @Override
                                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                                 holder.progressBar.setVisibility(View.INVISIBLE);
+                                                holder.imageView_icon_restaurant.setImageResource(R.drawable.ic_baseline_image_24);
                                                 return false;
                                             }
                                             @Override
@@ -252,6 +253,10 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
                                             }
                                         })
                                         .into(holder.imageView_icon_restaurant);
+                            }
+                            else {
+                                holder.progressBar.setVisibility(View.INVISIBLE);
+                                holder.imageView_icon_restaurant.setImageResource(R.drawable.ic_baseline_image_24);
                             }
 
 

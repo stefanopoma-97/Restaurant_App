@@ -19,11 +19,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.poma.restaurant.R;
 import com.poma.restaurant.account.Activity_Account;
-import com.poma.restaurant.notifications.Activity_Notifications;
 import com.poma.restaurant.notifications.Activity_Notifications_Admin;
-import com.poma.restaurant.restaurant.Activity_Favourite;
 import com.poma.restaurant.restaurant.Activity_Restaurants_List_Admin;
-import com.poma.restaurant.restaurant.Activity_Restaurants_List_Client;
 
 
 public class Activity_Drawer_Menu_Admin extends AppCompatActivity {

@@ -33,12 +33,12 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Fragment_Favourite#newInstance} factory method to
+ * Use the {@link Fragment_Favourites#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Fragment_Favourite extends Fragment {
+public class Fragment_Favourites extends Fragment {
 
-    private static final String TAG_LOG = Fragment_Favourite.class.getName();
+    private static final String TAG_LOG = Fragment_Favourites.class.getName();
     private RecyclerView rv;
     private ArrayList<Favourite> mdata;
     private FirebaseAuth mAuth;
@@ -59,7 +59,7 @@ public class Fragment_Favourite extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Fragment_Favourite() {
+    public Fragment_Favourites() {
         // Required empty public constructor
     }
 
@@ -72,8 +72,8 @@ public class Fragment_Favourite extends Fragment {
      * @return A new instance of fragment Fragment_Favourite.
      */
     // TODO: Rename and change types and number of parameters
-    public static Fragment_Favourite newInstance(String param1, String param2) {
-        Fragment_Favourite fragment = new Fragment_Favourite();
+    public static Fragment_Favourites newInstance(String param1, String param2) {
+        Fragment_Favourites fragment = new Fragment_Favourites();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -228,7 +228,7 @@ public class Fragment_Favourite extends Fragment {
     }
 
     private void createAdapter(ArrayList<Favourite> data){
-        this.adapter = new RecyclerViewAdapter_Favourite(getActivity(), data, Fragment_Favourite.this);
+        this.adapter = new RecyclerViewAdapter_Favourite(getActivity(), data, Fragment_Favourites.this);
 
     }
 
@@ -305,7 +305,7 @@ public class Fragment_Favourite extends Fragment {
         public void goBack();
     }
 
-    private Fragment_Favourite.FavouriteListInterfaceClient listener;
+    private Fragment_Favourites.FavouriteListInterfaceClient listener;
 
     //check if activity implement the interface
     @Override
@@ -313,8 +313,8 @@ public class Fragment_Favourite extends Fragment {
         Log.d(TAG_LOG,"onAttach fragment");
 
         super.onAttach(activity);
-        if(activity instanceof Fragment_Favourite.FavouriteListInterfaceClient){
-            listener = (Fragment_Favourite.FavouriteListInterfaceClient) activity;
+        if(activity instanceof Fragment_Favourites.FavouriteListInterfaceClient){
+            listener = (Fragment_Favourites.FavouriteListInterfaceClient) activity;
         }
         else {
             throw new ClassCastException(activity.toString() +

@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -17,23 +19,15 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.poma.restaurant.R;
-import com.poma.restaurant.databinding.ActivityRestaurantsListClientBinding;
-import com.poma.restaurant.menu.Activity_Drawer_Menu_Admin;
-import com.poma.restaurant.menu.Activity_Drawer_Menu_User;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
 import com.poma.restaurant.model.Receiver;
-import com.poma.restaurant.model.RecyclerViewAdapter.OnRestaurantClickListener;
-import com.poma.restaurant.model.Restaurant;
 import com.poma.restaurant.model.User;
 
 import java.util.Map;
 
-public class Activity_Restaurants_List_Admin extends Activity_Drawer_Menu_Admin implements Fragment_Restaurants_List_Client.RestaurantListInterfaceClient, OnRestaurantClickListener {
-    ActivityRestaurantsListClientBinding activityRestaurantsListClientBinding;
+public class Activity_Restaurant_Admin extends AppCompatActivity implements Fragment_Restaurant_Client.RestaurantInterface {
 
-    private static final String RESTAURANT_ID_EXTRA = "com.poma.restaurant.RESTAURANT_ID_EXTRA";
-
-    private static final String TAG_LOG = Activity_Restaurants_List_Admin.class.getName();
+    private static final String TAG_LOG = Activity_Restaurant_Admin.class.getName();
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
@@ -41,23 +35,26 @@ public class Activity_Restaurants_List_Admin extends Activity_Drawer_Menu_Admin 
 
     private BroadcastReceiver broadcastReceiver;
 
-    private static Fragment_Restaurants_List_Client fragment_restaurants_list_client;
+    private static Fragment_Restaurant_Client fragment_restaurant_client;
+    private ImageView imageView_back;
+
+    private static final String RESTAURANT_ID_EXTRA = "com.poma.restaurant.RESTAURANT_ID_EXTRA";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_restaurants_list_admin);
-
-        //Menu laterale
-        activityRestaurantsListClientBinding = ActivityRestaurantsListClientBinding.inflate(getLayoutInflater());
-        setContentView(activityRestaurantsListClientBinding.getRoot());
-        allocateActivityTitle(getResources().getString(R.string.restaurant));
+        Log.d(TAG_LOG, "on create");
+        setContentView(R.layout.activity_restaurant_admin);
 
         this.mAuth= FirebaseAuth.getInstance();
-        this.fragment_restaurants_list_client = (Fragment_Restaurants_List_Client)
-                getSupportFragmentManager().findFragmentById(R.id.fragment_restaurants_list_client);
-        this.fragment_restaurants_list_client.setAdmin(true);
-        this.fragment_restaurants_list_client.setAdminID(mAuth.getCurrentUser().getUid());
+        this.fragment_restaurant_client = (Fragment_Restaurant_Client)
+                getSupportFragmentManager().findFragmentById(R.id.fragment_restaurant_admin);
 
+        Intent intent = getIntent(); //receive the intent from Activity_first_access
+        String id_restaurant= intent.getStringExtra(RESTAURANT_ID_EXTRA);
+        Log.d(TAG_LOG, "Ricavo il seguente ID del ristorante: "+id_restaurant);
+        this.fragment_restaurant_client.setAdmin();
+        this.fragment_restaurant_client.setRestaurant_id(id_restaurant);
+        this.fragment_restaurant_client.setNotFavouriteAccess();
 
         //Riceve broadcast
         IntentFilter intentFilter = new IntentFilter();
@@ -71,21 +68,35 @@ public class Activity_Restaurants_List_Admin extends Activity_Drawer_Menu_Admin 
         });
         registerReceiver(this.broadcastReceiver, intentFilter);
 
+
+        this.imageView_back = (ImageView)findViewById(R.id.arrow_back_restaurant_admin);
+        this.imageView_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                back();
+            }
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d(TAG_LOG, "on start");
         check_user_admin();
     }
 
 
+    public void back() {
+        Log.d(TAG_LOG, "Back");
+        finish();
+    }
 
 
     private void logout(){
         Log.d(TAG_LOG, "Logout - inizio procedura");
         finish();
     }
+
 
     private void check_user_admin(){
 
@@ -135,16 +146,13 @@ public class Activity_Restaurants_List_Admin extends Activity_Drawer_Menu_Admin 
 
     }
 
-
     @Override
-    public void onRestaurantClick(Restaurant n) {
-        final Intent intent = new Intent(Activity_Restaurants_List_Admin.this, Activity_Restaurant_Admin.class);
-        intent.putExtra(RESTAURANT_ID_EXTRA, n.getId());
-        startActivity(intent);
+    public void goBack() {
+        finish();
     }
 
     @Override
-    public void goBack() {
-
+    public void edit_restaurant(String restaurant_id) {
+        //TODO mandare a pagina di edit
     }
 }

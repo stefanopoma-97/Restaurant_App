@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".restaurant.Activity_Favourite">
+    tools:context=".restaurant.Activity_Favourites">
     <fragment
         android:id="@+id/fragment_restaurants_list_favourite"
-        android:name="com.poma.restaurant.restaurant.Fragment_Favourite"
+        android:name="com.poma.restaurant.restaurant.Fragment_Favourites"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
