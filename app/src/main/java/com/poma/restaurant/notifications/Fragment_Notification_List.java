@@ -107,12 +107,12 @@ public class Fragment_Notification_List extends Fragment {
 
 
         //RV
-        this.rv = view.findViewById(R.id.RV_fragment_restaurants_list);
+        this.rv = view.findViewById(R.id.RV_fragment_favourite);
         this.textView_filter = view.findViewById(R.id.textview_filter_notifications_list);
-        this.searchView = view.findViewById(R.id.search_view_fragment_restaurants_list);
+        this.searchView = view.findViewById(R.id.search_view_fragment_favourite);
 
 
-        this.swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_fragment_restaurants_list);
+        this.swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_fragment_favourite);
         this.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

@@ -30,14 +30,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 import com.poma.restaurant.R;
-import com.poma.restaurant.model.Notification;
+import com.poma.restaurant.model.Favourite;
 import com.poma.restaurant.model.Restaurant;
-import com.poma.restaurant.utilities.MyApplication;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +47,7 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
     private Fragment mFragment;
     private ViewGroup parent;
     private List<Restaurant> mData;
+    private List<Favourite> mData2;
     private Boolean favourite = false;
 
     ///DB
@@ -77,6 +75,8 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
         this.mFragment = mFragment;
         this.onRestaurantClickListener = (OnRestaurantClickListener) context;
     }
+
+
 
     public RecyclerViewAdapter_Restaurant(Context context, List<Restaurant> mData, Fragment mFragment, Boolean favourite){
         this.mContext = context;
@@ -192,10 +192,10 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            cardView_restaurant = (CardView) itemView.findViewById(R.id.cardview_restaurant);
-            progressBar = (ProgressBar)itemView.findViewById(R.id.progress_bar_card_restaurant);
+            cardView_restaurant = (CardView) itemView.findViewById(R.id.cardview_favourite);
+            progressBar = (ProgressBar)itemView.findViewById(R.id.progress_bar_card_favourite);
 
-            imageView_icon_restaurant = (ImageView) itemView.findViewById(R.id.icon_card_restaurant);
+            imageView_icon_restaurant = (ImageView) itemView.findViewById(R.id.icon_card_favourite);
             star1 = (ImageView) itemView.findViewById(R.id.star1_card_restaurant);
             star2 = (ImageView) itemView.findViewById(R.id.star2_card_restaurant);
             star3 = (ImageView) itemView.findViewById(R.id.star3_card_restaurant);
@@ -205,9 +205,9 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
             btn_call = (Button)itemView.findViewById(R.id.btn_card_restaurant_call);
             btn_direction = (Button)itemView.findViewById(R.id.btn_card_restaurant_map);
 
-            textview_card_restaurant_title = (TextView) itemView.findViewById(R.id.textview_card_restaurant_title);
-            textview_card_restaurant_category = (TextView) itemView.findViewById(R.id.textview_card_restaurant_category);
-            textview_card_restaurant_adress = (TextView) itemView.findViewById(R.id.textview_card_restaurant_adress);
+            textview_card_restaurant_title = (TextView) itemView.findViewById(R.id.textview_card_favourite_title);
+            textview_card_restaurant_category = (TextView) itemView.findViewById(R.id.textview_card_favourite_category);
+            textview_card_restaurant_adress = (TextView) itemView.findViewById(R.id.textview_card_favourite_adress);
             textview_card_restaurant_tag1 = (TextView) itemView.findViewById(R.id.textview_card_restaurant_tag1);
             textview_card_restaurant_review = (TextView) itemView.findViewById(R.id.textview_card_restaurant_number_review);
 

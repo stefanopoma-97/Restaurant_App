@@ -7,7 +7,7 @@
     tools:context=".restaurant.Activity_Favourite">
     <fragment
         android:id="@+id/fragment_restaurants_list_favourite"
-        android:name="com.poma.restaurant.restaurant.Fragment_Restaurants_List_Client"
+        android:name="com.poma.restaurant.restaurant.Fragment_Favourite"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

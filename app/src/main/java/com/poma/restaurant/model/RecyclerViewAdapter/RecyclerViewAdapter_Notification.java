@@ -172,16 +172,16 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            cardView_notification = (CardView) itemView.findViewById(R.id.cardview_restaurant);
+            cardView_notification = (CardView) itemView.findViewById(R.id.cardview_favourite);
 
-            imageView_icon_notification = (ImageView) itemView.findViewById(R.id.icon_card_restaurant);
+            imageView_icon_notification = (ImageView) itemView.findViewById(R.id.icon_card_favourite);
             //imageView_icon_new_notification = (ImageView) itemView.findViewById(R.id.icon_new_notification);
 
-            textview_notification_title = (TextView) itemView.findViewById(R.id.textview_card_restaurant_title);
-            textview_notification_description = (TextView) itemView.findViewById(R.id.textview_card_restaurant_adress);
+            textview_notification_title = (TextView) itemView.findViewById(R.id.textview_card_favourite_title);
+            textview_notification_description = (TextView) itemView.findViewById(R.id.textview_card_favourite_adress);
             textview_notification_date = (TextView) itemView.findViewById(R.id.textview_card_restaurant_tag1);
 
-            progressBar = (ProgressBar)itemView.findViewById(R.id.progress_bar_card_restaurant);
+            progressBar = (ProgressBar)itemView.findViewById(R.id.progress_bar_card_favourite);
 
         }
     }

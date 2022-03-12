@@ -26,6 +26,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.poma.restaurant.R;
+import com.poma.restaurant.model.Favourite;
+import com.poma.restaurant.model.RecyclerViewAdapter.RecyclerViewAdapter_Favourite;
 import com.poma.restaurant.model.RecyclerViewAdapter.RecyclerViewAdapter_Restaurant;
 import com.poma.restaurant.model.Restaurant;
 
@@ -34,25 +36,21 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Fragment_Restaurants_List_Client#newInstance} factory method to
+ * Use the {@link Fragment_Favourite#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Fragment_Restaurants_List_Client extends Fragment {
+public class Fragment_Favourite extends Fragment {
 
-    //Per capire cosa mostrare
-    private Boolean favourite = false;
-    private Boolean admin = false;
-
-    private static final String TAG_LOG = Fragment_Restaurants_List_Client.class.getName();
+    private static final String TAG_LOG = Fragment_Favourite.class.getName();
     private RecyclerView rv;
-    private ArrayList<Restaurant> mdata;
+    private ArrayList<Favourite> mdata;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
     private static ListenerRegistration listener_notification;
 
     private SwipeRefreshLayout swipeRefreshLayout;
-    private RecyclerViewAdapter_Restaurant adapter;
+    private RecyclerViewAdapter_Favourite adapter;
     private SearchView searchView = null;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -64,7 +62,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Fragment_Restaurants_List_Client() {
+    public Fragment_Favourite() {
         // Required empty public constructor
     }
 
@@ -74,11 +72,11 @@ public class Fragment_Restaurants_List_Client extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Fragment_Restaurants_List_Client.
+     * @return A new instance of fragment Fragment_Favourite.
      */
     // TODO: Rename and change types and number of parameters
-    public static Fragment_Restaurants_List_Client newInstance(String param1, String param2) {
-        Fragment_Restaurants_List_Client fragment = new Fragment_Restaurants_List_Client();
+    public static Fragment_Favourite newInstance(String param1, String param2) {
+        Fragment_Favourite fragment = new Fragment_Favourite();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -98,9 +96,8 @@ public class Fragment_Restaurants_List_Client extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         Log.d(TAG_LOG,"on create view");
-        View view= inflater.inflate(R.layout.fragment_restaurants_list__client, container, false);
+        View view= inflater.inflate(R.layout.fragment_favourite, container, false);
 
         //RV
         this.rv = view.findViewById(R.id.RV_fragment_favourite);
@@ -120,7 +117,6 @@ public class Fragment_Restaurants_List_Client extends Fragment {
 
         return view;
     }
-
 
     @Override
     public void onStart() {
@@ -148,32 +144,14 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         this.listener_notification.remove();
     }
 
-    public void setAdmin(Boolean b){
-        this.admin = b;
-    }
-    public void setFavourite(Boolean b){
-        this.favourite = b;
-    }
-
     private void getRestaurants(){
         Log.d(TAG_LOG,"Get restaurants... quali?");
-        //TODO possibile controllo per far partire metodi che non selezionano tutti i ristoranti, ma qualcosa in meno
-        if (this.favourite == false && this.admin==false){
-            Log.d(TAG_LOG,"tutti (user");
-            getAllRestaurants();
-        }
-        else if (this.favourite == true && this.admin==false){
-            Log.d(TAG_LOG,"preferiti - user id:"+this.mAuth.getCurrentUser());
-            getAllRestaurants();
-        }
-        else if (this.favourite == false && this.admin==true){
-            Log.d(TAG_LOG,"admin - admin id:"+this.mAuth.getCurrentUser());
-            getAllRestaurants();
-        }
+
+        getFavourites();
 
     }
 
-    private void getAllRestaurants(){
+    private void getFavourites(){
         Log.d(TAG_LOG,"get all restaurants");
         this.mdata = new ArrayList<>();
 
@@ -186,7 +164,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         rv.setAdapter(adapter);
 
         if (this.currentUser!=null){
-            Query query = this.db.collection("restaurants");
+            Query query = this.db.collection("favourites").whereEqualTo("user_id",this.mAuth.getCurrentUser().getUid());
 
             this.listener_notification = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
                 @Override
@@ -201,14 +179,14 @@ public class Fragment_Restaurants_List_Client extends Fragment {
                         switch (dc.getType()) {
                             case ADDED:
                                 Log.d(TAG_LOG, "New notify di tipo: " + dc.getDocument().getString("type"));
-                                mdata.add(createRestaurant(dc.getDocument()));
+                                mdata.add(createFavourite(dc.getDocument()));
                                 setAdapterChange();
 
                                 break;
                             case MODIFIED:
                                 Log.d(TAG_LOG, "modify notify: " + dc.getDocument().getData());
                                 int pos = removeRestaurantFromData(dc.getDocument().getId());
-                                mdata.add(pos, createRestaurant(dc.getDocument()));
+                                mdata.add(pos, createFavourite(dc.getDocument()));
                                 setAdapterChange();
                                 break;
                             case REMOVED:
@@ -227,7 +205,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
 
     private int removeRestaurantFromData(String id){
         int index = 0;
-        for (Restaurant n:this.mdata){
+        for (Favourite n:this.mdata){
 
             if (n.getId().equals(id)){
                 this.mdata.remove(n);
@@ -238,42 +216,24 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         return index;
     }
 
-    //TODO aggiungendo una recensione partirà un metood che aggiornerà numero di recensionie  voto sul ristorante
-    private Restaurant createRestaurant(QueryDocumentSnapshot d){
-        Log.d(TAG_LOG, "Creando un ristorante: "+(String)d.get("name"));
-        Restaurant n = new Restaurant();
+    private Favourite createFavourite(QueryDocumentSnapshot d){
+        Log.d(TAG_LOG, "Creando un ristorante: "+(String)d.get("restaurant_name"));
+        Favourite n = new Favourite();
         n.setId(d.getId());
-        n.setName((String)d.get("name"));
-        n.setAddress((String)d.get("address"));
-        n.setCity((String)d.get("city"));
-        n.setCategory((String)d.get("category"));
-        n.setImageUrl((String)d.get("imageUrl"));
-        n.setPhone((String)d.get("phone"));
-        n.setTags((List<String>) d.get("tags"));
-
-        int in = d.getLong("vote").intValue();
-        n.setVote((int)in);
-
-        int in2 = d.getLong("n_reviews").intValue();
-        n.setN_reviews((int)in2);
-
-
-
-
+        n.setRestaurant_name((String)d.get("restaurant_name"));
+        n.setRestaurant_category((String)d.get("restaurant_category"));
+        n.setRestaurant_adrress((String)d.get("restaurant_address"));
+        n.setRestaurant_id((String)d.get("restaurant_id"));
 
 
         Log.d(TAG_LOG, "Ristorante letto correttamente");
         return n;
     }
 
+    private void createAdapter(ArrayList<Favourite> data){
+        this.adapter = new RecyclerViewAdapter_Favourite(getActivity(), data, Fragment_Favourite.this);
 
-    private void createAdapter(ArrayList<Restaurant> data){
-        if (this.favourite)
-            this.adapter = new RecyclerViewAdapter_Restaurant(getActivity(), data, Fragment_Restaurants_List_Client.this, true);
-        else
-            this.adapter = new RecyclerViewAdapter_Restaurant(getActivity(), data, Fragment_Restaurants_List_Client.this, false);
     }
-
 
     private void setSearchView(){
         //al cambio di orientazione la searchview viene resettata
@@ -312,12 +272,12 @@ public class Fragment_Restaurants_List_Client extends Fragment {
     private void filter(String text) {
         Log.d(TAG_LOG,"filter");
         this.listener_notification.remove();
-        ArrayList<Restaurant> filteredList = new ArrayList<>();
+        ArrayList<Favourite> filteredList = new ArrayList<>();
 
 
-        for (Restaurant item : this.mdata) {
+        for (Favourite item : this.mdata) {
 
-            if (item.getName().toLowerCase().contains(text.toLowerCase())) {
+            if (item.getRestaurant_name().toLowerCase().contains(text.toLowerCase())) {
                 filteredList.add(item);
             }
             if (filteredList.isEmpty()) {
@@ -343,14 +303,12 @@ public class Fragment_Restaurants_List_Client extends Fragment {
 
     }
 
-
-
     //Interfaccia
-    public interface RestaurantListInterfaceClient {
+    public interface FavouriteListInterfaceClient {
         public void goBack();
     }
 
-    private Fragment_Restaurants_List_Client.RestaurantListInterfaceClient listener;
+    private Fragment_Favourite.FavouriteListInterfaceClient listener;
 
     //check if activity implement the interface
     @Override
@@ -358,12 +316,15 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         Log.d(TAG_LOG,"onAttach fragment");
 
         super.onAttach(activity);
-        if(activity instanceof Fragment_Restaurants_List_Client.RestaurantListInterfaceClient){
-            listener = (Fragment_Restaurants_List_Client.RestaurantListInterfaceClient) activity;
+        if(activity instanceof Fragment_Favourite.FavouriteListInterfaceClient){
+            listener = (Fragment_Favourite.FavouriteListInterfaceClient) activity;
         }
         else {
             throw new ClassCastException(activity.toString() +
                     "Does not implement the interface");
         }
     }
+
+
+
 }

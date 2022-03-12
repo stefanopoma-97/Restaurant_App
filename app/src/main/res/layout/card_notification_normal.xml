@@ -11,7 +11,7 @@
     app:cardMaxElevation="10dp"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true"
-    android:id="@+id/cardview_restaurant"
+    android:id="@+id/cardview_favourite"
     >
 
     <!--
@@ -32,7 +32,7 @@
 
         <!--ImageVIew to display our Course Image-->
         <ImageView
-            android:id="@+id/icon_card_restaurant"
+            android:id="@+id/icon_card_favourite"
             android:layout_width="@dimen/image_view_list"
             android:layout_height="@dimen/image_view_list"
             android:layout_margin="10dp"
@@ -42,13 +42,13 @@
             />
 
         <ProgressBar
-            android:id="@+id/progress_bar_card_restaurant"
+            android:id="@+id/progress_bar_card_favourite"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_alignStart="@+id/icon_card_restaurant"
-            android:layout_alignTop="@+id/icon_card_restaurant"
-            android:layout_alignEnd="@+id/icon_card_restaurant"
-            android:layout_alignBottom="@+id/icon_card_restaurant"
+            android:layout_alignStart="@+id/icon_card_favourite"
+            android:layout_alignTop="@+id/icon_card_favourite"
+            android:layout_alignEnd="@+id/icon_card_favourite"
+            android:layout_alignBottom="@+id/icon_card_favourite"
             android:layout_gravity="center"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
@@ -69,14 +69,14 @@
 
         <!--Text View to display Course Name-->
         <TextView
-            android:id="@+id/textview_card_restaurant_title"
+            android:id="@+id/textview_card_favourite_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="10dp"
-            android:layout_toEndOf="@id/icon_card_restaurant"
+            android:layout_toEndOf="@id/icon_card_favourite"
             android:text="titolo"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_medium"
@@ -87,15 +87,15 @@
         <!--Text VIew to display COurse Rating-->
         <!--Image used in present in drawable folder-->
         <TextView
-            android:id="@+id/textview_card_restaurant_adress"
+            android:id="@+id/textview_card_favourite_adress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textview_card_restaurant_title"
+            android:layout_below="@id/textview_card_favourite_title"
             android:layout_marginStart="0dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:gravity="center"
-            android:layout_toEndOf="@id/icon_card_restaurant"
+            android:layout_toEndOf="@id/icon_card_favourite"
             android:textSize="@dimen/text_size_small"
             android:drawablePadding="2dp"
             android:text="Descrione fabdfffddffddfffdfddddddddddddddddf
@@ -106,11 +106,11 @@
             android:id="@+id/textview_card_restaurant_tag1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textview_card_restaurant_adress"
+            android:layout_below="@id/textview_card_favourite_adress"
             android:layout_marginEnd="20dp"
             android:layout_marginTop="10dp"
             android:gravity="right"
-            android:layout_toEndOf="@id/icon_card_restaurant"
+            android:layout_toEndOf="@id/icon_card_favourite"
             android:textSize="@dimen/text_size_micro"
             android:drawablePadding="2dp"
             android:text="Date"

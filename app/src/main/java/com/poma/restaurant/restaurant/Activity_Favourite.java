@@ -38,7 +38,7 @@ public class Activity_Favourite extends Activity_Drawer_Menu_User implements Fra
 
     private BroadcastReceiver broadcastReceiver;
 
-    private static Fragment_Restaurants_List_Client fragment_restaurants_list_favourite;
+    private static Fragment_Favourite fragment_restaurants_list_favourite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +51,9 @@ public class Activity_Favourite extends Activity_Drawer_Menu_User implements Fra
         allocateActivityTitle("Favourite");
 
         this.mAuth= FirebaseAuth.getInstance();
-        this.fragment_restaurants_list_favourite = (Fragment_Restaurants_List_Client)
+        this.fragment_restaurants_list_favourite = (Fragment_Favourite)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_restaurants_list_favourite);
-        this.fragment_restaurants_list_favourite.setFavourite(true);
-        this.fragment_restaurants_list_favourite.setAdmin(false);
+
 
         //TODO imposto qualcosa nel fragment per dirgli che voglio i miei preferiti
 

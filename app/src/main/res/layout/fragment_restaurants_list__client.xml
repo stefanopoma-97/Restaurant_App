@@ -10,7 +10,7 @@
 
 
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/search_view_fragment_restaurants_list"
+        android:id="@+id/search_view_fragment_favourite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -26,17 +26,17 @@
         app:showAsAction="ifRoom|collapseActionView" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_fragment_restaurants_list"
+        android:id="@+id/swipe_refresh_fragment_favourite"
         android:layout_width="0dp"
         android:layout_height="0dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_view_fragment_restaurants_list">
+        app:layout_constraintTop_toBottomOf="@+id/search_view_fragment_favourite">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RV_fragment_restaurants_list"
+            android:id="@+id/RV_fragment_favourite"
 
             android:layout_width="match_parent"
             android:layout_height="match_parent"

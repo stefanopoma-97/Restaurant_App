@@ -317,4 +317,8 @@ public class Activity_Test extends Activity_Drawer_Menu_User {
 
     }
 
+    private void create_favourite(){
+        
+    }
+
 }

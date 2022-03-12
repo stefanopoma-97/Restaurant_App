@@ -108,7 +108,7 @@ public class Fragment_Notification extends Fragment {
 
         this.btn_back = (Button)view.findViewById(R.id.btn_single_notification_goback);
         this.btn_view = (Button)view.findViewById(R.id.btn_single_notification_view);
-        this.textView_title = (TextView)view.findViewById(R.id.textview_card_restaurant_title);
+        this.textView_title = (TextView)view.findViewById(R.id.textview_card_favourite_title);
         this.textView_description = (TextView)view.findViewById(R.id.textview_single_notification_description);
         this.textView_delete = (TextView)view.findViewById(R.id.textview_single_notification_delete);
         this.textView_date = (TextView)view.findViewById(R.id.textview_single_notification_date);
