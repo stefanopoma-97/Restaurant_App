@@ -49,6 +49,8 @@ import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.Restaurant;
 import com.poma.restaurant.model.User;
 import com.poma.restaurant.notifications.Activity_Notifications;
+import com.poma.restaurant.restaurant.Activity_Restaurant_Client;
+import com.poma.restaurant.restaurant.Activity_Restaurants_List_Client;
 import com.poma.restaurant.utilities.Action;
 
 import java.util.ArrayList;
@@ -75,6 +77,8 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
     private static ListenerRegistration listener_notification;
 
     private static final int EDIT_REQUEST_ID = 3;
+
+    private static final String RESTAURANT_ID_EXTRA = "com.poma.restaurant.RESTAURANT_ID_EXTRA";
 
 
     //TODO Da buttare
@@ -344,18 +348,38 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
             notificationManager.createNotificationChannel(channel);
         }
 
+
+        PendingIntent pending_intent;
+
+
+        if (n.getType().equals(getResources().getString(R.string.new_restaurant))){
+            Log.d(TAG_LOG, "Creando una notifica di tipo NUOVO RISTORANTE");
+            Intent intent = new Intent(Activity_Menu.this, Activity_Restaurant_Client.class);
+            intent.putExtra(RESTAURANT_ID_EXTRA, n.getUseful_id());
+            Log.d(TAG_LOG, "Inserisco extra: "+RESTAURANT_ID_EXTRA+" - "+n.getUseful_id());
+            int uniqueInt = (int) (System.currentTimeMillis() & 0xfffffff);
+            pending_intent = PendingIntent.getActivity(Activity_Menu.this,uniqueInt,intent,0);
+
+        }
+        else {
+            /*Intent notifyIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.android.com"));
+            pending_intent = PendingIntent.getActivity(Activity_Menu.this,0,notifyIntent,0);*/
+
+            Intent intent = new Intent(Activity_Menu.this, Activity_First_Access.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            pending_intent = PendingIntent.getActivity(Activity_Menu.this,0,intent,0);
+        }
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "a_n")
                 .setContentTitle("Notifica: "+ n.getType())
                 .setSmallIcon(R.mipmap.logo_launcher_round)
                 .setAutoCancel(true)
+                .setContentIntent(pending_intent)
                 .setContentText(n.getContent());
 
-
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(getApplicationContext());
-        Intent notifyIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.android.com"));
-        PendingIntent intent = PendingIntent.getActivity(Activity_Menu.this,0,notifyIntent,0);
 
-        builder.setContentIntent(intent);
         managerCompat.notify(SIMPLE_NOTIFICATION_ID++, builder.build());
     }
 
@@ -384,7 +408,6 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
                                 Log.d(TAG_LOG, "New notify: " + dc.getDocument().getString("type"));
                                 Notification n = createNotification(dc.getDocument());
                                 new_notify(n);
-                                //TODO farle cancellare
                                 deleteNotification(dc.getDocument());
                                 break;
                             case MODIFIED:
@@ -407,6 +430,8 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
     private Notification createNotification(QueryDocumentSnapshot d){
         Log.d(TAG_LOG, "Creando una notifica");
         Notification n = new Notification(d.getString("user_id"), d.getId(), d.getString("type"));
+        n.setContent(d.getString("content"));
+        n.setUseful_id(d.getString("useful_id"));
         Log.d(TAG_LOG, "Notifica creata correttamente, user_id: "+n.getUser_id()+", id: "+n.getId()+", type: "+n.getType());
         return n;
     }
@@ -431,25 +456,6 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
                         }
                     }
                 });
-
-
-        /*
-        this.db.collection("notifications").document(d.getId())
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG_LOG, "DocumentSnapshot successfully deleted!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG_LOG, "Error deleting document", e);
-                    }
-                });;
-
-         */
 
     }
 

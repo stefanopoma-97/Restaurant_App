@@ -277,9 +277,9 @@ public class Activity_Test extends Activity_Drawer_Menu_User {
         n.setUser_id(mAuth.getCurrentUser().getUid());
         n.setRead(false);
         n.setShowed(false);
-        n.setContent("è stato aggiunto un nuovo ristorante alla nostra applicazione");
-        n.setType("Nuovo ristorante");
-        n.setUseful_id("id ristorante");
+        n.setContent("è stato aggiunto ...");
+        n.setType(getResources().getString(R.string.new_restaurant));
+        n.setUseful_id("VcvRkd12X78qwGANYdaf");
         Calendar calendar = Calendar.getInstance();
         long timeMilli2 = calendar.getTimeInMillis();
         n.setDate(timeMilli2);

@@ -46,14 +46,18 @@ public class Activity_Restaurant_Client extends AppCompatActivity implements Fra
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG_LOG, "on create");
         setContentView(R.layout.activity_restaurant_client);
 
         this.mAuth= FirebaseAuth.getInstance();
         this.fragment_restaurant_client = (Fragment_Restaurant_Client)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_restaurant_client);
 
-        Intent intent = getIntent(); //receive the intent from Activity_first_access
+        Intent intent = getIntent(); //receive the intent
         String id_restaurant= intent.getStringExtra(RESTAURANT_ID_EXTRA);
+
+
+
         Log.d(TAG_LOG, "Ricavo il seguente ID del ristorante: "+id_restaurant);
         this.fragment_restaurant_client.setUser();
         this.fragment_restaurant_client.setRestaurant_id(id_restaurant);
