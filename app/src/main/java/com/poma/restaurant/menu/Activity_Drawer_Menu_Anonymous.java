@@ -1,5 +1,13 @@
 package com.poma.restaurant.menu;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -11,26 +19,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.poma.restaurant.R;
 import com.poma.restaurant.account.Activity_Account;
+import com.poma.restaurant.login.Activity_First_Access;
+import com.poma.restaurant.login.Activity_Login;
 import com.poma.restaurant.notifications.Activity_Notifications;
-import com.poma.restaurant.restaurant.Activity_Favourite;
 import com.poma.restaurant.restaurant.Activity_Restaurants_List_Client;
-import com.poma.restaurant.utilities.MyApplication;
 
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.TextView;
+public class Activity_Drawer_Menu_Anonymous extends AppCompatActivity {
 
 
-public class Activity_Drawer_Menu_User extends AppCompatActivity {
-
-
-    private static final String TAG_LOG = Activity_Drawer_Menu_User.class.getName();
+    private static final String TAG_LOG = Activity_Drawer_Menu_Anonymous.class.getName();
 
     private DrawerLayout drawerLayout;
     private FrameLayout container;
@@ -44,7 +42,7 @@ public class Activity_Drawer_Menu_User extends AppCompatActivity {
     public void setContentView(View view) {
         Log.d(TAG_LOG, "set content view");
         //setto layout del drawer
-        this.drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_drawer_menu_user, null);
+        this.drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_drawer_menu_anonymous, null);
 
         //container
         this.container = this.drawerLayout.findViewById(R.id.activityContainer);
@@ -58,45 +56,24 @@ public class Activity_Drawer_Menu_User extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //parte a comparsa a sinistra contenente header e menu
-        this.navigationView = this.drawerLayout.findViewById(R.id.nav_view_menu_user);
+        this.navigationView = this.drawerLayout.findViewById(R.id.nav_view_menu_anonymous);
         this.navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         drawerLayout.closeDrawer(GravityCompat.START);
                         switch (item.getItemId()){
-                            case R.id.nav_user_notifications:
-                                Intent in = new Intent(getApplicationContext(), Activity_Notifications.class);
+                            case R.id.nav_anonymous_login:
+                                Log.d(TAG_LOG, "click su login");
+                                Intent in = new Intent(getApplicationContext(), Activity_First_Access.class);
                                 in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(in);
                                 break;
-                            case R.id.nav_user_profile:
-                                Log.d(TAG_LOG, "click su profilo");
-                                Intent in2 = new Intent(getApplicationContext(), Activity_Account.class);
-                                in2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(in2);
-                                break;
-                            case R.id.nav_user_logout:
-                                Log.d(TAG_LOG, "click su logout");
-                                broadcast_logout();
-                                break;
-                            case R.id.nav_user_restaurant:
+                            case R.id.nav_anonymous_restaurant:
                                 Log.d(TAG_LOG, "click su restaurant");
                                 Intent in3 = new Intent(getApplicationContext(), Activity_Restaurants_List_Client.class);
                                 in3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(in3);
-                                break;
-                            case R.id.nav_user_test:
-                                Log.d(TAG_LOG, "click su test");
-                                Intent in4 = new Intent(getApplicationContext(), Activity_Test.class);
-                                in4.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(in4);
-                                break;
-                            case R.id.nav_user_favourite:
-                                Log.d(TAG_LOG, "click su favourite");
-                                Intent in5 = new Intent(getApplicationContext(), Activity_Favourite.class);
-                                in5.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(in5);
                                 break;
                         }
                         return false;

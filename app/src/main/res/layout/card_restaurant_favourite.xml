@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="2dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp"
+    app:cardMaxElevation="10dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true"
+    android:id="@+id/cardview_restaurant"
+    tools:ignore="MissingDefaultResource">
+
+    <!--
+        In the above cardview widget
+        cardelevation property will give elevation to your card view
+        card corner radius will provide radius to your card view
+        card background color will give background color to your card view
+        card max elevation will give the cardview maximum elevation
+        card prevent corner overlap will add padding to CardView on v20 and
+        before to prevent intersections between the Card content and rounded corners.
+        card use compact padding will add padding in API v21+ as well to have the same
+        measurements with previous versions.
+    -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!--ImageVIew to display our Course Image-->
+        <ImageView
+            android:id="@+id/icon_card_restaurant"
+            android:layout_width="@dimen/image_view_list"
+            android:layout_height="@dimen/image_view_list"
+            android:layout_margin="10dp"
+            android:contentDescription="@string/app_name"
+            android:padding="5dp"
+            android:visibility="gone"
+
+            />
+
+        <ProgressBar
+            android:id="@+id/progress_bar_card_restaurant"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignStart="@+id/icon_card_restaurant"
+            android:layout_alignTop="@+id/icon_card_restaurant"
+            android:layout_alignEnd="@+id/icon_card_restaurant"
+            android:layout_alignBottom="@+id/icon_card_restaurant"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone" />
+
+
+        <TextView
+            android:id="@+id/textview_card_restaurant_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@id/icon_card_restaurant"
+            android:text="titolo"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textview_card_restaurant_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@id/textview_card_restaurant_title"
+            android:text="Categoria"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_medium"
+            />
+
+
+        <TextView
+            android:id="@+id/textview_card_restaurant_adress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textview_card_restaurant_title"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="left"
+            android:layout_toEndOf="@id/icon_card_restaurant"
+            android:textSize="@dimen/text_size_small"
+            android:drawablePadding="2dp"
+            android:text="Via ancona 13 - Palazzolo"
+            />
+
+        <TextView
+            android:id="@+id/textview_card_restaurant_tag1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textview_card_restaurant_adress"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="left"
+            android:layout_toEndOf="@id/icon_card_restaurant"
+            android:textSize="@dimen/text_size_micro"
+            android:drawablePadding="2dp"
+            android:text="Tag 1"
+            android:visibility="gone"
+            />
+
+
+        <ImageView
+            android:id="@+id/star1_card_restaurant"
+            android:layout_width="@dimen/star"
+            android:layout_height="@dimen/star"
+
+            android:layout_margin="10dp"
+            android:padding="0dp"
+            android:layout_marginStart="10dp"
+            android:layout_below="@id/icon_card_restaurant"
+            android:src="@drawable/ic_baseline_star_24"
+            app:tint="@color/yellow_star"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/star2_card_restaurant"
+            android:layout_width="@dimen/star"
+            android:layout_height="@dimen/star"
+
+            android:layout_below="@id/icon_card_restaurant"
+            android:layout_marginStart="-10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toEndOf="@+id/star1_card_restaurant"
+
+            android:padding="0dp"
+            android:src="@drawable/ic_baseline_star_24"
+            app:tint="@color/yellow_star"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/star3_card_restaurant"
+            android:layout_width="@dimen/star"
+            android:layout_height="@dimen/star"
+
+            android:layout_below="@id/icon_card_restaurant"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toEndOf="@+id/star2_card_restaurant"
+
+            android:padding="0dp"
+            android:src="@drawable/ic_baseline_star_24"
+            app:tint="@color/yellow_star"
+            android:visibility="gone"/>
+        <ImageView
+            android:id="@+id/star4_card_restaurant"
+            android:layout_width="@dimen/star"
+            android:layout_height="@dimen/star"
+
+            android:layout_below="@id/icon_card_restaurant"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toEndOf="@+id/star3_card_restaurant"
+
+            android:padding="0dp"
+            android:src="@drawable/ic_baseline_star_24"
+            app:tint="@color/yellow_star"
+            android:visibility="gone"/>
+        <ImageView
+            android:id="@+id/star5_card_restaurant"
+            android:layout_width="@dimen/star"
+            android:layout_height="@dimen/star"
+
+            android:layout_below="@id/icon_card_restaurant"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toEndOf="@+id/star4_card_restaurant"
+
+            android:padding="0dp"
+            android:src="@drawable/ic_baseline_star_24"
+            app:tint="@color/yellow_star"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/textview_card_restaurant_number_review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/icon_card_restaurant"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toEndOf="@+id/star5_card_restaurant"
+            android:text="100 review"
+            android:textSize="@dimen/text_size_small"
+            android:visibility="gone"></TextView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_card_restaurant_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textview_card_restaurant_number_review"
+            android:gravity="left"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            app:icon="@drawable/ic_baseline_directions_24"
+            style="?attr/materialButtonOutlinedStyle"
+            app:strokeWidth="3dp"
+            android:text="Direction"
+            app:strokeColor="@color/red"
+            android:textSize="@dimen/text_size_medium"
+            app:iconSize="@dimen/star"
+            android:textAllCaps="false"
+            android:visibility="gone"
+            >
+
+        </com.google.android.material.button.MaterialButton>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_card_restaurant_call"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textview_card_restaurant_number_review"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/btn_card_restaurant_map"
+            android:gravity="right"
+            android:text="Call"
+            app:icon="@drawable/ic_baseline_call_24"
+            app:strokeColor="@color/red"
+            app:strokeWidth="3dp"
+            android:textSize="@dimen/text_size_medium"
+            app:iconSize="@dimen/star"
+            android:textAllCaps="false"
+            android:visibility="gone">
+
+        </com.google.android.material.button.MaterialButton>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

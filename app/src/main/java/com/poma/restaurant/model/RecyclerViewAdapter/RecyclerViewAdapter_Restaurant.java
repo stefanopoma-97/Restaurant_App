@@ -50,10 +50,15 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
     private Fragment mFragment;
     private ViewGroup parent;
     private List<Restaurant> mData;
+    private Boolean favourite = false;
 
     ///DB
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+
+    //tipologie
+    private static int RISTORANTE_NORMALE = 1;
+    private static int RISTORANTE_PREFERITO = 0;
 
 
     //listener per notifica
@@ -73,6 +78,14 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
         this.onRestaurantClickListener = (OnRestaurantClickListener) context;
     }
 
+    public RecyclerViewAdapter_Restaurant(Context context, List<Restaurant> mData, Fragment mFragment, Boolean favourite){
+        this.mContext = context;
+        this.mData = mData;
+        this.mFragment = mFragment;
+        this.onRestaurantClickListener = (OnRestaurantClickListener) context;
+        this.favourite = favourite;
+    }
+
     @NonNull
     @Override
     public RecyclerViewAdapter_Restaurant.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -84,7 +97,10 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
         this.db = FirebaseFirestore.getInstance();
         this.parent = parent;
 
-        view = mInflater.inflate(R.layout.card_restaurant, parent,false);
+        if (viewType == RISTORANTE_NORMALE)
+            view = mInflater.inflate(R.layout.card_restaurant, parent,false);
+        else
+            view = mInflater.inflate(R.layout.card_restaurant_favourite, parent,false);
 
         return new RecyclerViewAdapter_Restaurant.MyViewHolder(view);
     }
@@ -107,16 +123,6 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
         }
         holder.textview_card_restaurant_tag1.setText(tag);
 
-
-        //carico immagine
-        updateImageView(holder, n);
-
-
-        //Stelle
-        populated_star(holder, n);
-
-
-
         //Click sulla card
         holder.cardView_restaurant.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,20 +132,31 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
             }
         });
 
-        holder.btn_direction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                direction(n);
 
-            }
-        });
+        if (getItemViewType(position)==RISTORANTE_NORMALE){
+            //carico immagine
+            updateImageView(holder, n);
 
-       holder.btn_call.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               call(n);
-           }
-       });
+            //Stelle
+            populated_star(holder, n);
+
+
+            holder.btn_direction.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    direction(n);
+
+                }
+            });
+
+            holder.btn_call.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    call(n);
+                }
+            });
+        }
+
 
     }
 
@@ -147,6 +164,15 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
     @Override
     public int getItemCount() {
         return this.mData.size();
+
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(this.favourite)
+            return RISTORANTE_PREFERITO;
+        else
+            return RISTORANTE_NORMALE;
 
     }
 

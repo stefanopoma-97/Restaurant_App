@@ -49,6 +49,10 @@ import java.util.Map;
  */
 public class Fragment_Restaurants_List_Client extends Fragment {
 
+    //Per capire cosa mostrare
+    private Boolean favourite = false;
+    private Boolean admin = false;
+
     private static final String TAG_LOG = Fragment_Restaurants_List_Client.class.getName();
     private RecyclerView rv;
     private ArrayList<Restaurant> mdata;
@@ -110,6 +114,8 @@ public class Fragment_Restaurants_List_Client extends Fragment {
 
         //RV
         this.rv = view.findViewById(R.id.RV_fragment_restaurants_list);
+
+
         this.searchView = view.findViewById(R.id.search_view_fragment_restaurants_list);
 
         this.swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_fragment_restaurants_list);
@@ -152,16 +158,37 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         this.listener_notification.remove();
     }
 
+    public void setAdmin(Boolean b){
+        this.admin = b;
+    }
+    public void setFavourite(Boolean b){
+        this.favourite = b;
+    }
+
     private void getRestaurants(){
+        Log.d(TAG_LOG,"Get restaurants... quali?");
         //TODO possibile controllo per far partire metodi che non selezionano tutti i ristoranti, ma qualcosa in meno
-        getAllRestaurants();
+        if (this.favourite == false && this.admin==false){
+            Log.d(TAG_LOG,"tutti (user");
+            getAllRestaurants();
+        }
+        else if (this.favourite == true && this.admin==false){
+            Log.d(TAG_LOG,"preferiti - user id:"+this.mAuth.getCurrentUser());
+            getAllRestaurants();
+        }
+        else if (this.favourite == false && this.admin==true){
+            Log.d(TAG_LOG,"admin - admin id:"+this.mAuth.getCurrentUser());
+            getAllRestaurants();
+        }
+
     }
 
     private void getAllRestaurants(){
         Log.d(TAG_LOG,"get all restaurants");
         this.mdata = new ArrayList<>();
 
-        this.adapter = new RecyclerViewAdapter_Restaurant(getActivity(), mdata, Fragment_Restaurants_List_Client.this);
+        createAdapter(mdata);
+
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 
@@ -233,8 +260,12 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         n.setImageUrl((String)d.get("imageUrl"));
         n.setPhone((String)d.get("phone"));
         n.setTags((List<String>) d.get("tags"));
-        n.setVote(Math.toIntExact((long)d.get("vote")));
-        n.setN_reviews(Math.toIntExact((long)d.get("n_reviews")));
+
+        int in = d.getLong("vote").intValue();
+        n.setVote((int)in);
+
+        int in2 = d.getLong("n_reviews").intValue();
+        n.setN_reviews((int)in2);
 
 
 
@@ -243,6 +274,14 @@ public class Fragment_Restaurants_List_Client extends Fragment {
 
         Log.d(TAG_LOG, "Ristorante letto correttamente");
         return n;
+    }
+
+
+    private void createAdapter(ArrayList<Restaurant> data){
+        if (this.favourite)
+            this.adapter = new RecyclerViewAdapter_Restaurant(getActivity(), data, Fragment_Restaurants_List_Client.this, true);
+        else
+            this.adapter = new RecyclerViewAdapter_Restaurant(getActivity(), data, Fragment_Restaurants_List_Client.this, false);
     }
 
 
@@ -299,7 +338,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
                 //Log.d(TAG_LOG,"filter list not empty: "+filteredList.size());
             }
 
-            this.adapter = new RecyclerViewAdapter_Restaurant(getActivity(), filteredList, Fragment_Restaurants_List_Client.this);
+            createAdapter(filteredList);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             rv.setLayoutManager(linearLayoutManager);
             rv.setAdapter(adapter);

@@ -38,6 +38,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.poma.restaurant.R;
 import com.poma.restaurant.menu.Activity_Menu;
+import com.poma.restaurant.menu.Activity_Menu_Anonymous;
 import com.poma.restaurant.model.User;
 import com.poma.restaurant.notifications.Notifications;
 import com.poma.restaurant.utilities.Action;
@@ -323,7 +324,7 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
     @Override
     public void anonymous_access(Boolean user) {
         Log.d(TAG_LOG, "Anonymous access");
-        Intent mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
+        Intent mainIntent = new Intent(Activity_First_Access.this, Activity_Menu_Anonymous.class);
         startActivity(mainIntent);
         Toast.makeText(Activity_First_Access.this, "Anonymous access", Toast.LENGTH_SHORT).show();
         finish();
