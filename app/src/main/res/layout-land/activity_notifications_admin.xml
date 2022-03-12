@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".notifications.Activity_Notifications_Admin">
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/appbar_activity_restaurant"
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="16dp"
+        tools:ignore="BottomAppBar"
+        app:title="Notification"
+        android:visibility="gone">
+        <TextView
+            android:id="@+id/textview_notifications_title"
+            style="@style/sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/notification_title"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/view_filter_notification"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.931" />
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+    <fragment
+        android:id="@+id/fragment_notification_list_admin"
+        class="com.poma.restaurant.notifications.Fragment_Notification_List"
+
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fragment_notification_land_admin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appbar_activity_restaurant"
+        tools:ignore="MissingConstraints"></fragment>
+
+    <fragment
+        android:id="@+id/fragment_notification_land_admin"
+        class="com.poma.restaurant.notifications.Fragment_Notification"
+
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/fragment_notification_list_admin"
+        app:layout_constraintTop_toBottomOf="@+id/appbar_activity_restaurant"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="MissingConstraints"></fragment>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

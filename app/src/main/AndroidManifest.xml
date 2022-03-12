@@ -19,7 +19,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Restaurant.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".restaurant.Activity_Favourite"></activity>
+        <activity android:name=".notifications.Activity_Notifications_Admin"></activity>
+        <activity android:name=".menu.Activity_Menu_Admin" />
+        <activity android:name=".restaurant.Activity_Restaurants_List_Admin" />
+        <activity android:name=".restaurant.Activity_Favourite" />
         <activity android:name=".menu.Activity_Test" />
         <activity android:name=".menu.Activity_Menu_Anonymous" />
         <activity android:name=".restaurant.Activity_Restaurant_Client" />

@@ -1,6 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".login.Activity_First_Access"
+    >
+
+
+
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="@color/red"
+        android:scaleType="centerCrop"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent=".5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintWidth_percent="1">
+
+    </View>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="@dimen/round_logo_width_external"
+        android:layout_height="@dimen/round_logo_width_external"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="250dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view"
+
+        app:layout_constraintVertical_bias=".5">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="@dimen/round_logo_width_internal"
+            android:layout_height="@dimen/round_logo_width_internal"
+            android:layout_gravity="center"
+            app:cardCornerRadius="250dp">
+
+            <ImageView
+                android:id="@+id/login_rapido"
+                android:layout_width="@dimen/round_logo_width_internal"
+                android:layout_height="@dimen/round_logo_width_internal"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/logo_launcher" />
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/shape_round_white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent=".70"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1">
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+
+            <fragment
+                android:layout_height="0dp"
+                android:layout_width="match_parent"
+
+                android:id="@+id/fragment_access"
+                class="com.poma.restaurant.login.Fragment_Access"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+
+                app:layout_constraintHeight_percent=".9"
+                app:layout_constraintVertical_bias=".5"
+                app:layout_constraintHorizontal_bias=".5" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton_login_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:srcCompat="@drawable/ic_baseline_login_24"
+        app:layout_constraintHorizontal_bias=".1"
+        android:visibility="visible"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton_login_admin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:srcCompat="@drawable/ic_baseline_login_24"
+        app:layout_constraintHorizontal_bias=".9"
+        android:visibility="visible"
+        />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

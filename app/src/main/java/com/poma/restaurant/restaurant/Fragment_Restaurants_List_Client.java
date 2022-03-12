@@ -42,6 +42,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
     //Per capire cosa mostrare
     private Boolean favourite = false;
     private Boolean admin = false;
+    private String admin_id;
 
     private static final String TAG_LOG = Fragment_Restaurants_List_Client.class.getName();
     private RecyclerView rv;
@@ -151,6 +152,9 @@ public class Fragment_Restaurants_List_Client extends Fragment {
     public void setAdmin(Boolean b){
         this.admin = b;
     }
+    public void setAdminID(String admin_id){
+        this.admin_id = admin_id;
+    }
     public void setFavourite(Boolean b){
         this.favourite = b;
     }
@@ -158,17 +162,13 @@ public class Fragment_Restaurants_List_Client extends Fragment {
     private void getRestaurants(){
         Log.d(TAG_LOG,"Get restaurants... quali?");
         //TODO possibile controllo per far partire metodi che non selezionano tutti i ristoranti, ma qualcosa in meno
-        if (this.favourite == false && this.admin==false){
+        if (this.admin==false){
             Log.d(TAG_LOG,"tutti (user");
             getAllRestaurants();
         }
-        else if (this.favourite == true && this.admin==false){
-            Log.d(TAG_LOG,"preferiti - user id:"+this.mAuth.getCurrentUser());
-            getAllRestaurants();
-        }
-        else if (this.favourite == false && this.admin==true){
+        else if (this.admin==true){
             Log.d(TAG_LOG,"admin - admin id:"+this.mAuth.getCurrentUser());
-            getAllRestaurants();
+            getAdminRestaurants();
         }
 
     }
@@ -224,6 +224,59 @@ public class Fragment_Restaurants_List_Client extends Fragment {
             });
         }
     }
+
+    private void getAdminRestaurants(){
+        Log.d(TAG_LOG,"get all admin restaurants");
+        this.mdata = new ArrayList<>();
+
+        createAdapter(mdata);
+
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+
+        rv.setLayoutManager(linearLayoutManager);
+        rv.setAdapter(adapter);
+
+        if (this.currentUser!=null){
+            Query query = this.db.collection("restaurants").whereEqualTo("admin_id",this.mAuth.getCurrentUser().getUid());
+
+            this.listener_notification = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot snapshots,
+                                    @Nullable FirebaseFirestoreException e) {
+                    if (e != null) {
+                        Log.w(TAG_LOG, "Listen failed.", e);
+                        return;
+                    }
+
+                    for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                        switch (dc.getType()) {
+                            case ADDED:
+                                Log.d(TAG_LOG, "New notify di tipo: " + dc.getDocument().getString("type"));
+                                mdata.add(createRestaurant(dc.getDocument()));
+                                setAdapterChange();
+
+                                break;
+                            case MODIFIED:
+                                Log.d(TAG_LOG, "modify notify: " + dc.getDocument().getData());
+                                int pos = removeRestaurantFromData(dc.getDocument().getId());
+                                mdata.add(pos, createRestaurant(dc.getDocument()));
+                                setAdapterChange();
+                                break;
+                            case REMOVED:
+                                Log.d(TAG_LOG, "Removed notify (id = "+dc.getDocument().getId()+"): " + dc.getDocument().getData());
+                                removeRestaurantFromData(dc.getDocument().getId());
+                                setAdapterChange();
+                                break;
+                        }
+                    }
+
+
+                }
+            });
+        }
+    }
+
 
     private int removeRestaurantFromData(String id){
         int index = 0;

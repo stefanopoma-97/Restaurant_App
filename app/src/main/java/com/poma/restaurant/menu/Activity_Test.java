@@ -12,10 +12,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -25,23 +23,15 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.poma.restaurant.R;
-import com.poma.restaurant.account.Activity_Account;
-import com.poma.restaurant.databinding.ActivityMenuBinding;
 import com.poma.restaurant.databinding.ActivityTestBinding;
-import com.poma.restaurant.login.Activity_First_Access;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
+import com.poma.restaurant.model.Favourite;
 import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.Restaurant;
@@ -118,6 +108,16 @@ public class Activity_Test extends Activity_Drawer_Menu_User {
             @Override
             public void onClick(View v) {
                 nuovo_ristorante();
+
+            }
+        });
+
+        Button btn_preferito = (Button)findViewById(R.id.btn_test_crea_favourite);
+        btn_preferito.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG_LOG, "Crea preferito");
+                create_favourite();
 
             }
         });
@@ -318,7 +318,31 @@ public class Activity_Test extends Activity_Drawer_Menu_User {
     }
 
     private void create_favourite(){
-        
+        Log.d(TAG_LOG, "Creazione notifica");
+
+        Favourite n = new Favourite();
+        n.setUser_id(mAuth.getCurrentUser().getUid());
+        n.setRestaurant_id("VcvRkd12X78qwGANYdaf");
+        n.setRestaurant_name("Ristorante Primo");
+        n.setRestaurant_category("Pizzeria");
+        n.setRestaurant_address("Via ancona 13");
+
+
+
+
+        db = FirebaseFirestore.getInstance();
+        db.collection("favourites").add(n).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Log.d(TAG_LOG, "aggiunta preferito");
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG_LOG, "Error adding preferito", e);
+                    }
+                });
     }
 
 }

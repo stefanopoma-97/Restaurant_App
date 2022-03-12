@@ -78,7 +78,7 @@
 
 
         <TextView
-            android:id="@+id/textview_card_favourite_adress"
+            android:id="@+id/textview_card_favourite_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/textview_card_favourite_title"
@@ -87,7 +87,6 @@
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="10dp"
             android:gravity="left"
-            android:layout_toEndOf="@id/icon_card_favourite"
             android:textSize="@dimen/text_size_small"
             android:drawablePadding="2dp"
             android:text="Via ancona 13 - Palazzolo"

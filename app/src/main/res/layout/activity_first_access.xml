@@ -28,30 +28,30 @@
     </View>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="@dimen/round_logo_width_external"
         android:layout_height="@dimen/round_logo_width_external"
-        app:cardCornerRadius="250dp"
         app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="250dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/view"
-        app:layout_constraintVertical_bias=".5"
 
-        >
+        app:layout_constraintVertical_bias=".5">
 
         <androidx.cardview.widget.CardView
             android:layout_width="@dimen/round_logo_width_internal"
             android:layout_height="@dimen/round_logo_width_internal"
-            app:cardCornerRadius="250dp"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            app:cardCornerRadius="250dp">
 
             <ImageView
+                android:id="@+id/login_rapido"
                 android:layout_width="@dimen/round_logo_width_internal"
                 android:layout_height="@dimen/round_logo_width_internal"
-                android:src="@mipmap/logo_launcher"
                 android:scaleType="centerCrop"
-                android:id="@+id/login_rapido"/>
+                android:src="@mipmap/logo_launcher" />
 
         </androidx.cardview.widget.CardView>
 
@@ -96,11 +96,41 @@
 
 
 
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton_login_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:srcCompat="@drawable/ic_baseline_login_24"
+        app:layout_constraintHorizontal_bias=".1"
+        android:visibility="gone"
+        />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton_login_admin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:srcCompat="@drawable/ic_baseline_login_24"
+        app:layout_constraintHorizontal_bias=".9"
+        android:visibility="visible"
+        />
 
 
 

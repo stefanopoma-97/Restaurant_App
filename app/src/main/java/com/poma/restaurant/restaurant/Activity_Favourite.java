@@ -13,7 +13,9 @@ import com.poma.restaurant.R;
 import com.poma.restaurant.databinding.ActivityFavouriteBinding;
 import com.poma.restaurant.menu.Activity_Drawer_Menu_User;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
+import com.poma.restaurant.model.Favourite;
 import com.poma.restaurant.model.Receiver;
+import com.poma.restaurant.model.RecyclerViewAdapter.OnFavouriteClickListener;
 import com.poma.restaurant.model.RecyclerViewAdapter.OnRestaurantClickListener;
 import com.poma.restaurant.model.Restaurant;
 import com.poma.restaurant.model.User;
@@ -26,7 +28,7 @@ import android.util.Log;
 
 import java.util.Map;
 
-public class Activity_Favourite extends Activity_Drawer_Menu_User implements Fragment_Restaurants_List_Client.RestaurantListInterfaceClient, OnRestaurantClickListener {
+public class Activity_Favourite extends Activity_Drawer_Menu_User implements Fragment_Favourite.FavouriteListInterfaceClient, OnFavouriteClickListener {
     ActivityFavouriteBinding activityFavouriteBinding;
     private static final String RESTAURANT_ID_EXTRA = "com.poma.restaurant.RESTAURANT_ID_EXTRA";
 
@@ -152,18 +154,19 @@ public class Activity_Favourite extends Activity_Drawer_Menu_User implements Fra
     }
 
 
-    //click sul ristorante
-    @Override
-    public void onRestaurantClick(Restaurant n) {
-        final Intent intent = new Intent(Activity_Favourite.this, Activity_Restaurant_Client.class);
-        intent.putExtra(RESTAURANT_ID_EXTRA, n.getId());
-        startActivity(intent);
 
-    }
 
     //goBack ricevuto dal fragment
     @Override
     public void goBack() {
+
         finish();
+    }
+
+    @Override
+    public void onRestaurantClick(Favourite n) {
+        final Intent intent = new Intent(Activity_Favourite.this, Activity_Restaurant_Client.class);
+        intent.putExtra(RESTAURANT_ID_EXTRA, n.getRestaurant_id());
+        startActivity(intent);
     }
 }

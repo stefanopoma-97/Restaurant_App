@@ -4,16 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".restaurant.Activity_Restaurants_List_Admin">
+    tools:context=".notifications.Activity_Notifications_Admin">
 
     <fragment
-        android:id="@+id/fragment_restaurants_list_admin"
-        android:name="com.poma.restaurant.restaurant.Fragment_Restaurants_List_Client"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/fragment_notification_list_admin_id"
+        class="com.poma.restaurant.notifications.Fragment_Notification_List"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </fragment>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

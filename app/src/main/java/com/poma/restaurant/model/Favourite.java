@@ -2,7 +2,7 @@ package com.poma.restaurant.model;
 
 public class Favourite {
     private String id;
-    private String user_id, restaurant_id, restaurant_name, restaurant_category, restaurant_adrress;
+    private String user_id, restaurant_id, restaurant_name, restaurant_category, restaurant_address;
 
     public Favourite(){
 
@@ -48,11 +48,11 @@ public class Favourite {
         this.restaurant_category = restaurant_category;
     }
 
-    public String getRestaurant_adrress() {
-        return restaurant_adrress;
+    public String getRestaurant_address() {
+        return restaurant_address;
     }
 
-    public void setRestaurant_adrress(String restaurant_adrress) {
-        this.restaurant_adrress = restaurant_adrress;
+    public void setRestaurant_address(String restaurant_address) {
+        this.restaurant_address = restaurant_address;
     }
 }

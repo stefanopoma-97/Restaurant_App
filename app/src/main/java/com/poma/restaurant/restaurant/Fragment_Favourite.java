@@ -28,11 +28,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.poma.restaurant.R;
 import com.poma.restaurant.model.Favourite;
 import com.poma.restaurant.model.RecyclerViewAdapter.RecyclerViewAdapter_Favourite;
-import com.poma.restaurant.model.RecyclerViewAdapter.RecyclerViewAdapter_Restaurant;
-import com.poma.restaurant.model.Restaurant;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -222,7 +219,7 @@ public class Fragment_Favourite extends Fragment {
         n.setId(d.getId());
         n.setRestaurant_name((String)d.get("restaurant_name"));
         n.setRestaurant_category((String)d.get("restaurant_category"));
-        n.setRestaurant_adrress((String)d.get("restaurant_address"));
+        n.setRestaurant_address((String)d.get("restaurant_address"));
         n.setRestaurant_id((String)d.get("restaurant_id"));
 
 

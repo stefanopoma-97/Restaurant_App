@@ -34,6 +34,8 @@ import com.poma.restaurant.utilities.MyApplication;
 
 import java.util.Map;
 
+import static com.poma.restaurant.utilities.Action.RESULT_OK_ADMIN;
+
 public class Activity_Login extends AppCompatActivity implements Fragment_Login.LoginInterface{
     private static final String TAG_LOG = Activity_Login.class.getName();
     private static final String USER_LOGIN_EXTRA = "com.poma.restaurant.USER_LOGIN_EXTRA ";
@@ -270,7 +272,7 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
                                                     Log.d(TAG_LOG, "User ID: "+user.getID());
                                                     Intent intent = new Intent();
                                                     //intent.putExtra(User.USER_DATA_EXTRA, user);
-                                                    setResult(RESULT_OK,intent);
+                                                    setResult(RESULT_OK_ADMIN,intent);
                                                     progressBarr(false);
                                                     finish();
                                                 }
