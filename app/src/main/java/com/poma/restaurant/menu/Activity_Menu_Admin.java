@@ -40,6 +40,9 @@ import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
 import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.User;
+import com.poma.restaurant.restaurant.Activity_Restaurant_Admin;
+import com.poma.restaurant.restaurant.Activity_Restaurant_Client;
+import com.poma.restaurant.utilities.Action;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -198,18 +201,38 @@ public class Activity_Menu_Admin extends Activity_Drawer_Menu_Admin {
             notificationManager.createNotificationChannel(channel);
         }
 
+
+        //Creo intent da associare alla notifica
+        PendingIntent pending_intent;
+        if (n.getType().equals(getResources().getString(R.string.new_favourite))){
+            Log.d(TAG_LOG, "Creando una notifica di tipo NUOVO PREFERITO");
+
+            Intent intent = new Intent(Activity_Menu_Admin.this, Activity_Restaurant_Admin.class);
+            intent.putExtra(Action.RESTAURANT_ID_EXTRA, n.getUseful_id());
+            Log.d(TAG_LOG, "Inserisco extra: "+Action.RESTAURANT_ID_EXTRA+" - "+n.getUseful_id());
+            int uniqueInt = (int) (System.currentTimeMillis() & 0xfffffff);
+            pending_intent = PendingIntent.getActivity(Activity_Menu_Admin.this,uniqueInt,intent,0);
+
+        }
+        else {
+            /*Intent notifyIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.android.com"));
+            pending_intent = PendingIntent.getActivity(Activity_Menu.this,0,notifyIntent,0);*/
+
+            Intent intent = new Intent(Activity_Menu_Admin.this, Activity_First_Access.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            pending_intent = PendingIntent.getActivity(Activity_Menu_Admin.this,0,intent,0);
+        }
+
+        //Creo e mando la notifica
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "a_n")
-                .setContentTitle("Notifica: "+ n.getType())
+                .setContentTitle(n.getType())
                 .setSmallIcon(R.mipmap.logo_launcher_round)
                 .setAutoCancel(true)
+                .setContentIntent(pending_intent)
                 .setContentText(n.getContent());
 
-
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(getApplicationContext());
-        Intent notifyIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.android.com"));
-        PendingIntent intent = PendingIntent.getActivity(Activity_Menu_Admin.this,0,notifyIntent,0);
-
-        builder.setContentIntent(intent);
         managerCompat.notify(SIMPLE_NOTIFICATION_ID++, builder.build());
     }
 
@@ -238,7 +261,6 @@ public class Activity_Menu_Admin extends Activity_Drawer_Menu_Admin {
                                 Log.d(TAG_LOG, "New notify: " + dc.getDocument().getString("type"));
                                 Notification n = createNotification(dc.getDocument());
                                 new_notify(n);
-                                //TODO farle cancellare
                                 deleteNotification(dc.getDocument());
                                 break;
                             case MODIFIED:
@@ -261,6 +283,8 @@ public class Activity_Menu_Admin extends Activity_Drawer_Menu_Admin {
     private Notification createNotification(QueryDocumentSnapshot d){
         Log.d(TAG_LOG, "Creando una notifica");
         Notification n = new Notification(d.getString("user_id"), d.getId(), d.getString("type"));
+        n.setContent(d.getString("content"));
+        n.setUseful_id(d.getString("useful_id"));
         Log.d(TAG_LOG, "Notifica creata correttamente, user_id: "+n.getUser_id()+", id: "+n.getId()+", type: "+n.getType());
         return n;
     }

@@ -349,9 +349,8 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
         }
 
 
+        //Creo intent da associare alla notifica
         PendingIntent pending_intent;
-
-
         if (n.getType().equals(getResources().getString(R.string.new_restaurant))){
             Log.d(TAG_LOG, "Creando una notifica di tipo NUOVO RISTORANTE");
             Intent intent = new Intent(Activity_Menu.this, Activity_Restaurant_Client.class);
@@ -371,15 +370,15 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
             pending_intent = PendingIntent.getActivity(Activity_Menu.this,0,intent,0);
         }
 
+        //Creo e mando la notifica
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "a_n")
-                .setContentTitle("Notifica: "+ n.getType())
+                .setContentTitle(n.getType())
                 .setSmallIcon(R.mipmap.logo_launcher_round)
                 .setAutoCancel(true)
                 .setContentIntent(pending_intent)
                 .setContentText(n.getContent());
 
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(getApplicationContext());
-
         managerCompat.notify(SIMPLE_NOTIFICATION_ID++, builder.build());
     }
 

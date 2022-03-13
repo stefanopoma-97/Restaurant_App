@@ -55,4 +55,15 @@ public class Favourite {
     public void setRestaurant_address(String restaurant_address) {
         this.restaurant_address = restaurant_address;
     }
+
+    @Override
+    public String toString() {
+        return "Favourite{" +
+                ", user_id='" + user_id + '\'' +
+                ", restaurant_id='" + restaurant_id + '\'' +
+                ", restaurant_name='" + restaurant_name + '\'' +
+                ", restaurant_category='" + restaurant_category + '\'' +
+                ", restaurant_address='" + restaurant_address + '\'' +
+                '}';
+    }
 }

@@ -120,24 +120,24 @@ public class Fragment_Register extends Fragment {
 
         View view= (View) inflater.inflate(R.layout.fragment_register, container, false);
 
-        this.btn_cancel = (Button)view.findViewById(R.id.button_registerform_cancel);
-        this.btn_register = (Button)view.findViewById(R.id.button_registerform_register);
-        this.e_username = (EditText)view.findViewById(R.id.edittext_registerform_username);
-        this.e_password = (EditText)view.findViewById(R.id.edittext_registerform_password);
-        this.error = (TextView)view.findViewById(R.id.textview_registerform_alert_message);
+        this.btn_cancel = (Button)view.findViewById(R.id.btn_edit_restaurant_cancel);
+        this.btn_register = (Button)view.findViewById(R.id.btn_edit_restaurant_create);
+        this.e_username = (EditText)view.findViewById(R.id.edittext_edit_restaurant_phone);
+        this.e_password = (EditText)view.findViewById(R.id.edittext_edit_restaurant_description);
+        this.error = (TextView)view.findViewById(R.id.textview_edit_restaurant_alert_message);
         this.e_date = (DatePicker)view.findViewById(R.id.datepicker_registerform_date);
 
-        this.e_email = (EditText)view.findViewById(R.id.edittext_registerform_email);
+        this.e_email = (EditText)view.findViewById(R.id.edittext_edit_restaurant_name);
         this.e_location = (EditText)view.findViewById(R.id.edittext_registerform_location);
-        this.e_name = (EditText)view.findViewById(R.id.edittext_registerform_name);
-        this.e_surname = (EditText)view.findViewById(R.id.edittext_registerform_surnamename);
-        this.spinner = (Spinner) view.findViewById(R.id.spinner_registerform_location);
+        this.e_name = (EditText)view.findViewById(R.id.edittext_edit_restaurant_email);
+        this.e_surname = (EditText)view.findViewById(R.id.edittext_edit_restaurant_address);
+        this.spinner = (Spinner) view.findViewById(R.id.spinner_edit_restaurant_city);
 
 
         this.btn_changepassword = (Button) view.findViewById(R.id.button_registerform_changepassword);
         this.btn_changeemail = (Button)view.findViewById(R.id.button_registerform_changeemail);
-        this.scrollView = (ScrollView) view.findViewById(R.id.registerform_scrollview);
-        this.t_loading_cities = (TextView)view.findViewById(R.id.textview_registerform_retrieve_cities);
+        this.scrollView = (ScrollView) view.findViewById(R.id.scrollview_register);
+        this.t_loading_cities = (TextView)view.findViewById(R.id.textview_edit_restaurant_loading_cities);
 
         /*
         String[] items = new String[]{"Brescia", "Milano", "Bergamo"};

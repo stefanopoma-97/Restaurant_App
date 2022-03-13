@@ -20,6 +20,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.poma.restaurant.R;
 import com.poma.restaurant.account.Activity_Account;
 import com.poma.restaurant.notifications.Activity_Notifications_Admin;
+import com.poma.restaurant.restaurant.Activity_Create_Restaurant;
 import com.poma.restaurant.restaurant.Activity_Restaurants_List_Admin;
 
 
@@ -81,6 +82,12 @@ public class Activity_Drawer_Menu_Admin extends AppCompatActivity {
                                 Intent in3 = new Intent(getApplicationContext(), Activity_Restaurants_List_Admin.class);
                                 in3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(in3);
+                                break;
+                            case R.id.nav_admin_add_restaurant:
+                                Log.d(TAG_LOG, "click su add restaurant");
+                                Intent in4 = new Intent(getApplicationContext(), Activity_Create_Restaurant.class);
+                                in4.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(in4);
                                 break;
                         }
                         return false;

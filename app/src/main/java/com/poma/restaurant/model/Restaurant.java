@@ -154,4 +154,24 @@ public class Restaurant implements Comparable<Restaurant>{
     public int compareTo(Restaurant o) {
         return this.name.compareTo(o.name);
     }
+
+    @Override
+    public String toString() {
+        return "Restaurant{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                ", phone='" + phone + '\'' +
+                ", admin_id='" + admin_id + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", category='" + category + '\'' +
+                ", category_id='" + category_id + '\'' +
+                ", n_reviews=" + n_reviews +
+                ", vote=" + vote +
+                ", tags=" + tags +
+                '}';
+    }
 }

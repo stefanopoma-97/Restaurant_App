@@ -83,6 +83,20 @@
     <!-- Menu laterale-->
     <string name="dashboard">Dashboard</string>
     <string name="restaurant">Restaurant</string>
+    <string name="add_new_restaurant">Add new restaurant</string>
+
+
+    <!-- Restauant-->
+    <string name="restuarant_name">Restaurant name</string>
+    <string name="restuarant_description">Restaurant description</string>
+    <string name="restuarant_email">Restaurant email</string>
+    <string name="restuarant_address">Restaurant address</string>
+    <string name="restuarant_city">Restaurant city</string>
+    <string name="restuarant_phone">Restaurant phone</string>
+    <string name="restuarant_category">Restaurant category</string>
+    <string name="loading_categories">Loading categories ...</string>
+    <string name="create">Create</string>
+
 
 
     <!-- Notifications -->
@@ -91,6 +105,7 @@
     <string name="confirm_notification_delete">The notification will be deleted</string>
     <string name="delete">Delete</string>
     <string name="new_restaurant">New Restaurant</string>
+    <string name="new_favourite">New Favourite</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

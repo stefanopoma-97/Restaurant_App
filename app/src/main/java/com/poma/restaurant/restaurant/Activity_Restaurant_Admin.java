@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.poma.restaurant.R;
+import com.poma.restaurant.account.Activity_Account;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
 import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.User;
@@ -32,6 +34,8 @@ public class Activity_Restaurant_Admin extends AppCompatActivity implements Frag
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
     private User currentUser2;
+
+    private static final int LOAD_IMAGE_REQUEST_ID = 5;
 
     private BroadcastReceiver broadcastReceiver;
 
@@ -155,4 +159,6 @@ public class Activity_Restaurant_Admin extends AppCompatActivity implements Frag
     public void edit_restaurant(String restaurant_id) {
         //TODO mandare a pagina di edit
     }
+
+
 }

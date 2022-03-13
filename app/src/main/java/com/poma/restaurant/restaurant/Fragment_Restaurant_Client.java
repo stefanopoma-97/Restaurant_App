@@ -1,6 +1,9 @@
 package com.poma.restaurant.restaurant;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,10 +16,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -24,6 +29,8 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,8 +43,14 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.poma.restaurant.R;
 import com.poma.restaurant.account.Activity_Account;
+import com.poma.restaurant.model.Favourite;
 import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.Restaurant;
 import com.poma.restaurant.notifications.Fragment_Notification;
@@ -46,8 +59,12 @@ import com.poma.restaurant.notifications.Fragment_Notification_List;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +78,10 @@ public class Fragment_Restaurant_Client extends Fragment {
     private Boolean favourite_access = false;
     private String restaurant_id = null;
 
+    private static final int LOAD_IMAGE_REQUEST_ID = 5;
+
+    private ProgressDialog progressDialog_image;
+
 
     private ProgressBar progressBar;
     private ImageView imageView;
@@ -72,6 +93,7 @@ public class Fragment_Restaurant_Client extends Fragment {
     private TextView textView_tag1;
     private TextView textView_tag2;
     private TextView textView_tag3;
+    private View view_color;
 
     private Button btn_edit;
     private Button btn_back;
@@ -84,6 +106,7 @@ public class Fragment_Restaurant_Client extends Fragment {
     private Restaurant restaurant;
 
     private Uri preload_imageUri;
+    private Uri imageUri;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -149,10 +172,13 @@ public class Fragment_Restaurant_Client extends Fragment {
         this.textView_tag2 = view.findViewById(R.id.textview_tag2_fragment_restaurant);
         this.textView_tag3 = view.findViewById(R.id.textview_tag3_fragment_restaurant);
 
+        this.progressDialog_image = new ProgressDialog(view.getContext());
+
         this.btn_edit = view.findViewById(R.id.btn_edit_fragment_restaurant);
         this.btn_back = view.findViewById(R.id.btn_back_fragment_restaurant);
         this.btn_add_favourite = view.findViewById(R.id.floatingActionButton_favourite_fragment_restaurant);
         this.btn_remove_favourite = view.findViewById(R.id.floatingActionButton_removefavourite_fragment_restaurant);
+        this.view_color = view.findViewById(R.id.view2_restaurant_client);
 
         this.btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,16 +197,18 @@ public class Fragment_Restaurant_Client extends Fragment {
         this.btn_add_favourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO add to favourite
+                add_to_favourite();
             }
         });
 
         this.btn_remove_favourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO remove to favourite
+                remove_to_favourite();
             }
         });
+
+
 
         return view;
     }
@@ -193,9 +221,105 @@ public class Fragment_Restaurant_Client extends Fragment {
         load_restaurant();
         load_image();
         check_page_type();
+        if (this.user_access==false){
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG_LOG, "on click imageView");
+                    choosePicture();
+                }
+            });
+        }
 
 
     }
+
+    private void add_to_favourite(){
+        Log.d(TAG_LOG, "Creazione preferito");
+        db = FirebaseFirestore.getInstance();
+
+        Favourite n = new Favourite();
+        n.setUser_id(mAuth.getCurrentUser().getUid());
+        n.setRestaurant_id(this.restaurant_id);
+        n.setRestaurant_name(this.restaurant.getName());
+        n.setRestaurant_category(this.restaurant.getCategory());
+        n.setRestaurant_address(this.restaurant.getAddress());
+
+        Log.d(TAG_LOG, "Preparato Favourite: "+n.toString());
+
+
+        db.collection("favourites").add(n).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG_LOG, "aggiunta preferito");
+                        Toast.makeText(getContext(), "Add favourite", Toast.LENGTH_SHORT).show();
+
+                        load_favourite_button();
+                        create_notification_favourite();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG_LOG, "Error adding preferito", e);
+                    }
+                });
+    }
+
+    private void remove_to_favourite(){
+        Log.d(TAG_LOG, "rimozione preferito");
+        db = FirebaseFirestore.getInstance();
+
+        db.collection("favourites")
+                .whereEqualTo("restaurant_id", this.restaurant_id)
+                .whereEqualTo("user_id", mAuth.getCurrentUser().getUid())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                Log.d(TAG_LOG, "On complete");
+
+                if (task.isSuccessful()) {
+                    Log.d(TAG_LOG, "is successfull");
+
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                        document.getReference().delete()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            Log.d(TAG_LOG, "preferito eliminata");
+                                            load_favourite_button();
+                                            Toast.makeText(getContext(), "Remove favourite", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                        else{
+                                            Log.d(TAG_LOG, "problemi eliminazione notifica");
+
+                                        }
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d(TAG_LOG, "problema eliminziome", e);
+                                    }
+                                });
+                    }
+
+
+                } else {
+                    Log.d(TAG_LOG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+
+
+
+    }
+
+
 
     private void check_page_type(){
         if (user_access == false){
@@ -210,6 +334,7 @@ public class Fragment_Restaurant_Client extends Fragment {
         this.btn_edit.setVisibility(View.VISIBLE);
         btn_add_favourite.setVisibility(View.INVISIBLE);
         btn_remove_favourite.setVisibility(View.INVISIBLE);
+        this.view_color.setBackgroundColor(getResources().getColor(R.color.blue_link));
     }
     private void setForUser(){
         this.btn_edit.setVisibility(View.INVISIBLE);
@@ -219,37 +344,72 @@ public class Fragment_Restaurant_Client extends Fragment {
     }
 
     private void load_favourite_button(){
+        this.db.collection("favourites")
+                .whereEqualTo("restaurant_id",this.restaurant_id)
+                .whereEqualTo("user_id",this.mAuth.getCurrentUser().getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            boolean fav = false;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                Map<String, Object> data = document.getData();
+                                fav = true;
+                            }
+
+                            if (fav){
+                                btn_remove_favourite.setVisibility(View.VISIBLE);
+                                btn_add_favourite.setVisibility(View.GONE);
+                            }
+                            else {
+                                btn_remove_favourite.setVisibility(View.GONE);
+                                btn_add_favourite.setVisibility(View.VISIBLE);
+                            }
 
 
 
-    this.db.collection("favourites")
-            .whereEqualTo("restaurant_id",this.restaurant_id)
-            .whereEqualTo("user_id",this.mAuth.getCurrentUser().getUid())
-            .get()
-            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        boolean fav = false;
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-
-                            Map<String, Object> data = document.getData();
-                            fav = true;
                         }
-
-                        if (fav)
-                            btn_remove_favourite.setVisibility(View.VISIBLE);
-                        else
-                            btn_add_favourite.setVisibility(View.VISIBLE);
-
-
                     }
-                }
-            });
+                });
 
 
 
     }
+
+    private void create_notification_favourite(){
+        Log.d(TAG_LOG, "Creazione notifica");
+
+        Notification n = new Notification();
+        n.setUser_id(this.restaurant.getAdmin_id());
+        n.setRead(false);
+        n.setShowed(false);
+        n.setContent("Qualcuno ha aggiunto ai preferiti il tuo ristorante");
+        n.setType(getResources().getString(R.string.new_favourite));
+        n.setUseful_id(this.restaurant.getId());
+        Calendar calendar = Calendar.getInstance();
+        long timeMilli2 = calendar.getTimeInMillis();
+        n.setDate(timeMilli2);
+        Log.d(TAG_LOG, "notifica istanziata: "+n.toString());
+
+
+
+        db = FirebaseFirestore.getInstance();
+        db.collection("notifications").add(n).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Log.d(TAG_LOG, "aggiunta notifica ristorante");
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG_LOG, "Error adding notifica", e);
+                    }
+                });
+    }
+
 
     private void load_image(){
         Log.d(TAG_LOG, "inizio update imageView");
@@ -310,6 +470,7 @@ public class Fragment_Restaurant_Client extends Fragment {
 
 
     }
+
     private void load_restaurant(){
         DocumentReference docRef = this.db.collection("restaurants").document(this.restaurant_id);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -328,6 +489,8 @@ public class Fragment_Restaurant_Client extends Fragment {
                         restaurant.setDescription((String) data.get("description"));
                         restaurant.setEmail((String) data.get("email"));
                         restaurant.setTags((List<String>) data.get("tags"));
+                        restaurant.setAdmin_id((String) data.get("admin_id"));
+                        restaurant.setId((String) document.getId());
                         /*
                         Long in = (long)data.get("vote");
                         restaurant.setVote(in.intValue());
@@ -397,6 +560,227 @@ public class Fragment_Restaurant_Client extends Fragment {
 
     public void setNotFavouriteAccess(){
         this.favourite_access=false;
+    }
+
+    private void choosePicture() {
+        Log.d(TAG_LOG, "Chose pictures");
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, LOAD_IMAGE_REQUEST_ID);
+        Log.d(TAG_LOG, "start intent for result");
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode,resultCode,data);
+        //final User user;
+        final Intent mainIntent;
+        if (requestCode == LOAD_IMAGE_REQUEST_ID){
+            Log.d(TAG_LOG, "retrive intent image");
+            switch (resultCode)
+            {
+                case RESULT_OK:
+                    Log.d(TAG_LOG, "Return from load image: OK");
+                    if (data != null && data.getData() != null){
+                        imageUri = data.getData();
+                        //this.imageView.setImageURI(imageUri);
+                        uploadPicture();
+
+                    }
+                    break;
+                case RESULT_CANCELED:
+                    Log.d(TAG_LOG, "Return from load image: CANCELED");
+                    break;
+            }
+        }
+
+    }
+
+    public void setImageUri(Uri uri){
+        imageUri = uri;
+    }
+
+
+
+    private void delete_current_image(){
+        if (preload_imageUri != null){
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReferenceFromUrl(preload_imageUri.toString());
+            Log.d(TAG_LOG, "delete current image: "+storageRef.getName());
+            //StorageReference picRef = storageRef.child(preload_imageUri.toString());
+
+
+            storageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG_LOG, "delete on success");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Log.d(TAG_LOG, "delete failure");
+                }
+            });
+        }
+
+
+    }
+
+    private String getFileExtension(Uri _imageUri) {
+        ContentResolver cr = getContext().getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cr.getType(_imageUri));
+    }
+
+    public void updateImageView() {
+
+
+        Log.d(TAG_LOG, "inizio update imageView");
+
+        DocumentReference docRef = db.collection("restaurants").document(restaurant_id);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
+
+                        if ((String)data.get("imageUrl") != null){
+                            progressBar.setVisibility(View.VISIBLE);
+                            Uri uri = Uri.parse((String)data.get("imageUrl"));
+                            preload_imageUri = uri;
+                            Log.d("firebase", "Image Url: " + preload_imageUri);
+                            Glide.with(Fragment_Restaurant_Client.this)
+                                    .load(uri)
+                                    .listener(new RequestListener<Drawable>() {
+                                        @Override
+                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+
+                                            return false;
+                                        }
+                                        @Override
+                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                            Log.d(TAG_LOG, "Glide on resource ready");
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                            return false;
+                                        }
+                                    })
+                                    .into(imageView);
+                        }
+                        //progressBar.setVisibility(View.INVISIBLE);
+
+
+
+                    } else {
+                        Log.d(TAG_LOG, "No such document");
+                        //progressDialog(false,"");
+                        //progressBar.setVisibility(View.INVISIBLE);
+                    }
+                } else {
+                    Log.d(TAG_LOG, "get failed with ", task.getException());
+                    //progressDialog(false,"");
+                    //progressBar.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+    }
+
+
+    public void uploadPicture() {
+        Log.d(TAG_LOG, "upload pictures");
+
+        progressDialog_image(true, getResources().getString(R.string.uploading_image));
+
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        Log.d(TAG_LOG, "upload - reference storage prefe");
+        // Create a reference to "mountains.jpg"
+        StorageReference picRef = storageRef.child(System.currentTimeMillis() + "." + getFileExtension(this.imageUri));
+
+
+        Log.d(TAG_LOG, "upload - creato picRef");
+        picRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                //Snackbar.make(getActivity().findViewById(android.R.id.content), "Image uploaded", Snackbar.LENGTH_LONG).show();
+                picRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Log.d(TAG_LOG, "upload - on success");
+                        delete_current_image();
+
+                        DocumentReference docRef = db.collection("restaurants").document(restaurant_id);
+
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("imageUrl", uri.toString());
+                        Log.d(TAG_LOG, "upload - voglio aggiungere a utente: "+uri.toString());
+
+                        docRef.set(updates, SetOptions.merge())
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            Log.d(TAG_LOG, "upload - aggiorno info ristorante");
+
+                                            // Reload information
+                                            updateImageView();
+                                            progressDialog_image(false, "");
+                                            Toast.makeText(getContext(), "Image uploaded", Toast.LENGTH_LONG).show();
+                                        }
+                                        else{
+                                            Log.d(TAG_LOG, "problemi aggiornamento user");
+                                            progressDialog_image(false, "");
+
+                                        }
+                                    }
+                                });
+
+                    }
+                });
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG_LOG, "upload - on failure");
+                        progressDialog_image(false, "");
+                    }
+                })
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                        Log.d(TAG_LOG, "upload - on progress");
+                        double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                        if ((int)progressPercent == 100){
+                            progressDialog_image(false, "arrivato a 100");
+                        }
+                        else {
+                            progressDialog_image(true, "Progress: " + (int) progressPercent + "%");
+                        }
+
+
+                    }
+                });
+
+    }
+
+    private void progressDialog_image(Boolean b, String text){
+
+        Log.d(TAG_LOG, "Progress dialog ("+b.toString()+") con testo: "+text);
+        if(b){
+            this.progressDialog_image.setMessage(text);
+            this.progressDialog_image.show();
+        }
+        else{
+            this.progressDialog_image.dismiss();
+        }
+
     }
 
 

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:id="@+id/registerform_scrollview"
+        android:id="@+id/scrollview_register"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,14 +20,14 @@
 
 
             <TextView
-                android:id="@+id/textview_registerform_alert_message"
+                android:id="@+id/textview_edit_restaurant_alert_message"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintWidth_percent=".8"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
 
-                app:layout_constraintBottom_toTopOf="@+id/edittext_registerform_email"
+                app:layout_constraintBottom_toTopOf="@+id/edittext_edit_restaurant_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -45,7 +45,7 @@
                 android:visibility="invisible"/>
 
             <EditText
-                android:id="@+id/edittext_registerform_email"
+                android:id="@+id/edittext_edit_restaurant_name"
 
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent=".8"
@@ -77,7 +77,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintWidth_percent=".8"
-                app:layout_constraintBottom_toTopOf="@+id/edittext_registerform_password"
+                app:layout_constraintBottom_toTopOf="@+id/edittext_edit_restaurant_description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="parent"
@@ -88,7 +88,7 @@
                 android:visibility="gone"/>
 
             <EditText
-                android:id="@+id/edittext_registerform_password"
+                android:id="@+id/edittext_edit_restaurant_description"
 
                 android:textSize="@dimen/text_size_medium"
 
@@ -99,7 +99,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_email"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_edit_restaurant_name"
 
                 app:layout_constraintVertical_bias=".02"
                 app:layout_constraintHorizontal_bias=".3"
@@ -120,7 +120,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_email"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_edit_restaurant_name"
 
                 app:layout_constraintVertical_bias=".02"
                 app:layout_constraintHorizontal_bias=".3"
@@ -129,7 +129,7 @@
 
 
             <EditText
-                android:id="@+id/edittext_registerform_name"
+                android:id="@+id/edittext_edit_restaurant_email"
 
                 android:textSize="@dimen/text_size_medium"
                 android:layout_width="0dp"
@@ -139,7 +139,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_password"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_edit_restaurant_description"
 
                 app:layout_constraintVertical_bias=".02"
                 app:layout_constraintHorizontal_bias=".3"
@@ -151,7 +151,7 @@
                 android:hint="@string/name"/>
 
             <EditText
-                android:id="@+id/edittext_registerform_surnamename"
+                android:id="@+id/edittext_edit_restaurant_address"
                 android:textSize="@dimen/text_size_medium"
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent=".8"
@@ -160,7 +160,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_name"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_edit_restaurant_email"
 
                 app:layout_constraintVertical_bias=".02"
                 app:layout_constraintHorizontal_bias=".3"
@@ -172,7 +172,7 @@
                 android:hint="@string/surname"/>
 
             <EditText
-                android:id="@+id/edittext_registerform_username"
+                android:id="@+id/edittext_edit_restaurant_phone"
 
                 android:textSize="@dimen/text_size_medium"
                 android:layout_width="0dp"
@@ -182,7 +182,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_surnamename"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_edit_restaurant_address"
 
                 app:layout_constraintVertical_bias=".02"
                 app:layout_constraintHorizontal_bias=".3"
@@ -194,14 +194,14 @@
                 android:hint="@string/username"/>
 
             <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spinner_registerform_location"
+                android:id="@+id/spinner_edit_restaurant_city"
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent=".8"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_username"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_edit_restaurant_phone"
                 android:spinnerMode="dropdown"
                 android:prompt="@string/location"
 
@@ -218,14 +218,14 @@
             </androidx.appcompat.widget.AppCompatSpinner>
 
             <TextView
-                android:id="@+id/textview_registerform_retrieve_cities"
+                android:id="@+id/textview_edit_restaurant_loading_cities"
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent=".8"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_username"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_edit_restaurant_phone"
                 android:textAlignment="center"
 
 
@@ -256,7 +256,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_username"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_edit_restaurant_phone"
 
                 app:layout_constraintVertical_bias=".02"
                 app:layout_constraintHorizontal_bias=".3"
@@ -292,7 +292,7 @@
             <com.google.android.material.button.MaterialButton
                 style="@style/main_button_style"
                 app:cornerRadius="@dimen/button_radius"
-                android:id="@+id/button_registerform_register"
+                android:id="@+id/btn_edit_restaurant_create"
 
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -313,7 +313,7 @@
             <com.google.android.material.button.MaterialButton
                 style="@style/button_secondary"
                 app:cornerRadius="@dimen/button_radius"
-                android:id="@+id/button_registerform_cancel"
+                android:id="@+id/btn_edit_restaurant_cancel"
 
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -329,7 +329,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias=".5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button_registerform_register"
+                app:layout_constraintTop_toBottomOf="@+id/btn_edit_restaurant_create"
                 app:layout_constraintWidth_percent=".8" />
 
 

@@ -161,7 +161,6 @@ public class Fragment_Restaurants_List_Client extends Fragment {
 
     private void getRestaurants(){
         Log.d(TAG_LOG,"Get restaurants... quali?");
-        //TODO possibile controllo per far partire metodi che non selezionano tutti i ristoranti, ma qualcosa in meno
         if (this.admin==false){
             Log.d(TAG_LOG,"tutti (user");
             getAllRestaurants();

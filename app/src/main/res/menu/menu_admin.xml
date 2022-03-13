@@ -19,6 +19,11 @@
             android:title="My Restaurant" />
 
         <item
+            android:id="@+id/nav_admin_add_restaurant"
+            android:icon="@drawable/ic_baseline_add_box_24"
+            android:title="Add new restaurant" />
+
+        <item
             android:id="@+id/nav_admin_logout"
             android:icon="@drawable/ic_baseline_logout_24"
             android:title="Logout" />

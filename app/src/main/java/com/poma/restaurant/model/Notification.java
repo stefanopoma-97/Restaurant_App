@@ -115,4 +115,18 @@ public class Notification implements Comparable<Notification>{
         else
             return 0;
     }
+
+    @Override
+    public String toString() {
+        return "Notification{" +
+                "user_id='" + user_id + '\'' +
+                ", date=" + date +
+                ", time='" + time + '\'' +
+                ", type='" + type + '\'' +
+                ", content='" + content + '\'' +
+                ", showed=" + showed +
+                ", read=" + read +
+                ", useful_id='" + useful_id + '\'' +
+                '}';
+    }
 }
