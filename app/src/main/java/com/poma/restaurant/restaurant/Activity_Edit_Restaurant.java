@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.BroadcastReceiver;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,24 +20,28 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.poma.restaurant.R;
 import com.poma.restaurant.databinding.ActivityCreateRestaurantBinding;
-import com.poma.restaurant.databinding.ActivityRestaurantsListClientBinding;
+import com.poma.restaurant.databinding.ActivityEditAccountBinding;
+import com.poma.restaurant.databinding.ActivityEditRestaurantBinding;
+import com.poma.restaurant.login.Fragment_Register;
 import com.poma.restaurant.menu.Activity_Drawer_Menu_Admin;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
 import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.Restaurant;
 import com.poma.restaurant.model.User;
+import com.poma.restaurant.utilities.Action;
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Activity_Create_Restaurant extends Activity_Drawer_Menu_Admin implements Fragment_Edit_Restaurant.CreateRestaurantInterface {
+public class Activity_Edit_Restaurant extends Activity_Drawer_Menu_Admin implements Fragment_Edit_Restaurant.CreateRestaurantInterface {
 
-    ActivityCreateRestaurantBinding activityCreateRestaurantBinding;
+    ActivityEditRestaurantBinding activityEditRestaurantBinding;
 
     private static final String TAG_LOG = Activity_Create_Restaurant.class.getName();
     private FirebaseAuth mAuth;
@@ -47,16 +52,26 @@ public class Activity_Create_Restaurant extends Activity_Drawer_Menu_Admin imple
 
     private BroadcastReceiver broadcastReceiver;
 
+    Fragment_Edit_Restaurant fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //Menu laterale
-        activityCreateRestaurantBinding = ActivityCreateRestaurantBinding.inflate(getLayoutInflater());
-        setContentView(activityCreateRestaurantBinding.getRoot());
-        allocateActivityTitle(getResources().getString(R.string.add_new_restaurant));
+        activityEditRestaurantBinding = ActivityEditRestaurantBinding.inflate(getLayoutInflater());
+        setContentView(activityEditRestaurantBinding.getRoot());
+        allocateActivityTitle(getResources().getString(R.string.edit_restaurant));
 
         this.mAuth= FirebaseAuth.getInstance();
+
+        this.fragment = (Fragment_Edit_Restaurant)
+                getSupportFragmentManager().findFragmentById(R.id.fragment_edit_restaurant_edit);
+
+        //Imposta il fragment per la modifica
+        Intent intent = getIntent(); //receive the intent from Activity_first_access
+        String id_restaurant= intent.getStringExtra(Action.RESTAURANT_ID_EXTRA);
+        this.fragment.setRestaurantID(id_restaurant);
+        this.fragment.setUpdate();
 
         //Riceve broadcast
         IntentFilter intentFilter = new IntentFilter();
@@ -77,9 +92,6 @@ public class Activity_Create_Restaurant extends Activity_Drawer_Menu_Admin imple
         super.onStart();
         check_user_admin();
     }
-
-
-
 
     private void logout(){
         Log.d(TAG_LOG, "Logout - inizio procedura");
@@ -230,6 +242,38 @@ public class Activity_Create_Restaurant extends Activity_Drawer_Menu_Admin imple
 
     @Override
     public void update_restaurant(String name, String description, String email, String address, String city, String phone, String admin_id, String imageUrl, String category, List<String> tags, String id) {
+        Log.d(TAG_LOG, "Create restuaruant");
+
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("name", name);
+        data.put("description", description);
+        data.put("address", address);
+        data.put("city", city);
+        data.put("phone", phone);
+        data.put("category", category);
+        data.put("tags", tags);
+
+
+        DocumentReference document = db.collection("restaurants").document(id);
+        document.set(data, SetOptions.merge())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Log.d(TAG_LOG, "aggiorno ristorante");
+                            finish();
+
+                        }
+                        else{
+                            Log.d(TAG_LOG, "problemi aggiornamento notifica");
+
+                        }
+                    }
+                });
+
+
+
 
     }
 

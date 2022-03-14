@@ -1,6 +1,7 @@
 package com.poma.restaurant.restaurant;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -26,11 +27,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.poma.restaurant.R;
+import com.poma.restaurant.account.Activity_Edit_Account;
 import com.poma.restaurant.login.Fragment_Register;
+import com.poma.restaurant.model.Restaurant;
+import com.poma.restaurant.model.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,6 +59,10 @@ public class Fragment_Edit_Restaurant extends Fragment {
     private static final String TAG2_STRING_KEY_FRAGMENT_EDIT_RESTAURANT= "com.poma.restaurant.TAG2_STRING_KEY_FRAGMENT_EDIT_RESTAURANT";
     private static final String TAG3_STRING_KEY_FRAGMENT_EDIT_RESTAURANT= "com.poma.restaurant.TAG3_STRING_KEY_FRAGMENT_EDIT_RESTAURANT";
 
+    private static final String ID_STRING_KEY_FRAGMENT_EDIT_RESTAURANT= "com.poma.restaurant.ID_STRING_KEY_FRAGMENT_EDIT_RESTAURANT";
+    private static final String SAVED_STRING_KEY_FRAGMENT_EDIT_RESTAURANT= "com.poma.restaurant.SAVED_STRING_KEY_FRAGMENT_EDIT_RESTAURANT";
+
+
 
     private Map<String, Object> cities;
     private Map<String, Object> categories;
@@ -64,6 +74,7 @@ public class Fragment_Edit_Restaurant extends Fragment {
 
     private FirebaseAuth mAuth;
 
+    private ProgressDialog progressDialog;
 
     private Spinner spinner_cities;
     private Spinner spinner_categories;
@@ -86,6 +97,14 @@ public class Fragment_Edit_Restaurant extends Fragment {
 
     private Button btn_create;
     private Button btn_cancel;
+
+
+    //Per gestire UPDATE
+    private Boolean update = false;
+    private String restaurant_id = null;
+    private Restaurant restaurant;
+
+    private Boolean saved_state = null;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -247,7 +266,10 @@ public class Fragment_Edit_Restaurant extends Fragment {
                     if (tags_insert[2])
                         tags.add(chip3.getText().toString());
 
-                    listener.create_restaurant(name, description, mail, address, city, phone, mAuth.getCurrentUser().getUid(), "", category,tags);
+                    if (update)
+                        listener.update_restaurant(name, description, mail, address, city, phone, mAuth.getCurrentUser().getUid(), "", category,tags, restaurant_id);
+                    else
+                        listener.create_restaurant(name, description, mail, address, city, phone, mAuth.getCurrentUser().getUid(), "", category,tags);
                 }
 
 
@@ -266,6 +288,7 @@ public class Fragment_Edit_Restaurant extends Fragment {
         savedInstanceState.putString(ERROR_STRING_KEY_FRAGMENT_EDIT_RESTAURANT, this.textView_error.getText().toString());
         savedInstanceState.putString(CITY_NAME_STRING_KEY_FRAGMENT_EDIT_RESTAURANT, getCity());
         savedInstanceState.putString(CATEGORY_NAME_STRING_KEY_FRAGMENT_EDIT_RESTAURANT, getCategory());
+        savedInstanceState.putString(ID_STRING_KEY_FRAGMENT_EDIT_RESTAURANT, this.restaurant_id);
         if (this.tags_insert[0])
             savedInstanceState.putString(TAG1_STRING_KEY_FRAGMENT_EDIT_RESTAURANT, this.chip1.getText().toString());
         else
@@ -281,6 +304,7 @@ public class Fragment_Edit_Restaurant extends Fragment {
 
         this.retrieve_city = null;
         this.retrieve_category = null;
+        this.saved_state=null;
         super.onSaveInstanceState(savedInstanceState);
         Log.d(TAG_LOG,"Save state: "+ERROR_STRING_KEY_FRAGMENT_EDIT_RESTAURANT+" valore: "+this.textView_error.getText().toString());
         Log.d(TAG_LOG,"Save state: "+CITY_NAME_STRING_KEY_FRAGMENT_EDIT_RESTAURANT+" valore: "+getCity());
@@ -294,6 +318,7 @@ public class Fragment_Edit_Restaurant extends Fragment {
         Log.d(TAG_LOG,"on Activity Create");
 
         if (savedInstanceState != null){
+            this.saved_state = true;
             String errore = savedInstanceState.getString(ERROR_STRING_KEY_FRAGMENT_EDIT_RESTAURANT);
             if (errore==""){
                 this.error_state="";
@@ -310,6 +335,8 @@ public class Fragment_Edit_Restaurant extends Fragment {
             String tag1 = savedInstanceState.getString(TAG1_STRING_KEY_FRAGMENT_EDIT_RESTAURANT);
             String tag2 = savedInstanceState.getString(TAG2_STRING_KEY_FRAGMENT_EDIT_RESTAURANT);
             String tag3 = savedInstanceState.getString(TAG3_STRING_KEY_FRAGMENT_EDIT_RESTAURANT);
+
+            this.restaurant_id = savedInstanceState.getString(ID_STRING_KEY_FRAGMENT_EDIT_RESTAURANT);
 
             if (!tag1.equals("")){
                 this.chip1.setText(tag1);
@@ -343,8 +370,89 @@ public class Fragment_Edit_Restaurant extends Fragment {
         super.onStart();
         this.cities = new HashMap<>();
         this.categories = new HashMap<>();
-        retrive_cities();
-        retrive_categories();
+
+        //se sono in modalità update e non c'è uno stato da recuperare
+        if (this.update && this.saved_state==null)
+            retrive_restaurant_info();
+        else {
+            retrive_cities();
+            retrive_categories();
+        }
+    }
+
+    private void retrive_restaurant_info(){
+        progressDialog(true, getResources().getString(R.string.retrieving_restaurant_wait));
+
+
+        Log.d(TAG_LOG, "inizio metodo retrive restuarant");
+
+        DocumentReference docRef = db.collection("restaurants").document(this.restaurant_id);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
+
+                        restaurant = new Restaurant();
+                        restaurant.setName((String) data.get("name"));
+                        restaurant.setDescription((String) data.get("description"));
+                        restaurant.setEmail((String) data.get("email"));
+                        restaurant.setAddress((String) data.get("address"));
+                        restaurant.setPhone((String) data.get("phone"));
+                        restaurant.setCity((String) data.get("city"));
+                        restaurant.setCategory((String) data.get("category"));
+                        restaurant.setTags((List<String>) data.get("tags"));
+                        restaurant.setAdmin_id((String) data.get("admin_id"));
+                        restaurant.setId((String) document.getId());
+
+                        retrieve_city=restaurant.getCity();
+                        retrieve_category=restaurant.getCategory();
+
+
+                        editText_name.setText(restaurant.getName());
+                        editText_description.setText(restaurant.getDescription());
+                        editText_mail.setText(restaurant.getEmail());
+                        editText_address.setText(restaurant.getAddress());
+                        editText_phone.setText(restaurant.getPhone());
+
+                        if (!restaurant.getTag1().equals("")){
+                            chip1.setText(restaurant.getTag1());
+                            chip1.setVisibility(View.VISIBLE);
+                            tags_insert[0]=true;
+                        }
+
+                        if (!restaurant.getTag2().equals("")){
+                            chip2.setText(restaurant.getTag2());
+                            chip2.setVisibility(View.VISIBLE);
+                            tags_insert[1]=true;
+                        }
+
+                        if (!restaurant.getTag3().equals("")){
+                            chip3.setText(restaurant.getTag3());
+                            chip3.setVisibility(View.VISIBLE);
+                            tags_insert[2]=true;
+                        }
+
+
+                        retrive_cities();
+                        retrive_categories();
+
+                        progressDialog(false, getResources().getString(R.string.retrieving_restaurant_wait));
+
+                    } else {
+                        Log.d(TAG_LOG, "No such document");
+                        progressDialog(false, "");
+                    }
+                } else {
+                    Log.d(TAG_LOG, "get failed with ", task.getException());
+                    progressDialog(false, "");
+                }
+            }
+        });
+
     }
 
     private void enter_tag(View view){
@@ -489,6 +597,9 @@ public class Fragment_Edit_Restaurant extends Fragment {
             int spinnerPosition = adapter.getPosition(compareValue);
             spinner_categories.setSelection(spinnerPosition);
         }
+        else {
+            spinner_categories.setSelection(1);
+        }
 
         this.textView_loading_categories.setVisibility(View.INVISIBLE);
         this.spinner_categories.setVisibility(View.VISIBLE);
@@ -575,7 +686,7 @@ public class Fragment_Edit_Restaurant extends Fragment {
         public void create_restaurant(String name, String description, String email, String address,
                                       String city, String phone, String admin_id, String imageUrl, String category, List<String> tags);
         public void update_restaurant(String name, String description, String email, String address,
-                                      String city, String phone, String admin_id, String imageUrl, String category, List<String> tags);
+                                      String city, String phone, String admin_id, String imageUrl, String category, List<String> tags, String id);
         public void cancel();
     }
 
@@ -610,5 +721,28 @@ public class Fragment_Edit_Restaurant extends Fragment {
         this.textView_error.setText(text);
         this.textView_error.setVisibility(View.VISIBLE);
         this.scrollView.smoothScrollTo(0,0);
+    }
+
+    public void setUpdate(){
+        this.update = true;
+        this.btn_create.setText(R.string.update);
+    }
+
+    public void setRestaurantID(String id){
+        this.restaurant_id = id;
+    }
+
+    private void progressDialog(Boolean b, String text){
+
+        if(b){
+            this.progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage(text);
+            progressDialog.show();
+
+        }
+        else{
+            this.progressDialog.dismiss();
+        }
+
     }
 }

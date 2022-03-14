@@ -84,6 +84,7 @@
     <string name="dashboard">Dashboard</string>
     <string name="restaurant">Restaurant</string>
     <string name="add_new_restaurant">Add new restaurant</string>
+    <string name="edit_restaurant">Edit restaurant</string>
 
 
     <!-- Restauant-->
@@ -102,6 +103,7 @@
     <string name="address_mandatory">Insert an address</string>
     <string name="phone_mandatory">Insert a phone number</string>
     <string name="phone_not_digits_only">Insert a real phone number</string>
+    <string name="retrieving_restaurant_wait">Retrieving data Please Wait...</string>
 
 
 

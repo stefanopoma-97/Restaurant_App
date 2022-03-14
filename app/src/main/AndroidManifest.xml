@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Restaurant.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".restaurant.Activity_Create_Restaurant"></activity>
+        <activity android:name=".restaurant.Activity_Edit_Restaurant"></activity>
+        <activity android:name=".restaurant.Activity_Create_Restaurant" />
         <activity android:name=".restaurant.Activity_Restaurant_Admin" />
         <activity android:name=".restaurant.Activity_Favourite_Restaurant" />
         <activity android:name=".notifications.Activity_Notifications_Admin" />

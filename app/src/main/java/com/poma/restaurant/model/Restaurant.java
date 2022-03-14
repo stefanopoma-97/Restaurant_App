@@ -144,7 +144,7 @@ public class Restaurant implements Comparable<Restaurant>{
 
     public String getTag3(){
         if (this.tags.size() >= 3)
-            return tags.get(3);
+            return tags.get(2);
         else
             return "";
     }

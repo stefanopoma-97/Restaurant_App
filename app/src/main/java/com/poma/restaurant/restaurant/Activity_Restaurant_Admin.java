@@ -24,6 +24,7 @@ import com.poma.restaurant.account.Activity_Account;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
 import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.User;
+import com.poma.restaurant.utilities.Action;
 
 import java.util.Map;
 
@@ -157,7 +158,10 @@ public class Activity_Restaurant_Admin extends AppCompatActivity implements Frag
 
     @Override
     public void edit_restaurant(String restaurant_id) {
-        //TODO mandare a pagina di edit
+        Intent intent = new Intent(Activity_Restaurant_Admin.this, Activity_Edit_Restaurant.class);
+        intent.putExtra(Action.RESTAURANT_ID_EXTRA, restaurant_id);
+        startActivity(intent);
+
     }
 
 
