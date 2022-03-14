@@ -85,6 +85,15 @@
 
     </style>
 
+    <style name="chip_styles" parent="Base.Widget.MaterialComponents.Chip">
+    <item name="android:checkable">true</item>
+
+    <item name="chipIconVisible">false</item>
+    <item name="closeIconVisible">false</item>
+
+    <item name="checkedIcon">@drawable/ic_mtrl_chip_checked_black</item>
+  </style>
+
 
 
 

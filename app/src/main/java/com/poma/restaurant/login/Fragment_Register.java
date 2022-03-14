@@ -43,7 +43,7 @@ public class Fragment_Register extends Fragment {
     private static final String ERROR_STRING_KEY_FRAGMENT_REGISTER = "com.poma.restaurant.ERROR_STRING_KEY_FRAGMENT_REGISTER";
     private static final String CITY_NAME_STRING_KEY_FRAGMENT_REGISTER = "com.poma.restaurant.CITY_NAME_STRING_KEY_FRAGMENT_REGISTER";
     //private static final String CITY_NAME_STRING_KEY_FRAGMENT_REGISTER = "com.poma.restaurant.CITY_NAME_STRING_KEY_FRAGMENT_REGISTER";
-    private static String error_state ="";;
+    private static String error_state ="";
     private static String retrieve_city = null;
 
     private Button btn_cancel;
