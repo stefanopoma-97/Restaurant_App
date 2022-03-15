@@ -2,14 +2,16 @@ package com.poma.restaurant.model;
 
 public class Review {
     private String id;
-    private String text, user_id, restaurant_id;
-    private int vote;
+    private String user_id, restaurant_id, location, service, experience, problems, username;
+    private float vote;
+
+
 
     public Review(){
 
     }
-    public Review(String text, String user_id, String restaurant_id, int vote){
-        this.text = text;
+    public Review(String experience, String user_id, String restaurant_id, float vote){
+        this.experience = experience;
         this.user_id = user_id;
         this.restaurant_id = restaurant_id;
         this.vote = vote;
@@ -29,12 +31,40 @@ public class Review {
         this.id = id;
     }
 
-    public String getText() {
-        return text;
+    public String getLocation() {
+        return location;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getService() {
+        return service;
+    }
+
+    public void setService(String service) {
+        this.service = service;
+    }
+
+    public String getExperience() {
+        return experience;
+    }
+
+    public void setExperience(String experience) {
+        this.experience = experience;
+    }
+
+    public String getProblems() {
+        return problems;
+    }
+
+    public void setProblems(String problems) {
+        this.problems = problems;
+    }
+
+    public void setVote(float vote) {
+        this.vote = vote;
     }
 
     public String getUser_id() {
@@ -53,11 +83,16 @@ public class Review {
         this.restaurant_id = restaurant_id;
     }
 
-    public int getVote() {
+    public float getVote() {
         return vote;
     }
 
-    public void setVote(int vote) {
-        this.vote = vote;
+    public String getUsername() {
+        return username;
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
 }

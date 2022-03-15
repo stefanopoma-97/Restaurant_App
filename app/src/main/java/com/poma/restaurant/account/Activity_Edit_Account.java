@@ -24,6 +24,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.poma.restaurant.R;
 import com.poma.restaurant.login.Fragment_Register;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
@@ -243,6 +244,7 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
                     Log.d(TAG_LOG, "Utente aggiornato");
+                    update_review(firebase_user.getUid(), username);
                     progressDialog(false, "");
                     getBack(RESULT_OK);
                     //popupMessage();
@@ -254,6 +256,55 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
                 }
             }
         });
+    }
+
+    private void update_review(String user_id, String username){
+        Log.d(TAG_LOG, "Update reviews");
+        db.collection("reviews").whereEqualTo("user_id", user_id).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                Log.d(TAG_LOG, "On complete");
+
+                if (task.isSuccessful()) {
+                    Log.d(TAG_LOG, "is successfull");
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                        Map<String, Object> data = document.getData();
+                        Log.d(TAG_LOG, "Review: "+data.toString());
+                        update_single_review(username, document.getId());
+                    }
+
+                } else {
+                    Log.d(TAG_LOG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+    }
+
+    private void update_single_review(String username, String review_id){
+        Log.d(TAG_LOG, "aggionro singola review");
+
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("username", username);
+
+
+        DocumentReference document = db.collection("reviews").document(review_id);
+        document.set(data, SetOptions.merge())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Log.d(TAG_LOG, "aggiorno preferito");
+
+                        }
+                        else{
+                            Log.d(TAG_LOG, "problemi aggiornamento preferito");
+
+                        }
+                    }
+                });
     }
 
     @Override
@@ -488,6 +539,7 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
 
         }
     }
+
     private void logout(){
         Log.d(TAG_LOG, "Logout - inizio procedura");
         finish();

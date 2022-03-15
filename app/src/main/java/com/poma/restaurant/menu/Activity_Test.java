@@ -27,6 +27,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.poma.restaurant.R;
 import com.poma.restaurant.databinding.ActivityTestBinding;
@@ -35,6 +36,7 @@ import com.poma.restaurant.model.Favourite;
 import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.Restaurant;
+import com.poma.restaurant.model.Review;
 import com.poma.restaurant.model.User;
 
 import java.util.ArrayList;
@@ -118,6 +120,16 @@ public class Activity_Test extends Activity_Drawer_Menu_User {
             public void onClick(View v) {
                 Log.d(TAG_LOG, "Crea preferito");
                 create_favourite();
+
+            }
+        });
+
+        Button btn_review = (Button)findViewById(R.id.btn_test_create_review);
+        btn_review.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG_LOG, "Crea preferito");
+                create_review();
 
             }
         });
@@ -341,6 +353,97 @@ public class Activity_Test extends Activity_Drawer_Menu_User {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG_LOG, "Error adding preferito", e);
+                    }
+                });
+    }
+
+    private void create_review(){
+        Log.d(TAG_LOG, "Creazione review");
+
+        Review n = new Review();
+        n.setUser_id(mAuth.getCurrentUser().getUid());
+        n.setRestaurant_id("1PnYRQVWNaV7EfZ9Guz6"); //creato 1
+        n.setExperience("Descrizione dell'esperinza complessiva");
+        n.setLocation("Descrizione della location");
+        n.setService("Descrizione del servizio");
+        n.setProblems("");
+        n.setUsername("Username test");
+        n.setVote(new Float(4.5));
+
+
+        db = FirebaseFirestore.getInstance();
+        db.collection("reviews").add(n).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG_LOG, "aggiunta recensione");
+                        search_restaurant_vote("1PnYRQVWNaV7EfZ9Guz6");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG_LOG, "Error adding preferito", e);
+                    }
+                });
+    }
+
+    private void search_restaurant_vote(String restaurant_id){
+        ArrayList<Float> votes = new ArrayList<>();
+        Log.d(TAG_LOG, "Update resturant vote");
+        db.collection("reviews").whereEqualTo("restaurant_id", restaurant_id).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                Log.d(TAG_LOG, "On complete");
+
+                if (task.isSuccessful()) {
+                    Log.d(TAG_LOG, "is successfull");
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                        Map<String, Object> data = document.getData();
+                        Log.d(TAG_LOG, "reviews: "+data.toString());
+                        Double d = (Double) data.get("vote");
+                        votes.add(new Float(d.floatValue()));
+                    }
+
+                    update_restaurant_vote(votes, restaurant_id);
+
+                } else {
+                    Log.d(TAG_LOG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+
+    }
+
+    private void update_restaurant_vote(ArrayList<Float> votes, String restaurant_id){
+        //////
+        Map<String, Object> data = new HashMap<>();
+
+        Float average = new Float(0);
+        for (Float f : votes) {
+            average += f;
+        }
+        average = average / votes.size();
+        data.put("vote", average);
+        data.put("n_reviews", votes.size());
+
+        Log.d(TAG_LOG, "MEDIA: "+average+" SIZE: "+votes.size());
+
+
+        DocumentReference document = db.collection("restaurants").document(restaurant_id);
+        document.set(data, SetOptions.merge())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Log.d(TAG_LOG, "aggiorno ristorante");
+
+                        }
+                        else{
+                            Log.d(TAG_LOG, "problemi aggiornamento ristorante");
+
+                        }
                     }
                 });
     }
