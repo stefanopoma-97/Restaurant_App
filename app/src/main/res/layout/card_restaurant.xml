@@ -117,11 +117,27 @@
             android:text="Tag 1"
             />
 
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/rating_card_restaurant"
+            android:theme="@style/RatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/star"
+            style="@style/RatingBar_small"
+            android:numStars="5"
+            android:stepSize="0.5"
+            android:rating="0"
+
+            android:layout_margin="10dp"
+            android:padding="0dp"
+            android:layout_marginStart="10dp"
+            android:layout_below="@id/icon_card_favourite"
+            />
 
         <ImageView
             android:id="@+id/star1_card_restaurant"
             android:layout_width="@dimen/star"
             android:layout_height="@dimen/star"
+            android:visibility="gone"
 
             android:layout_margin="10dp"
             android:padding="0dp"
@@ -134,6 +150,7 @@
             android:id="@+id/star2_card_restaurant"
             android:layout_width="@dimen/star"
             android:layout_height="@dimen/star"
+            android:visibility="gone"
 
             android:layout_below="@id/icon_card_favourite"
             android:layout_marginStart="-10dp"
@@ -149,6 +166,7 @@
             android:id="@+id/star3_card_restaurant"
             android:layout_width="@dimen/star"
             android:layout_height="@dimen/star"
+            android:visibility="gone"
 
             android:layout_below="@id/icon_card_favourite"
             android:layout_marginStart="0dp"
@@ -163,6 +181,7 @@
             android:id="@+id/star4_card_restaurant"
             android:layout_width="@dimen/star"
             android:layout_height="@dimen/star"
+            android:visibility="gone"
 
             android:layout_below="@id/icon_card_favourite"
             android:layout_marginStart="0dp"
@@ -177,6 +196,7 @@
             android:id="@+id/star5_card_restaurant"
             android:layout_width="@dimen/star"
             android:layout_height="@dimen/star"
+            android:visibility="gone"
 
             android:layout_below="@id/icon_card_favourite"
             android:layout_marginStart="0dp"
@@ -195,7 +215,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_toEndOf="@+id/star5_card_restaurant"
+            android:layout_toEndOf="@+id/rating_card_restaurant"
             android:text="100 review"
             android:textSize="@dimen/text_size_small"></TextView>
 

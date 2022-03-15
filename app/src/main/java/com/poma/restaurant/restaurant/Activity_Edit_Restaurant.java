@@ -163,7 +163,7 @@ public class Activity_Edit_Restaurant extends Activity_Drawer_Menu_Admin impleme
         r.setTags(tags);
 
         Integer n = new Integer(0);
-        Integer n2 = new Integer(0);
+        Float n2 = new Float(0);
         r.setN_reviews(n);
         r.setVote(n2);
 

@@ -1,25 +1,41 @@
 package com.poma.restaurant.model.RecyclerViewAdapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatRatingBar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.poma.restaurant.R;
 import com.poma.restaurant.model.Favourite;
+import com.poma.restaurant.model.Restaurant;
 import com.poma.restaurant.model.Review;
 
 import java.util.List;
+import java.util.Map;
 
 
 public class RecyclerViewAdapter_Review extends RecyclerView.Adapter<RecyclerViewAdapter_Review.MyViewHolder> {
@@ -86,6 +102,8 @@ public class RecyclerViewAdapter_Review extends RecyclerView.Adapter<RecyclerVie
 
         invisible(holder);
 
+        updateImageView(holder, n);
+
 
         //Click sulla card
         holder.cardView_review.setOnClickListener(new View.OnClickListener() {
@@ -121,15 +139,51 @@ public class RecyclerViewAdapter_Review extends RecyclerView.Adapter<RecyclerVie
         holder.textview_problem.setVisibility(View.GONE);
         holder.textview_experience.setVisibility(View.GONE);
         holder.load_less.setVisibility(View.GONE);
+
+        holder.title_location.setVisibility(View.GONE);
+        holder.title_service.setVisibility(View.GONE);
+        holder.title_problem.setVisibility(View.GONE);
+        holder.title_experience.setVisibility(View.GONE);
+
+        holder.view1.setVisibility(View.GONE);
+        holder.view2.setVisibility(View.GONE);
+        holder.view3.setVisibility(View.GONE);
+        holder.view4.setVisibility(View.GONE);
+
         holder.load_more.setVisibility(View.VISIBLE);
     }
 
     private void visible(RecyclerViewAdapter_Review.MyViewHolder holder){
-        holder.textview_location.setVisibility(View.VISIBLE);
-        holder.textview_service.setVisibility(View.VISIBLE);
-        holder.textview_problem.setVisibility(View.VISIBLE);
-        holder.textview_experience.setVisibility(View.VISIBLE);
+        if (!holder.textview_location.getText().equals("")){
+            holder.textview_location.setVisibility(View.VISIBLE);
+            holder.title_location.setVisibility(View.VISIBLE);
+            holder.view1.setVisibility(View.VISIBLE);
+        }
+
+        if (!holder.textview_service.getText().equals("")){
+            holder.textview_service.setVisibility(View.VISIBLE);
+            holder.title_service.setVisibility(View.VISIBLE);
+            holder.view2.setVisibility(View.VISIBLE);
+        }
+
+        if (!holder.textview_experience.getText().equals("")){
+            holder.textview_experience.setVisibility(View.VISIBLE);
+            holder.title_experience.setVisibility(View.VISIBLE);
+
+            holder.view3.setVisibility(View.VISIBLE);
+        }
+
+        if (!holder.textview_problem.getText().equals("")){
+            holder.textview_problem.setVisibility(View.VISIBLE);
+            holder.title_problem.setVisibility(View.VISIBLE);
+
+        }
+
+
+
         holder.load_less.setVisibility(View.VISIBLE);
+
+        holder.view4.setVisibility(View.GONE);
         holder.load_more.setVisibility(View.GONE);
     }
 
@@ -150,6 +204,7 @@ public class RecyclerViewAdapter_Review extends RecyclerView.Adapter<RecyclerVie
         CardView cardView_review;
         ImageView image;
         AppCompatRatingBar rating;
+        ProgressBar progressBar;
 
         View view1, view2, view3, view4;
         TextView title_location, title_service, title_experience, title_problem;
@@ -184,10 +239,73 @@ public class RecyclerViewAdapter_Review extends RecyclerView.Adapter<RecyclerVie
             view3 = (View) itemView.findViewById(R.id.view3_cardreview);
             view4 = (View) itemView.findViewById(R.id.view4_cardreview);
 
+            progressBar = (ProgressBar) itemView.findViewById(R.id.progress_bar_cardreview);
+
 
 
         }
     }
+
+    //Caricamento asincrono imageview
+    public void updateImageView(RecyclerViewAdapter_Review.MyViewHolder holder, Review n) {
+
+        Log.d(TAG_LOG, "inizio update imageView");
+        holder.progressBar.setVisibility(View.VISIBLE);
+
+        DocumentReference docRef = db.collection("users").document(n.getUser_id());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG_LOG, "task successfull");
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
+
+                        if ((String)data.get("imageUrl") != null && (String)data.get("imageUrl")!= ""){
+                            Uri uri = Uri.parse((String)data.get("imageUrl"));
+                            Log.d("firebase", "Image Url: " + uri);
+                            Glide.with(mContext)
+                                    .load(uri)
+                                    .listener(new RequestListener<Drawable>() {
+                                        @Override
+                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                            holder.progressBar.setVisibility(View.INVISIBLE);
+                                            holder.image.setImageResource(R.drawable.ic_baseline_image_24);
+                                            return false;
+                                        }
+                                        @Override
+                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                            Log.d(TAG_LOG, "Glide on resource ready");
+                                            holder.progressBar.setVisibility(View.INVISIBLE);
+                                            return false;
+                                        }
+                                    })
+                                    .into(holder.image);
+                        }
+                        else {
+                            holder.progressBar.setVisibility(View.INVISIBLE);
+                            holder.image.setImageResource(R.drawable.ic_baseline_account_circle_24);
+                        }
+
+
+
+                    } else {
+                        Log.d(TAG_LOG, "No such document");
+                        holder.progressBar.setVisibility(View.INVISIBLE);
+
+                    }
+                } else {
+                    Log.d(TAG_LOG, "get failed with ", task.getException());
+                    holder.progressBar.setVisibility(View.INVISIBLE);
+
+                }
+            }
+        });
+
+    }
+
 
 
 }

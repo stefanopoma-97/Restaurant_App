@@ -303,8 +303,10 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         n.setPhone((String)d.get("phone"));
         n.setTags((List<String>) d.get("tags"));
 
-        int in = d.getLong("vote").intValue();
-        n.setVote((int)in);
+        Double valore = (Double) d.get("vote");
+        n.setVote(new Float(valore.floatValue()));
+
+        Log.d(TAG_LOG, "Voto settato: "+valore);
 
         int in2 = d.getLong("n_reviews").intValue();
         n.setN_reviews((int)in2);

@@ -38,6 +38,9 @@ import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.Restaurant;
 import com.poma.restaurant.model.Review;
 import com.poma.restaurant.model.User;
+import com.poma.restaurant.restaurant.Activity_Restaurants_List_Client;
+import com.poma.restaurant.review.Activity_Review;
+import com.poma.restaurant.utilities.Action;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -130,6 +133,17 @@ public class Activity_Test extends Activity_Drawer_Menu_User {
             public void onClick(View v) {
                 Log.d(TAG_LOG, "Crea preferito");
                 create_review();
+
+            }
+        });
+
+        Button btn_got_to_review= (Button)findViewById(R.id.btn_go_to_review);
+        btn_got_to_review.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in3 = new Intent(getApplicationContext(), Activity_Review.class);
+                in3.putExtra(Action.RESTAURANT_ID_EXTRA, "1PnYRQVWNaV7EfZ9Guz6");
+                startActivity(in3);
 
             }
         });
@@ -259,7 +273,7 @@ public class Activity_Test extends Activity_Drawer_Menu_User {
         array.add("tag2");
         r.setTags(array);
         Integer n = new Integer(100);
-        Integer n2 = new Integer(4);
+        Float n2 = new Float(4);
         r.setN_reviews(n);
         r.setVote(n2);
 

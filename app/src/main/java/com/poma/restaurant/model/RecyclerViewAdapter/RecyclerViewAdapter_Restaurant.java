@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatRatingBar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -189,6 +190,8 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
         Button btn_direction, btn_call;
         ProgressBar progressBar;
 
+        AppCompatRatingBar rating;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -204,6 +207,8 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
 
             btn_call = (Button)itemView.findViewById(R.id.btn_card_restaurant_call);
             btn_direction = (Button)itemView.findViewById(R.id.btn_card_restaurant_map);
+
+            rating = (AppCompatRatingBar) itemView.findViewById(R.id.rating_card_restaurant);
 
             textview_card_restaurant_title = (TextView) itemView.findViewById(R.id.textview_card_favourite_title);
             textview_card_restaurant_category = (TextView) itemView.findViewById(R.id.textview_card_favourite_category);
@@ -291,6 +296,9 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
     }
 
     private void populated_star(RecyclerViewAdapter_Restaurant.MyViewHolder holder, Restaurant r){
+
+        holder.rating.setRating(r.getVote());
+
         Log.d(TAG_LOG, "Populated stars");
         Log.d(TAG_LOG, "voto ristorante: "+r.getName()+" Voto:"+r.getVote());
         int stelle = (int) Math.round(r.getVote());

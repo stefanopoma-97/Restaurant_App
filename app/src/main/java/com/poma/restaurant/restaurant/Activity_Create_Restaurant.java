@@ -151,7 +151,7 @@ public class Activity_Create_Restaurant extends Activity_Drawer_Menu_Admin imple
         r.setTags(tags);
 
         Integer n = new Integer(0);
-        Integer n2 = new Integer(0);
+        Float n2 = new Float(0);
         r.setN_reviews(n);
         r.setVote(n2);
 

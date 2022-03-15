@@ -78,5 +78,8 @@
     <!-- star-->
     <dimen name="star">20dp</dimen>
 
+    <!-- title review-->
+    <dimen name="title_review">100dp</dimen>
+
 
 </resources>
