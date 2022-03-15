@@ -2,12 +2,15 @@ package com.poma.restaurant.review;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -32,10 +35,14 @@ public class Activity_Review extends AppCompatActivity {
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
     private User currentUser2;
+    private String id_restaurant;
 
     private BroadcastReceiver broadcastReceiver;
 
     private static Fragment_Reviews_List fragment_reviews_list;
+
+    ImageView imageView_back;
+    AppCompatButton btn_create_review;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +54,13 @@ public class Activity_Review extends AppCompatActivity {
                 getSupportFragmentManager().findFragmentById(R.id.fragment_reviews_list);
 
         Intent intent = getIntent(); //receive the intent
-        String id_restaurant= intent.getStringExtra(Action.RESTAURANT_ID_EXTRA);
+        this.id_restaurant= intent.getStringExtra(Action.RESTAURANT_ID_EXTRA);
+        Log.d(TAG_LOG, "Ricevo Extra; "+this.id_restaurant);
 
         this.fragment_reviews_list.setRestaurant_id(id_restaurant);
+
+        this.imageView_back = findViewById(R.id.arrow_back_review_client);
+        this.btn_create_review = findViewById(R.id.btn_create_review);
 
 
         //Riceve broadcast
@@ -63,6 +74,23 @@ public class Activity_Review extends AppCompatActivity {
             }
         });
         registerReceiver(this.broadcastReceiver, intentFilter);
+
+
+        this.btn_create_review.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(Activity_Review.this, Activity_Create_Review.class);
+                intent1.putExtra(Action.RESTAURANT_ID_EXTRA, id_restaurant);
+                startActivity(intent1);
+            }
+        });
+
+        this.imageView_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                back();
+            }
+        });
     }
 
     @Override
@@ -114,10 +142,12 @@ public class Activity_Review extends AppCompatActivity {
 
                             if((boolean)data.get("admin")){
                                 Log.d(TAG_LOG, "Errore - Utente Admin");
-                                finish();
+                                btn_create_review.setVisibility(View.GONE);
+
                             }
                             else {
                                 Log.d(TAG_LOG, "Utente Visitatore");
+                                btn_create_review.setVisibility(View.VISIBLE);
                             }
                         }
                     }

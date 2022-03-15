@@ -83,6 +83,10 @@
                 android:layout_marginTop="1dp"
                 android:theme="@style/RatingBar"
 
+                android:clickable="false"
+                android:contextClickable="false"
+                android:isIndicator="true"
+
 
                 android:rating="0"
                 app:layout_constraintBottom_toBottomOf="parent"

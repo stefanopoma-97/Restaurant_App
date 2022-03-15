@@ -31,7 +31,6 @@
                 app:layout_constraintBottom_toTopOf="@+id/btn_edit_restaurant_create"
 
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias=".5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/chipCpp2"
 

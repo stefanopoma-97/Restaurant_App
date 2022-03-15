@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +57,8 @@ import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.Restaurant;
 import com.poma.restaurant.notifications.Fragment_Notification;
 import com.poma.restaurant.notifications.Fragment_Notification_List;
+import com.poma.restaurant.review.Activity_Review;
+import com.poma.restaurant.utilities.Action;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -94,6 +98,7 @@ public class Fragment_Restaurant_Client extends Fragment {
     private TextView textView_tag2;
     private TextView textView_tag3;
     private View view_color;
+    private TextView review;
 
     private Button btn_edit;
     private Button btn_back;
@@ -171,6 +176,7 @@ public class Fragment_Restaurant_Client extends Fragment {
         this.textView_tag1 = view.findViewById(R.id.textview_tag1_fragment_restaurant);
         this.textView_tag2 = view.findViewById(R.id.textview_tag2_fragment_restaurant);
         this.textView_tag3 = view.findViewById(R.id.textview_tag3_fragment_restaurant);
+        this.review = view.findViewById(R.id.textview_reviews_link_fragment_restaurant);
 
         this.progressDialog_image = new ProgressDialog(view.getContext());
 
@@ -210,6 +216,8 @@ public class Fragment_Restaurant_Client extends Fragment {
 
 
 
+
+
         return view;
     }
 
@@ -230,6 +238,15 @@ public class Fragment_Restaurant_Client extends Fragment {
                 }
             });
         }
+
+        this.review.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), Activity_Review.class);
+                intent.putExtra(Action.RESTAURANT_ID_EXTRA, restaurant_id);
+                startActivity(intent);
+            }
+        });
 
 
     }
@@ -491,13 +508,15 @@ public class Fragment_Restaurant_Client extends Fragment {
                         restaurant.setTags((List<String>) data.get("tags"));
                         restaurant.setAdmin_id((String) data.get("admin_id"));
                         restaurant.setId((String) document.getId());
+
+
                         /*
                         Long in = (long)data.get("vote");
                         restaurant.setVote(in.intValue());
-
+                        */
                         Long in2 = (long)data.get("n_reviews");
                         restaurant.setN_reviews(in2.intValue());
-                        */
+
 
 
 
@@ -506,6 +525,10 @@ public class Fragment_Restaurant_Client extends Fragment {
                         textView_city.setText(restaurant.getCity());
                         textView_category.setText(restaurant.getCategory());
                         textView_mail.setText(restaurant.getEmail());
+
+                        SpannableString content = new SpannableString(String.valueOf(restaurant.getN_reviews()));
+                        content.setSpan(new UnderlineSpan(), 0, (String.valueOf(restaurant.getN_reviews())).length(), 0);
+                        review.setText(content);
 
                         String tag1 = restaurant.getTag1();
                         if (tag1 != ""){

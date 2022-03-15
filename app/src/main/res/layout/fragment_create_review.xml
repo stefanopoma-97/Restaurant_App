@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".review.Fragment_Create_Review">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edittext_edit_review_experience"
+
+            android:layout_width="0dp"
+
+            android:layout_height="wrap_content"
+            android:hint="@string/insert_experience"
+            android:lines="5"
+
+            android:maxLines="5"
+            android:minLines="5"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+
+            android:paddingBottom="10dp"
+            android:textSize="@dimen/text_size_medium_large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".5"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:layout_constraintVertical_bias=".02"
+            app:layout_constraintWidth_percent=".8" />
+
+        <EditText
+            android:id="@+id/edittext_edit_review_service"
+
+            android:layout_width="0dp"
+
+            android:layout_height="wrap_content"
+            android:hint="@string/insert_service"
+            android:lines="5"
+
+            android:maxLines="5"
+            android:minLines="5"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+
+            android:paddingBottom="10dp"
+            android:textSize="@dimen/text_size_medium_large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".5"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edittext_edit_review_experience"
+
+            app:layout_constraintVertical_bias=".02"
+            app:layout_constraintWidth_percent=".8" />
+
+        <EditText
+            android:id="@+id/edittext_edit_review_location"
+
+            android:layout_width="0dp"
+
+            android:layout_height="wrap_content"
+            android:hint="@string/insert_location"
+            android:lines="5"
+
+            android:maxLines="5"
+            android:minLines="5"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+
+            android:paddingBottom="10dp"
+            android:textSize="@dimen/text_size_medium_large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".5"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edittext_edit_review_service"
+
+            app:layout_constraintVertical_bias=".02"
+            app:layout_constraintWidth_percent=".8" />
+
+        <EditText
+            android:id="@+id/edittext_edit_review_problem"
+
+            android:layout_width="0dp"
+
+            android:layout_height="wrap_content"
+            android:hint="@string/insert_problems"
+            android:lines="5"
+
+            android:maxLines="5"
+            android:minLines="5"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+
+            android:paddingBottom="10dp"
+            android:textSize="@dimen/text_size_medium_large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".5"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edittext_edit_review_location"
+
+            app:layout_constraintVertical_bias=".02"
+            app:layout_constraintWidth_percent=".8" />
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/ratingbar_create_review"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:rating="0"
+            android:theme="@style/RatingBar"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edittext_edit_review_problem"
+            app:layout_constraintVertical_bias="0."
+
+            />
+
+        <TextView
+            android:id="@+id/textview_create_review_alert_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:text=""
+
+            android:textAlignment="center"
+            android:textColor="@color/red"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold"
+
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ratingbar_create_review"
+
+
+            app:layout_constraintVertical_bias=".1"
+            app:layout_constraintWidth_percent=".8" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save_review"
+            style="@style/main_button_style"
+            android:layout_width="0dp"
+
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            app:icon="@drawable/ic_baseline_save_24"
+            app:iconGravity="textStart"
+
+            app:cornerRadius="@dimen/button_radius"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintHorizontal_bias=".5"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toBottomOf="@+id/ratingbar_create_review"
+            app:layout_constraintVertical_bias=".2"
+            app:layout_constraintWidth_percent=".8"
+            android:layout_margin="50dp"
+
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_cancel_review"
+            style="@style/button_secondary"
+            android:layout_width="0dp"
+
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+
+            app:cornerRadius="@dimen/button_radius"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintHorizontal_bias=".5"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toBottomOf="@+id/btn_save_review"
+            app:layout_constraintVertical_bias="1"
+            app:layout_constraintWidth_percent=".8"
+            android:layout_marginBottom="200dp"
+
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

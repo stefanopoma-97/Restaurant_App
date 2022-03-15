@@ -95,4 +95,17 @@ public class Review {
         this.username = username;
     }
 
+    @Override
+    public String toString() {
+        return "Review{" +
+                "user_id='" + user_id + '\'' +
+                ", restaurant_id='" + restaurant_id + '\'' +
+                ", location='" + location + '\'' +
+                ", service='" + service + '\'' +
+                ", experience='" + experience + '\'' +
+                ", problems='" + problems + '\'' +
+                ", username='" + username + '\'' +
+                ", vote=" + vote +
+                '}';
+    }
 }
