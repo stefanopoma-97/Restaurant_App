@@ -262,6 +262,7 @@ public class Activity_Edit_Restaurant extends Activity_Drawer_Menu_Admin impleme
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
                             Log.d(TAG_LOG, "aggiorno ristorante");
+                            update_favourites(id, name, category, address);
                             finish();
 
                         }
@@ -272,10 +273,60 @@ public class Activity_Edit_Restaurant extends Activity_Drawer_Menu_Admin impleme
                     }
                 });
 
-
-
-
     }
+
+
+    private void update_favourites(String restaurant_id, String name, String category, String address){
+        Log.d(TAG_LOG, "Update reviews");
+        db.collection("favourites").whereEqualTo("restaurant_id", restaurant_id).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                Log.d(TAG_LOG, "On complete");
+
+                if (task.isSuccessful()) {
+                    Log.d(TAG_LOG, "is successfull");
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                        Map<String, Object> data = document.getData();
+                        Log.d(TAG_LOG, "Favourite: "+data.toString());
+                        update_single_favourite(document.getId(), name, category, address);
+                    }
+
+                } else {
+                    Log.d(TAG_LOG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+    }
+
+    private void update_single_favourite(String favourite_id, String name, String category, String address){
+        Log.d(TAG_LOG, "aggionro singola review");
+
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("restaurant_name", name);
+        data.put("restaurant_category", category);
+        data.put("restaurant_address", address);
+
+
+        DocumentReference document = db.collection("favourites").document(favourite_id);
+        document.set(data, SetOptions.merge())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Log.d(TAG_LOG, "aggiorno preferito");
+
+                        }
+                        else{
+                            Log.d(TAG_LOG, "problemi aggiornamento preferito");
+
+                        }
+                    }
+                });
+    }
+
 
     @Override
     public void cancel() {
