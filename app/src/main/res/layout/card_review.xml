@@ -151,6 +151,7 @@
                 app:layout_constraintWidth_percent=".7"
                 android:visibility="visible"/>
 
+
             <View
                 android:id="@+id/view1_cardreview"
                 android:layout_width="0dp"
@@ -160,16 +161,15 @@
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.803"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textview_location_content_cardreview"
 
-                app:layout_constraintVertical_bias="0.05"
+                app:layout_constraintTop_toBottomOf="@+id/textview_location_content_cardreview"
+                app:layout_constraintVertical_bias="0.046"
                 app:layout_constraintWidth_percent=".6"
-                app:layout_constraintHorizontal_bias=".8"
 
 
                 />
-
 
             <TextView
                 android:id="@+id/textview_service_cardreview"

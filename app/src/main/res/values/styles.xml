@@ -85,6 +85,23 @@
 
     </style>
 
+
+    <style name="main_button_style_direction" parent="Widget.MaterialComponents.Button">
+        <!--<item name="android:background">@drawable/button_primary_background</item>-->
+        <!--<item name="android:textColor">@drawable/button_primary_textcolor</item>-->
+        <item name="android:backgroundTint">@color/red_light</item>
+
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+
+        <item name="android:padding">@dimen/padding_button</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+
+
+    </style>
+
     <style name="chip_styles" parent="Base.Widget.MaterialComponents.Chip">
     <item name="android:checkable">true</item>
 

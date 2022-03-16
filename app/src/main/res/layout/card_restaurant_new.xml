@@ -28,14 +28,16 @@
             android:layout_margin="10dp"
             android:contentDescription="@string/app_name"
             android:padding="5dp"
+            android:src="@drawable/add_image"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias=".0"
             app:layout_constraintStart_toStartOf="parent"
-
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias=".05" />
+
+            app:layout_constraintHorizontal_bias=".0"
+            app:layout_constraintVertical_bias=".0"
+            />
 
 
         <ProgressBar
@@ -50,7 +52,7 @@
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/icon_card_favourite"
             app:layout_constraintEnd_toEndOf="@+id/icon_card_favourite"
-            app:layout_constraintStart_toStartOf="@+id/icon_card_favourite"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/icon_card_favourite" />
 
         <TextView
@@ -68,7 +70,7 @@
             app:layout_constraintStart_toEndOf="@+id/icon_card_favourite"
             app:layout_constraintTop_toTopOf="parent"
 
-            app:layout_constraintHorizontal_bias=".5"
+            app:layout_constraintHorizontal_bias=".1"
             app:layout_constraintVertical_bias=".1"
 
             />
@@ -84,26 +86,29 @@
             android:textSize="@dimen/text_size_medium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias=".5"
-            app:layout_constraintStart_toEndOf="@+id/icon_card_favourite"
-            app:layout_constraintTop_toBottomOf="@+id/textview_card_favourite_title"
-            app:layout_constraintVertical_bias=".05" />
+            app:layout_constraintStart_toEndOf="@+id/textview_card_favourite_title"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias=".1"
+            app:layout_constraintVertical_bias=".1"
+            />
 
         <TextView
             android:id="@+id/textview_card_favourite_adress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:layout_below="@id/textview_card_favourite_title"
+            android:layout_toEndOf="@id/icon_card_favourite"
             android:drawablePadding="2dp"
             android:gravity="left"
             android:text="Via ancona 13 - Palazzolo"
             android:textSize="@dimen/text_size_small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/icon_card_favourite"
+            app:layout_constraintTop_toBottomOf="@+id/textview_card_favourite_title"
             app:layout_constraintHorizontal_bias=".1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/icon_card_favourite"
-            app:layout_constraintVertical_bias=".05" />
+            app:layout_constraintVertical_bias=".1"
+            />
 
         <TextView
             android:id="@+id/textview_card_restaurant_tag1"
@@ -118,59 +123,45 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias=".3"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/icon_card_favourite"
             app:layout_constraintTop_toBottomOf="@+id/textview_card_favourite_adress"
-            app:layout_constraintVertical_bias=".05" />
+            app:layout_constraintVertical_bias=".1" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/rating_card_restaurant"
+            style="@style/RatingBar_small"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/star"
+            android:layout_below="@id/icon_card_favourite"
+            android:layout_margin="10dp"
+            android:numStars="5"
+            android:padding="0dp"
+
+            android:rating="0"
+            android:stepSize="0.5"
+            android:theme="@style/RatingBar"
+            app:layout_constraintBottom_toBottomOf="@+id/view1_cardreview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_card_restaurant_tag1"
+            app:layout_constraintTop_toBottomOf="@+id/icon_card_favourite"
+            app:layout_constraintHorizontal_bias=".05"
             app:layout_constraintVertical_bias=".1"
-            >
+            />
 
-            <androidx.appcompat.widget.AppCompatRatingBar
-                android:id="@+id/rating_card_restaurant"
-                style="@style/RatingBar_small"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/star"
-                android:numStars="5"
-                android:padding="0dp"
-
-                android:rating="0"
-                android:stepSize="0.5"
-                android:theme="@style/RatingBar"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias=".2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias=".1" />
-
-            <TextView
-                android:id="@+id/textview_card_restaurant_number_review"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/rating_card_restaurant"
-                android:text="100 review"
-                android:textSize="@dimen/text_size_small"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias=".8"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias=".1"
-
-                />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
+        <TextView
+            android:id="@+id/textview_card_restaurant_number_review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/icon_card_favourite"
+            android:layout_toEndOf="@+id/rating_card_restaurant"
+            android:text="100 review"
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintBottom_toBottomOf="@+id/view1_cardreview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".05"
+            app:layout_constraintStart_toEndOf="@+id/rating_card_restaurant"
+            app:layout_constraintTop_toTopOf="@+id/rating_card_restaurant"
+            app:layout_constraintVertical_bias=".1"/>
 
         <View
             android:id="@+id/view1_cardreview"
@@ -184,7 +175,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
 
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+            app:layout_constraintTop_toBottomOf="@+id/rating_card_restaurant"
             app:layout_constraintVertical_bias="0.2"
             app:layout_constraintWidth_percent=".8"
 

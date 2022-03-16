@@ -199,11 +199,13 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
             progressBar = (ProgressBar)itemView.findViewById(R.id.progress_bar_card_favourite);
 
             imageView_icon_restaurant = (ImageView) itemView.findViewById(R.id.icon_card_favourite);
-            star1 = (ImageView) itemView.findViewById(R.id.star1_card_restaurant);
+            /*star1 = (ImageView) itemView.findViewById(R.id.star1_card_restaurant);
             star2 = (ImageView) itemView.findViewById(R.id.star2_card_restaurant);
             star3 = (ImageView) itemView.findViewById(R.id.star3_card_restaurant);
             star4 = (ImageView) itemView.findViewById(R.id.star4_card_restaurant);
             star5 = (ImageView) itemView.findViewById(R.id.star5_card_restaurant);
+
+             */
 
             btn_call = (Button)itemView.findViewById(R.id.btn_card_restaurant_call);
             btn_direction = (Button)itemView.findViewById(R.id.btn_card_restaurant_map);
@@ -300,6 +302,8 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
         holder.rating.setRating(r.getVote());
 
         Log.d(TAG_LOG, "Populated stars");
+
+        /*
         Log.d(TAG_LOG, "voto ristorante: "+r.getName()+" Voto:"+r.getVote());
         int stelle = (int) Math.round(r.getVote());
         Log.d(TAG_LOG, "Roud: "+stelle);
@@ -349,5 +353,7 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
             holder.star1.setColorFilter(R.color.grey);
 
         }
+
+         */
     }
 }
