@@ -3,6 +3,7 @@ package com.poma.restaurant.review;
 import android.app.Activity;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatRatingBar;
 import androidx.fragment.app.Fragment;
 
@@ -31,6 +32,9 @@ import java.util.List;
 public class Fragment_Create_Review extends Fragment {
 
     private static final String TAG_LOG = Fragment_Create_Review.class.getName();
+
+    private static final String ERROR_STRING_KEY_FRAGMENT_CREATE_REVIEW= "com.poma.restaurant.ERROR_STRING_KEY_FRAGMENT_CREATE_REVIEW=";
+
 
     private static String error_state ="";
 
@@ -137,6 +141,40 @@ public class Fragment_Create_Review extends Fragment {
         return view;
     }
 
+    //State
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+
+        savedInstanceState.putString(ERROR_STRING_KEY_FRAGMENT_CREATE_REVIEW, this.textView_error.getText().toString());
+        super.onSaveInstanceState(savedInstanceState);
+        Log.d(TAG_LOG,"Save state: "+ERROR_STRING_KEY_FRAGMENT_CREATE_REVIEW+" valore: "+this.textView_error.getText().toString());
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d(TAG_LOG,"on Activity Create");
+
+        if (savedInstanceState != null){
+            String errore = savedInstanceState.getString(ERROR_STRING_KEY_FRAGMENT_CREATE_REVIEW);
+            if (errore==""){
+                this.error_state="";
+            }
+            else {
+                this.error_state=errore;
+            }
+
+            setErrorState(this.error_state);
+
+            Log.d(TAG_LOG,"Retrive state: "+ERROR_STRING_KEY_FRAGMENT_CREATE_REVIEW+" valore: "+errore);
+        }
+        else {
+            Log.d(TAG_LOG,"Retrive state: "+ERROR_STRING_KEY_FRAGMENT_CREATE_REVIEW+" valore: null");
+        }
+
+    }
+
 
     //Interfaccia
     public interface CreateReviewInterface {
@@ -163,6 +201,12 @@ public class Fragment_Create_Review extends Fragment {
         }
     }
 
+    private void setErrorState(String s){
+        this.textView_error.setText(s);
+        this.textView_error.setVisibility(View.VISIBLE);
+        this.textView_error.requestFocus();
+    }
+
     private Boolean checkFields (){
         Log.d(TAG_LOG, "check fields");
         String experience = editText_experience.getText().toString();
@@ -173,7 +217,7 @@ public class Fragment_Create_Review extends Fragment {
         if(TextUtils.isEmpty(experience))
         {
             Log.d(TAG_LOG, "name vuoto");
-            this.textView_error.setText(getResources().getString(R.string.name_mandatory));
+            this.textView_error.setText(getResources().getString(R.string.experience_mandatory));
             this.textView_error.setVisibility(View.VISIBLE);
             this.textView_error.requestFocus();
 

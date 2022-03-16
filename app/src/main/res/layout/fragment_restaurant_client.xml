@@ -369,27 +369,27 @@
 
                     />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/floatingActionButton_favourite_fragment_restaurant"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:clickable="true"
-                    android:visibility="visible"
-
-                    app:backgroundTint="#FFEB3B"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias=".1"
-                    app:layout_constraintHorizontal_bias=".9"
-                    app:rippleColor="@color/yellow_star"
-                    app:srcCompat="@drawable/ic_baseline_star_24" />
-
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingActionButton_favourite_fragment_restaurant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:clickable="true"
+                android:visibility="visible"
+
+                app:backgroundTint="#FFEB3B"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.859"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/constraintLayout_restaurant"
+                app:layout_constraintVertical_bias="0.0"
+                app:rippleColor="@color/yellow_star"
+                app:srcCompat="@drawable/ic_baseline_star_24" />
 
 
             <com.google.android.material.button.MaterialButton

@@ -47,6 +47,7 @@ public class Activity_Review extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG_LOG, "On create");
         setContentView(R.layout.activity_review);
 
         this.mAuth= FirebaseAuth.getInstance();
@@ -75,7 +76,6 @@ public class Activity_Review extends AppCompatActivity {
         });
         registerReceiver(this.broadcastReceiver, intentFilter);
 
-
         this.btn_create_review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,6 +84,13 @@ public class Activity_Review extends AppCompatActivity {
                 startActivity(intent1);
             }
         });
+
+
+
+
+
+
+
 
         this.imageView_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +104,16 @@ public class Activity_Review extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         check_user();
+
+        Log.d(TAG_LOG, "Land? :"+getResources().getBoolean(R.bool.dual_pane));
+        if (getResources().getBoolean(R.bool.dual_pane)){
+            this.btn_create_review.setVisibility(View.GONE);
+            Log.d(TAG_LOG, "rendo il bottone invisibile");
+        }
+        else {
+            this.btn_create_review.setVisibility(View.VISIBLE);
+            Log.d(TAG_LOG, "rendo il bottone visibile");
+        }
     }
 
 
@@ -147,7 +164,7 @@ public class Activity_Review extends AppCompatActivity {
                             }
                             else {
                                 Log.d(TAG_LOG, "Utente Visitatore");
-                                btn_create_review.setVisibility(View.VISIBLE);
+                                //btn_create_review.setVisibility(View.VISIBLE);
                             }
                         }
                     }
