@@ -312,7 +312,7 @@ public class Fragment_Notification_List extends Fragment {
     private Notification createNotification(QueryDocumentSnapshot d){
         Log.d(TAG_LOG, "Creando una notifica");
         Notification n = new Notification(mAuth.getCurrentUser().getUid(), d.getId(), d.getString("type"));
-        //n.setDate((long)d.get("date"));
+        n.setDate((long)d.get("date"));
         n.setContent((String)d.get("content"));
         n.setRead((Boolean)d.get("read"));
         Log.d(TAG_LOG, "Notifica creata correttamente, user_id: "+n.getUser_id()+", id: "+n.getId()+", type: "+n.getType()+", read: "+n.getRead());

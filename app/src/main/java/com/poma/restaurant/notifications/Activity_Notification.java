@@ -13,11 +13,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.poma.restaurant.R;
 import com.poma.restaurant.databinding.ActivityMenuBinding;
 import com.poma.restaurant.databinding.ActivityNotificationBinding;
+import com.poma.restaurant.login.Activity_First_Access;
 import com.poma.restaurant.menu.Activity_Menu;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
 import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.User;
+import com.poma.restaurant.restaurant.Activity_Restaurant_Admin;
+import com.poma.restaurant.restaurant.Activity_Restaurant_Client;
+import com.poma.restaurant.utilities.Action;
 
 
 import android.app.PendingIntent;
@@ -124,10 +128,21 @@ public class Activity_Notification extends AppCompatActivity implements Fragment
     }
 
     private void redirect_to_notification(Notification n){
-        //TODO in base al tipo di notifica vanno creati intent differenti
-        final Intent intent = new Intent(Activity_Notification.this, Activity_Menu.class);
-        intent.putExtra(USEFUL_ID_EXTRA, n.getUseful_id());
-        startActivity(intent);
+        if (n.getType().equals(getResources().getString(R.string.new_restaurant))){
+            Log.d(TAG_LOG, "Creando una notifica di tipo NUOVO RISTORANTE");
+            Intent intent = new Intent(Activity_Notification.this, Activity_Restaurant_Client.class);
+            intent.putExtra(Action.RESTAURANT_ID_EXTRA, n.getUseful_id());
+            Log.d(TAG_LOG, "Inserisco extra: "+Action.RESTAURANT_ID_EXTRA+" - "+n.getUseful_id());
+            startActivity(intent);
+
+        }
+        else if(n.getType().equals(getResources().getString(R.string.new_favourite))) {
+            Log.d(TAG_LOG, "Creando una notifica di tipo NUOVO PREFERITO");
+            Intent intent2 = new Intent(Activity_Notification.this, Activity_Restaurant_Admin.class);
+            intent2.putExtra(Action.RESTAURANT_ID_EXTRA, n.getUseful_id());
+            Log.d(TAG_LOG, "Inserisco extra: "+Action.RESTAURANT_ID_EXTRA+" - "+n.getUseful_id());
+            startActivity(intent2);
+        }
 
     }
 
