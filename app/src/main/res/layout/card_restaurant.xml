@@ -203,13 +203,13 @@
 
             app:icon="@drawable/ic_baseline_directions_24"
             android:text="Direction"
-            android:textSize="@dimen/text_size_medium"
+            android:textSize="@dimen/text_size_small"
             app:iconSize="@dimen/star"
 
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view1_card_restaurant"
             app:layout_constraintVertical_bias=".1"
-            app:layout_constraintHorizontal_bias=".1"
+            app:layout_constraintHorizontal_bias=".05"
             />
 
         <com.google.android.material.button.MaterialButton
@@ -223,13 +223,13 @@
 
             android:text="CALL"
             app:icon="@drawable/ic_baseline_call_24"
-            android:textSize="@dimen/text_size_medium"
+            android:textSize="@dimen/text_size_small"
             app:iconSize="@dimen/star"
 
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view1_cardreview"
             app:layout_constraintVertical_bias=".1"
-            app:layout_constraintHorizontal_bias=".9"
+            app:layout_constraintHorizontal_bias=".95"
             />
 
 
