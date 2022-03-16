@@ -60,7 +60,7 @@
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent=".4"
+                app:layout_constraintHeight_percent=".3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0."
@@ -80,7 +80,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view2_restaurant_client"
-                app:layout_constraintVertical_bias=".1"/>
+                app:layout_constraintVertical_bias=".05"/>
 
             <View
                 android:id="@+id/view3"
@@ -295,6 +295,103 @@
                 tools:ignore="MissingConstraints" />
 
 
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout_restaurant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_tag1_fragment_restaurant"
+                app:layout_constraintVertical_bias=".1"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/textview_reviews_fragment_restaurant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="Reviews: "
+
+                    android:textAlignment="center"
+                    android:textSize="@dimen/text_size_small"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias=".2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias=".1"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/textview_reviews_link_fragment_restaurant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="20dp"
+                    android:text="0"
+
+                    android:textColor="@color/blue_link"
+                    android:textSize="@dimen/text_size_small"
+
+
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias=".05"
+                    app:layout_constraintStart_toEndOf="@+id/textview_reviews_fragment_restaurant"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias=".1"
+                    tools:ignore="MissingConstraints" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/floatingActionButton_removefavourite_fragment_restaurant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+
+                    android:visibility="gone"
+                    app:backgroundTint="#FFEB3B"
+
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias=".1"
+                    app:layout_constraintHorizontal_bias=".9"
+
+                    app:rippleColor="@color/yellow_star"
+                    app:srcCompat="@drawable/ic_baseline_remove_circle_24"
+
+                    />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/floatingActionButton_favourite_fragment_restaurant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:clickable="true"
+                    android:visibility="visible"
+
+                    app:backgroundTint="#FFEB3B"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias=".1"
+                    app:layout_constraintHorizontal_bias=".9"
+                    app:rippleColor="@color/yellow_star"
+                    app:srcCompat="@drawable/ic_baseline_star_24" />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_edit_fragment_restaurant"
                 style="@style/main_button_style"
@@ -313,7 +410,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textview_tag1_fragment_restaurant"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout_restaurant"
                 app:layout_constraintVertical_bias="0.3"
 
                 app:layout_constraintWidth_percent=".8"
@@ -324,12 +421,13 @@
                 android:id="@+id/btn_back_fragment_restaurant"
                 style="@style/button_secondary"
 
-                android:layout_width="0dp"
                 app:icon="@drawable/ic_baseline_arrow_back_24"
                 app:iconGravity="textStart"
 
                 android:layout_height="wrap_content"
                 android:text="@string/cancel"
+                android:layout_marginBottom="100dp"
+                android:layout_marginTop="10dp"
 
                 app:cornerRadius="@dimen/button_radius"
 
@@ -342,43 +440,6 @@
                 app:layout_constraintVertical_bias=".1"
 
                 app:layout_constraintWidth_percent=".8" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/floatingActionButton_favourite_fragment_restaurant"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-
-                app:backgroundTint="#FFEB3B"
-
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias=".9"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textview_tag1_fragment_restaurant"
-                app:layout_constraintVertical_bias="0"
-                app:rippleColor="@color/yellow_star"
-                app:srcCompat="@drawable/ic_baseline_star_24"
-                />
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/floatingActionButton_removefavourite_fragment_restaurant"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-
-                app:backgroundTint="#FFEB3B"
-                android:visibility="gone"
-
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias=".9"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textview_tag1_fragment_restaurant"
-                app:layout_constraintVertical_bias="0"
-                app:rippleColor="@color/yellow_star"
-                app:srcCompat="@drawable/ic_baseline_remove_circle_24"
-                />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

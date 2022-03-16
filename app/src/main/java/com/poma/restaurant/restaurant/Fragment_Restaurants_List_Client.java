@@ -322,7 +322,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
 
 
     private void createAdapter(ArrayList<Restaurant> data){
-        if (this.favourite)
+        if (this.admin)
             this.adapter = new RecyclerViewAdapter_Restaurant(getActivity(), data, Fragment_Restaurants_List_Client.this, true);
         else
             this.adapter = new RecyclerViewAdapter_Restaurant(getActivity(), data, Fragment_Restaurants_List_Client.this, false);

@@ -50,6 +50,7 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
     private List<Restaurant> mData;
     private List<Favourite> mData2;
     private Boolean favourite = false;
+    private Boolean admin_access = false;
 
     ///DB
     private FirebaseAuth mAuth;
@@ -79,12 +80,12 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
 
 
 
-    public RecyclerViewAdapter_Restaurant(Context context, List<Restaurant> mData, Fragment mFragment, Boolean favourite){
+    public RecyclerViewAdapter_Restaurant(Context context, List<Restaurant> mData, Fragment mFragment, Boolean admin){
         this.mContext = context;
         this.mData = mData;
         this.mFragment = mFragment;
         this.onRestaurantClickListener = (OnRestaurantClickListener) context;
-        this.favourite = favourite;
+        this.admin_access = admin;
     }
 
     @NonNull
@@ -141,6 +142,11 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
             //Stelle
             populated_star(holder, n);
 
+            if(this.admin_access){
+                holder.view.setVisibility(View.GONE);
+                holder.btn_direction.setVisibility(View.GONE);
+                holder.btn_call.setVisibility(View.GONE);
+            }
 
             holder.btn_direction.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -189,6 +195,7 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
         ImageView imageView_icon_restaurant, star1, star2, star3, star4, star5;
         Button btn_direction, btn_call;
         ProgressBar progressBar;
+        View view;
 
         AppCompatRatingBar rating;
 
@@ -204,9 +211,10 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
             star3 = (ImageView) itemView.findViewById(R.id.star3_card_restaurant);
             star4 = (ImageView) itemView.findViewById(R.id.star4_card_restaurant);
             star5 = (ImageView) itemView.findViewById(R.id.star5_card_restaurant);
+            view1_cardreview
 
              */
-
+            view = (View) itemView.findViewById(R.id.view1_card_restaurant);
             btn_call = (Button)itemView.findViewById(R.id.btn_card_restaurant_call);
             btn_direction = (Button)itemView.findViewById(R.id.btn_card_restaurant_map);
 

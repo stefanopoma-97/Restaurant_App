@@ -19,7 +19,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="10dp">
 
         <ImageView
             android:id="@+id/icon_card_favourite"
@@ -130,7 +131,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_card_restaurant_tag1"
-            app:layout_constraintVertical_bias=".1"
+            app:layout_constraintVertical_bias=".25"
             >
 
             <androidx.appcompat.widget.AppCompatRatingBar
@@ -173,7 +174,7 @@
 
 
         <View
-            android:id="@+id/view1_cardreview"
+            android:id="@+id/view1_card_restaurant"
             android:layout_width="0dp"
             android:layout_height="1dp"
 
@@ -206,7 +207,7 @@
             app:iconSize="@dimen/star"
 
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view1_cardreview"
+            app:layout_constraintTop_toBottomOf="@+id/view1_card_restaurant"
             app:layout_constraintVertical_bias=".1"
             app:layout_constraintHorizontal_bias=".1"
             />
