@@ -114,6 +114,8 @@
     <string name="new_restaurant">New Restaurant</string>
     <string name="new_restaurant_content">A new restaurant has been added in your city</string>
     <string name="new_favourite">New Favourite</string>
+    <string name="favourites">Favourites</string>
+    <string name="profile">Profile</string>
 
 
     <!-- Review -->

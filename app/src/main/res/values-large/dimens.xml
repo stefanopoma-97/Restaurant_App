@@ -32,6 +32,7 @@
     <dimen name="text_size_medium_large">55sp</dimen>
     <dimen name="text_size_large">58sp</dimen>
     <dimen name="text_size_extra_large">60sp</dimen>
+    <dimen name="text_size_extra_extra_large">90sp</dimen>
 
 
 
@@ -80,5 +81,8 @@
 
     <!-- title review-->
     <dimen name="title_review">180dp</dimen>
+
+    <!-- card-->
+    <dimen name="card_dimension">390dp</dimen>
 
 </resources>

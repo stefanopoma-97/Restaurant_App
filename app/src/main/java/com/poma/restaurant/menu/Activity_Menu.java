@@ -2,7 +2,6 @@ package com.poma.restaurant.menu;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -17,7 +16,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,24 +41,21 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.poma.restaurant.R;
-import com.poma.restaurant.account.Activity_Account;
-import com.poma.restaurant.account.Activity_Edit_Account;
 import com.poma.restaurant.databinding.ActivityMenuBinding;
 import com.poma.restaurant.login.Activity_First_Access;
-import com.poma.restaurant.login.Activity_Register;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
 import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.Restaurant;
 import com.poma.restaurant.model.User;
-import com.poma.restaurant.notifications.Activity_Notifications;
 import com.poma.restaurant.restaurant.Activity_Restaurant_Client;
 import com.poma.restaurant.restaurant.Activity_Restaurants_List_Client;
-import com.poma.restaurant.utilities.Action;
+import com.poma.restaurant.utilities.AsyncIntent;
+import com.poma.restaurant.utilities.MyAnimationCardListener;
+import com.poma.restaurant.utilities.MyAnimationTextListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,6 +81,22 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
     private static final String RESTAURANT_ID_EXTRA = "com.poma.restaurant.RESTAURANT_ID_EXTRA";
 
 
+    private ImageView imageView_restaurants;
+    private ImageView imageView_favourites;
+    private ImageView imageView_profile;
+    private ImageView imageView_notifications;
+
+    private TextView textView_restaurant;
+    private TextView textView_favourites;
+    private TextView textView_profile;
+    private TextView textView_notifications;
+
+    private Animation zoom_animation;
+
+    private Animation zoom_in_image;
+    private Animation zoom_out_text;
+
+
     //TODO Da buttare
     private String id_city ="";
 
@@ -96,7 +112,6 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
 
 
         this.mAuth= FirebaseAuth.getInstance();
-        this.btn_logout= (Button)findViewById(R.id.button_menu_logout);
 
         //notifiche
         receiveNotifications();
@@ -113,77 +128,154 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
         });
         registerReceiver(this.broadcastReceiver, intentFilter);
 
+        //Load animation
+        //this.zoom_animation = AnimationUtils.loadAnimation(this, R.anim.animation_card);
 
 
 
-        btn_logout.setOnClickListener(new View.OnClickListener() {
+
+        this.imageView_restaurants = findViewById(R.id.imageView_restaurant_home_client);
+        this.imageView_favourites = findViewById(R.id.imageView_favourite_home_client);
+        this.imageView_profile = findViewById(R.id.imageView_profile_home_client);
+        this.imageView_notifications = findViewById(R.id.imageView_notification_home_client);
+
+        this.textView_restaurant = findViewById(R.id.textview_restaurant_menu_client);
+        this.textView_favourites = findViewById(R.id.textview_favourite_menu_client);
+        this.textView_profile = findViewById(R.id.textview_profile_menu_client);
+        this.textView_notifications = findViewById(R.id.textview_notification_menu_client);
+
+        MyAnimationCardListener myAnimationCardListener = new MyAnimationCardListener();
+        MyAnimationTextListener myAnimationTextListener = new MyAnimationTextListener();
+
+
+        this.imageView_restaurants.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logout();
+                //load animation
+                myAnimationCardListener.setImage(imageView_restaurants);
+                myAnimationCardListener.setXY(imageView_restaurants.getScaleX(), imageView_restaurants.getScaleY());
+
+                create_animation(myAnimationCardListener);
+
+                myAnimationTextListener.setImage(textView_restaurant);
+                myAnimationTextListener.setXY(textView_restaurant.getScaleX(), textView_restaurant.getScaleY());
+                create_animation_text(myAnimationTextListener);
+
+
+                //start animation
+                imageView_restaurants.startAnimation(zoom_in_image);
+                textView_restaurant.startAnimation(zoom_out_text);
+
+
+                Intent in3 = new Intent(getApplicationContext(), Activity_Restaurants_List_Client.class);
+                in3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                new AsyncIntent().execute(in3, Activity_Menu.this);
+
+
+
             }
         });
 
-        Button btn = (Button)findViewById(R.id.button_menu_modificaaccount);
-        btn.setOnClickListener(new View.OnClickListener() {
+        this.imageView_favourites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Intent intent = new Intent(Activity_Menu.this, Activity_Account.class);
-                startActivity(intent);
-                /*
-                Log.d(TAG_LOG, "edit account");
-                final Intent intent = new Intent(Activity_Menu.this, Activity_Edit_Account.class);
-                //intent.putExtra(USER_LOGIN_EXTRA, user);
-                startActivityForResult(intent, EDIT_REQUEST_ID);
-                Log.d(TAG_LOG, "send Intent for result. edit");*/
-            }
-        });
+                myAnimationCardListener.setImage(imageView_favourites);
+                myAnimationCardListener.setXY(imageView_favourites.getScaleX(), imageView_favourites.getScaleY());
+                create_animation(myAnimationCardListener);
 
+                myAnimationTextListener.setImage(textView_favourites);
+                myAnimationTextListener.setXY(textView_favourites.getScaleX(), textView_favourites.getScaleY());
+                create_animation_text(myAnimationTextListener);
 
-        Button btn_map = (Button)findViewById(R.id.button_menu_map);
-        btn_map.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //direction();
-                call();
+                imageView_favourites.startAnimation(zoom_in_image);
+                textView_favourites.startAnimation(zoom_out_text);
 
             }
         });
 
-        Button btn_notifica_ristorante = (Button)findViewById(R.id.btn_menu_nuova_notifica_ristorante);
-        btn_notifica_ristorante.setOnClickListener(new View.OnClickListener() {
+        this.imageView_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG_LOG, "Click creazione notifica ristorante");
-                nuova_notifica_ristorante();
+                myAnimationCardListener.setImage(imageView_profile);
+                myAnimationCardListener.setXY(imageView_profile.getScaleX(), imageView_profile.getScaleY());
+                create_animation(myAnimationCardListener);
+
+                myAnimationTextListener.setImage(textView_profile);
+                myAnimationTextListener.setXY(textView_profile.getScaleX(), textView_profile.getScaleY());
+                create_animation_text(myAnimationTextListener);
+
+                imageView_profile.startAnimation(zoom_in_image);
+                textView_profile.startAnimation(zoom_out_text);
 
             }
         });
 
-        Button btn_notifica_recensione = (Button)findViewById(R.id.btn_menu_nuova_notifica_recensione);
-        btn_notifica_recensione.setText("Nuovo ristorante");
-        btn_notifica_recensione.setOnClickListener(new View.OnClickListener() {
+        this.imageView_notifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nuovo_ristorante();
+                myAnimationCardListener.setImage(imageView_notifications);
+                myAnimationCardListener.setXY(imageView_notifications.getScaleX(), imageView_notifications.getScaleY());
+                create_animation(myAnimationCardListener);
+
+                myAnimationTextListener.setImage(textView_notifications);
+                myAnimationTextListener.setXY(textView_notifications.getScaleX(), textView_notifications.getScaleY());
+                create_animation_text(myAnimationTextListener);
+
+                imageView_notifications.startAnimation(zoom_in_image);
+                textView_notifications.startAnimation(zoom_out_text);
 
             }
         });
+
+    }
+
+    private void create_animation(MyAnimationCardListener listener){
+        Float scalex = listener.getScalex();
+        Float scaley = listener.getScalex();
+
+
+
+        this.zoom_in_image = new ScaleAnimation(
+                scalex, new Float(1.5), // Start and end values for the X axis scaling
+                scaley, new Float(1.5), // Start and end values for the Y axis scaling
+                Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
+                Animation.RELATIVE_TO_SELF, 0.5f); // Pivot point of Y scaling
+        zoom_in_image.setFillAfter(true); // Needed to keep the result of the animation
+        zoom_in_image.setDuration(500);
+        zoom_in_image.setAnimationListener(listener);
+
+
+    }
+
+    private void create_animation_text(MyAnimationTextListener listener){
+        Float scalex = listener.getScalex();
+        Float scaley = listener.getScalex();
+
+
+
+        this.zoom_out_text = new ScaleAnimation(
+                scalex, new Float(0.9), // Start and end values for the X axis scaling
+                scaley, new Float(0.9), // Start and end values for the Y axis scaling
+                Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
+                Animation.RELATIVE_TO_SELF, 0.5f); // Pivot point of Y scaling
+        zoom_out_text.setFillAfter(true); // Needed to keep the result of the animation
+        zoom_out_text.setDuration(500);
+        zoom_out_text.setAnimationListener(listener);
+
+
     }
 
     //Correzioni al layout sulla base del tipo di utente
     private void set_for_admin(){
-        this.btn_logout.setVisibility(View.VISIBLE);
-        this.btn_logout.setText("LOGOUT (ADMIN)");
+
     }
 
     private void set_for_user(){
-        this.btn_logout.setVisibility(View.VISIBLE);
-        this.btn_logout.setText("LOGOUT");
+
     }
 
     private void set_for_anonymous(){
-        this.btn_logout.setVisibility(View.INVISIBLE);
-        this.btn_logout.setVisibility(View.GONE);
+
     }
 
     @Override

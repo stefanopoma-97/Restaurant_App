@@ -31,6 +31,7 @@
     <dimen name="text_size_medium_large">20sp</dimen>
     <dimen name="text_size_large">22sp</dimen>
     <dimen name="text_size_extra_large">25sp</dimen>
+    <dimen name="text_size_extra_extra_large">25sp</dimen>
     <dimen name="text_area_height">245dp</dimen>
     <dimen name="empty_space_height">40dp</dimen>
 
@@ -77,6 +78,9 @@
 
     <!-- title review-->
     <dimen name="title_review">80dp</dimen>
+
+    <!-- card-->
+    <dimen name="card_dimension">240dp</dimen>
 
 
 </resources>

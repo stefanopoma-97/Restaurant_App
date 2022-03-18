@@ -96,6 +96,12 @@ public class Activity_Drawer_Menu_User extends AppCompatActivity {
                                 in5.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(in5);
                                 break;
+                            case R.id.nav_user_dashboard:
+                                Log.d(TAG_LOG, "click su dashboard");
+                                Intent in6 = new Intent(getApplicationContext(), Activity_Menu.class);
+                                in6.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(in6);
+                                break;
                         }
                         return false;
                     }
