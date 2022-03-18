@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".filter.Fragment_Filter">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        tools:ignore="MissingConstraints" >
+
+
+
+    <TextView
+        android:id="@+id/textview_loading_cities_filter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="@string/loading_cities"
+        android:textAlignment="center"
+
+
+        android:textSize="@dimen/text_size_medium"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias=".5"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias=".05"
+        app:layout_constraintWidth_percent=".8">
+
+    </TextView>
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/spinner_cities_filter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:spinnerMode="dropdown"
+        android:textSize="@dimen/text_size_medium"
+
+        android:visibility="invisible"
+
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintHorizontal_bias=".5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias=".05"
+        app:layout_constraintWidth_percent=".8">
+
+    </androidx.appcompat.widget.AppCompatSpinner>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Voto >="
+        android:textSize="@dimen/text_size_medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_cities_filter"
+        app:layout_constraintVertical_bias=".1" />
+
+    <androidx.appcompat.widget.AppCompatRatingBar
+        android:id="@+id/ratingbar_filter"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        android:rating="0"
+        android:theme="@style/RatingBar"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.005"
+
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_all_categories"
+        style="@style/button_style_allcategory_not_selected"
+
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="All categories"
+
+        app:cornerRadius="@dimen/button_radius"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ratingbar_filter"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintWidth_percent=".5"
+
+
+
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_category_pizzeria"
+        style="@style/button_style_category_not_selected"
+
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Pizzeria"
+
+        app:cornerRadius="@dimen/button_radius"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_all_categories"
+        app:layout_constraintVertical_bias="0.05"
+        app:layout_constraintHorizontal_bias=".05"
+        app:layout_constraintWidth_percent=".3"
+
+        />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_category_bar"
+        style="@style/button_style_category_not_selected"
+
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Bar"
+
+        app:cornerRadius="@dimen/button_radius"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_all_categories"
+        app:layout_constraintVertical_bias="0.05"
+        app:layout_constraintHorizontal_bias=".5"
+        app:layout_constraintWidth_percent=".3"
+
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_category_sushi"
+        style="@style/button_style_category_not_selected"
+
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="sushi"
+
+        app:cornerRadius="@dimen/button_radius"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_all_categories"
+        app:layout_constraintVertical_bias="0.05"
+        app:layout_constraintHorizontal_bias=".95"
+        app:layout_constraintWidth_percent=".3"
+
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_category_fast_food"
+        style="@style/button_style_category_not_selected"
+
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Fast food"
+
+        app:cornerRadius="@dimen/button_radius"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias=".2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_category_bar"
+        app:layout_constraintVertical_bias="0.00"
+        app:layout_constraintWidth_percent=".35"
+
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_category_pasticceria"
+        style="@style/button_style_category_not_selected"
+
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Pasticceria"
+
+        app:cornerRadius="@dimen/button_radius"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias=".8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_category_bar"
+        app:layout_constraintVertical_bias="0.00"
+        app:layout_constraintWidth_percent=".35"
+
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_filter"
+        style="@style/main_button_style"
+        android:layout_width="0dp"
+
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+
+        android:text="Filter"
+        app:cornerRadius="@dimen/button_radius"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias=".5"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_category_fast_food"
+        app:layout_constraintVertical_bias=".2"
+        app:layout_constraintWidth_percent=".4"
+
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_reset_filter"
+        style="@style/button_secondary"
+        android:layout_width="0dp"
+
+        android:layout_height="wrap_content"
+        android:text="Reset"
+
+        app:cornerRadius="@dimen/button_radius"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintHorizontal_bias=".5"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/btn_filter"
+        app:layout_constraintVertical_bias=".05"
+        app:layout_constraintWidth_percent=".4"
+        android:layout_margin="20dp"
+
+        />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</FrameLayout>
+
+
+
+
+
+
+

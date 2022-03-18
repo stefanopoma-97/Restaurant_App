@@ -1,6 +1,7 @@
 package com.poma.restaurant.restaurant;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -14,7 +15,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,11 +30,21 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.poma.restaurant.R;
+import com.poma.restaurant.filter.Activity_Filter;
+import com.poma.restaurant.login.Activity_First_Access;
+import com.poma.restaurant.login.Activity_Login;
+import com.poma.restaurant.menu.Activity_Menu;
+import com.poma.restaurant.menu.Activity_Menu_Admin;
 import com.poma.restaurant.model.RecyclerViewAdapter.RecyclerViewAdapter_Restaurant;
 import com.poma.restaurant.model.Restaurant;
+import com.poma.restaurant.model.User;
+import com.poma.restaurant.utilities.Action;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,6 +61,10 @@ public class Fragment_Restaurants_List_Client extends Fragment {
     private static final String TAG_LOG = Fragment_Restaurants_List_Client.class.getName();
     private static final String SEARCH_KEY_FRAGMENT_RESTAURANTS_LIST = "com.poma.restaurant.SEARCH_KEY_FRAGMENT_RESTAURANTS_LIST";
 
+    private static final String CITY_KEY_FRAGMENT_RESTAURANTS_LIST = "com.poma.restaurant.CITY_KEY_FRAGMENT_RESTAURANTS_LIST";
+    private static final String CATEGORY_KEY_FRAGMENT_RESTAURANTS_LIST = "com.poma.restaurant.CATEGORY_KEY_FRAGMENT_RESTAURANTS_LIST";
+    private static final String VOTE_KEY_FRAGMENT_RESTAURANTS_LIST = "com.poma.restaurant.VOTE_KEY_FRAGMENT_RESTAURANTS_LIST";
+
 
     private RecyclerView rv;
     private ArrayList<Restaurant> mdata;
@@ -62,6 +79,13 @@ public class Fragment_Restaurants_List_Client extends Fragment {
 
     private TextView textView_no_result;
     private String search = "";
+    private Button btn_filter;
+
+    //Filter
+    private String city_filter = "";
+    private Float vote_filter = new Float(0);
+    private ArrayList<String> categories_filter = new ArrayList<String>();
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -117,6 +141,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         this.searchView = view.findViewById(R.id.search_view_fragment_favourite);
         this.textView_no_result = view.findViewById(R.id.textview_no_result_restaurants_list);
         this.textView_no_result.setVisibility(View.INVISIBLE);
+        this.btn_filter = view.findViewById(R.id.btn_filter_restaurants_list);
 
         this.swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_fragment_favourite);
         this.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -128,6 +153,8 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         });
 
 
+
+
         return view;
     }
 
@@ -136,6 +163,10 @@ public class Fragment_Restaurants_List_Client extends Fragment {
     public void onSaveInstanceState(Bundle savedInstanceState) {
 
         savedInstanceState.putString(SEARCH_KEY_FRAGMENT_RESTAURANTS_LIST, this.searchView.getQuery().toString());
+        savedInstanceState.putString(CITY_KEY_FRAGMENT_RESTAURANTS_LIST, this.city_filter);
+        savedInstanceState.putStringArrayList(CATEGORY_KEY_FRAGMENT_RESTAURANTS_LIST, this.categories_filter);
+        savedInstanceState.putFloat(VOTE_KEY_FRAGMENT_RESTAURANTS_LIST, this.vote_filter);
+
         super.onSaveInstanceState(savedInstanceState);
         Log.d(TAG_LOG,"Save state: "+SEARCH_KEY_FRAGMENT_RESTAURANTS_LIST+" valore: "+this.searchView.getQuery().toString());
     }
@@ -148,7 +179,9 @@ public class Fragment_Restaurants_List_Client extends Fragment {
 
         if (savedInstanceState != null){
             this.search = savedInstanceState.getString(SEARCH_KEY_FRAGMENT_RESTAURANTS_LIST);
-            //searchView.setQuery(search, true);
+            this.city_filter = savedInstanceState.getString(CITY_KEY_FRAGMENT_RESTAURANTS_LIST);
+            this.vote_filter = savedInstanceState.getFloat(VOTE_KEY_FRAGMENT_RESTAURANTS_LIST);
+            this.categories_filter = savedInstanceState.getStringArrayList(CATEGORY_KEY_FRAGMENT_RESTAURANTS_LIST);
 
 
             Log.d(TAG_LOG,"Retrive state: "+SEARCH_KEY_FRAGMENT_RESTAURANTS_LIST+" valore: "+search);
@@ -167,6 +200,8 @@ public class Fragment_Restaurants_List_Client extends Fragment {
 
         this.db = FirebaseFirestore.getInstance();
         this.mAuth= FirebaseAuth.getInstance();
+        if (this.listener_notification!=null)
+            this.listener_notification.remove();
 
         this.currentUser = mAuth.getCurrentUser();
 
@@ -176,6 +211,57 @@ public class Fragment_Restaurants_List_Client extends Fragment {
 
         setSearchView();
 
+
+
+        this.btn_filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent(getContext(), Activity_Filter.class);
+                intent.putExtra(Action.FILTER_CITY_EXTRA, city_filter);
+                intent.putExtra(Action.FILTER_VOTE_EXTRA, vote_filter);
+                intent.putExtra(Action.FILTER_CATEGORY_EXTRA, categories_filter);
+                startActivityForResult(intent, Action.FILTER_REQUEST);
+            }
+        });
+
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        Log.d(TAG_LOG, "On activity result");
+        //final User user;
+        final Intent mainIntent;
+
+        //risposta ad un login
+        if(requestCode == Action.FILTER_REQUEST) {
+            switch (resultCode)
+            {
+                case RESULT_OK:
+                    Log.d(TAG_LOG, "Return from filter OK");
+
+                    Log.d(TAG_LOG, "Città: "+data.getStringExtra(Action.FILTER_CITY_EXTRA));
+                    Log.d(TAG_LOG, "Vote: "+data.getFloatExtra(Action.FILTER_VOTE_EXTRA, new Float(0)));
+                    Log.d(TAG_LOG, "Category: "+data.getStringArrayListExtra(Action.FILTER_CATEGORY_EXTRA));
+
+                    this.city_filter=data.getStringExtra(Action.FILTER_CITY_EXTRA);
+                    this.vote_filter=data.getFloatExtra(Action.FILTER_VOTE_EXTRA, new Float(0));
+                    this.categories_filter=data.getStringArrayListExtra(Action.FILTER_CATEGORY_EXTRA);
+
+                    Log.d(TAG_LOG, "Città: "+this.city_filter);
+                    Log.d(TAG_LOG, "Vote: "+this.vote_filter);
+                    Log.d(TAG_LOG, "Category: "+this.categories_filter);
+
+                    onStart();
+
+                    break;
+
+                case RESULT_CANCELED:
+                    Log.d(TAG_LOG, "Return from login: CANCELED");
+                    break;
+            }
+        }
 
     }
 
@@ -223,7 +309,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         this.textView_no_result.setVisibility(View.VISIBLE);
 
         if (this.currentUser!=null){
-            Query query = this.db.collection("restaurants");
+            Query query = getQueryFiltered();
 
             this.listener_notification = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
                 @Override
@@ -357,6 +443,32 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         }
     }
 
+    private Query getQueryFiltered(){
+        Log.d(TAG_LOG, "Get Query");
+        Log.d(TAG_LOG, "Città: "+this.city_filter);
+        Log.d(TAG_LOG, "Vote: "+this.vote_filter);
+        Log.d(TAG_LOG, "Category: "+this.categories_filter);
+
+        Query query1 = this.db.collection("restaurants");
+
+        if (!this.city_filter.equals("")){
+            Log.d(TAG_LOG, "Filtro per città");
+            query1 = query1.whereEqualTo("city", this.city_filter);
+        }
+
+        if (this.vote_filter!=(new Float(0))){
+            Log.d(TAG_LOG, "Filtro per voto");
+            query1 = query1.whereGreaterThanOrEqualTo("vote", this.vote_filter);
+        }
+
+        if (this.categories_filter.size()!=0){
+            Log.d(TAG_LOG, "Filtro per categoria");
+            query1 = query1.whereIn("category", this.categories_filter);
+        }
+
+        Query query2 = this.db.collection("restaurants").whereEqualTo("city", "Brescia").whereGreaterThanOrEqualTo("vote", 4);
+        return query1;
+    }
 
     private int removeRestaurantFromData(String id){
         int index = 0;

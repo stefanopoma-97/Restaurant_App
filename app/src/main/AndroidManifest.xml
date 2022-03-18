@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Restaurant.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".review.Activity_Create_Review"></activity>
+        <activity android:name=".filter.Activity_Filter"></activity>
+        <activity android:name=".review.Activity_Create_Review" />
         <activity android:name=".review.Activity_Review" />
         <activity android:name=".restaurant.Activity_Edit_Restaurant" />
         <activity android:name=".restaurant.Activity_Create_Restaurant" />
