@@ -181,6 +181,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
             this.search = savedInstanceState.getString(SEARCH_KEY_FRAGMENT_RESTAURANTS_LIST);
             this.city_filter = savedInstanceState.getString(CITY_KEY_FRAGMENT_RESTAURANTS_LIST);
             this.vote_filter = savedInstanceState.getFloat(VOTE_KEY_FRAGMENT_RESTAURANTS_LIST);
+            this.categories_filter = new ArrayList<>();
             this.categories_filter = savedInstanceState.getStringArrayList(CATEGORY_KEY_FRAGMENT_RESTAURANTS_LIST);
 
 
@@ -247,6 +248,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
 
                     this.city_filter=data.getStringExtra(Action.FILTER_CITY_EXTRA);
                     this.vote_filter=data.getFloatExtra(Action.FILTER_VOTE_EXTRA, new Float(0));
+                    this.categories_filter = new ArrayList<>();
                     this.categories_filter=data.getStringArrayListExtra(Action.FILTER_CATEGORY_EXTRA);
 
                     Log.d(TAG_LOG, "Città: "+this.city_filter);
