@@ -57,8 +57,21 @@
 
                     tools:listitem="@layout/card_notification_normal" />
 
+
+
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-
+        <TextView
+            android:id="@+id/textview_no_result_notifications_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/title"
+            android:text="@string/no_element"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search_view_fragment_favourite"
+            app:layout_constraintVertical_bias=".1"
+            />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

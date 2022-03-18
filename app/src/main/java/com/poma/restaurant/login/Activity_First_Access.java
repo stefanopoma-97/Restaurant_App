@@ -98,6 +98,16 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
             }
         });
 
+        btn_login_rapido.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                login_rapido_admin();
+                return true;
+            }
+        });
+
+
+
         btn_login_rapido_admin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
