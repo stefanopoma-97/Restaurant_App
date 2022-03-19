@@ -79,6 +79,7 @@ public class Fragment_Restaurant_Client extends Fragment {
 
     private static final String TAG_LOG = Fragment_Restaurant_Client.class.getName();
     private Boolean user_access = true;
+    private Boolean anonymous_access = false;
     private Boolean favourite_access = false;
     private String restaurant_id = null;
 
@@ -239,14 +240,32 @@ public class Fragment_Restaurant_Client extends Fragment {
             });
         }
 
-        this.review.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), Activity_Review.class);
-                intent.putExtra(Action.RESTAURANT_ID_EXTRA, restaurant_id);
-                startActivity(intent);
-            }
-        });
+        if (anonymous_access == false){
+            this.review.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(getContext(), Activity_Review.class);
+                    intent.putExtra(Action.RESTAURANT_ID_EXTRA, restaurant_id);
+                    startActivity(intent);
+
+
+                }
+            });
+        }
+        else {
+            this.review.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Toast.makeText(getContext(), "You should login first", Toast.LENGTH_SHORT).show();
+
+
+
+                }
+            });
+        }
+
 
 
     }
@@ -339,8 +358,11 @@ public class Fragment_Restaurant_Client extends Fragment {
 
 
     private void check_page_type(){
-        if (user_access == false){
+        if (user_access == false && anonymous_access==false){
             setForAdmin();
+        }
+        else if (user_access == false && anonymous_access==true) {
+            setForAnonymous();
         }
         else if (user_access == true) {
             setForUser();
@@ -349,15 +371,21 @@ public class Fragment_Restaurant_Client extends Fragment {
 
     private void setForAdmin(){
         this.btn_edit.setVisibility(View.VISIBLE);
-        btn_add_favourite.setVisibility(View.INVISIBLE);
-        btn_remove_favourite.setVisibility(View.INVISIBLE);
+        this.btn_add_favourite.setVisibility(View.INVISIBLE);
+        this.btn_remove_favourite.setVisibility(View.INVISIBLE);
         this.view_color.setBackgroundColor(getResources().getColor(R.color.blue_link));
     }
     private void setForUser(){
-        this.btn_edit.setVisibility(View.INVISIBLE);
-        btn_add_favourite.setVisibility(View.INVISIBLE);
-        btn_remove_favourite.setVisibility(View.INVISIBLE);
+        this.btn_edit.setVisibility(View.GONE);
+        this.btn_add_favourite.setVisibility(View.INVISIBLE);
+        this.btn_remove_favourite.setVisibility(View.INVISIBLE);
         load_favourite_button();
+    }
+
+    private void setForAnonymous(){
+        this.btn_edit.setVisibility(View.GONE);
+        this.btn_add_favourite.setVisibility(View.INVISIBLE);
+        this.btn_remove_favourite.setVisibility(View.INVISIBLE);
     }
 
     private void load_favourite_button(){
@@ -574,6 +602,11 @@ public class Fragment_Restaurant_Client extends Fragment {
     }
 
     public void setAdmin(){
+        this.user_access=false;
+    }
+
+    public void setAnonymous(){
+        this.anonymous_access = true;
         this.user_access=false;
     }
 

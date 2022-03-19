@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".menu.Activity_Menu_Anonymous">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        tools:ignore="MissingConstraints">
+
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardview_restaurant_home_anonymous"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/card_dimension"
+            android:layout_margin="10dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="10dp"
+            app:cardMaxElevation="10dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/cardview_login_home_anonymous"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias=".05"
+            app:layout_constraintHorizontal_bias=".5"
+
+
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/constraintLayout1_home_anonymous">
+
+
+
+                <ImageView
+                    android:id="@+id/imageView_restaurant_anonymous"
+                    android:foreground="@drawable/gradient_image"
+                    android:foregroundTintMode="src_atop"
+
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/constraintLayout1_home_anonymous"
+                    app:layout_constraintEnd_toEndOf="@+id/constraintLayout1_home_anonymous"
+                    app:layout_constraintStart_toStartOf="@+id/constraintLayout1_home_anonymous"
+                    app:layout_constraintTop_toTopOf="@+id/constraintLayout1_home_anonymous"
+                    app:srcCompat="@drawable/restaurant_image"
+                    />
+
+                <TextView
+                    android:id="@+id/textview_restaurant_menu_anonymous"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/title_card"
+                    android:textColor="@color/white"
+                    android:text="@string/restaurant"
+                    app:layout_constraintBottom_toBottomOf="@+id/constraintLayout1_home_anonymous"
+                    app:layout_constraintEnd_toEndOf="@+id/constraintLayout1_home_anonymous"
+                    app:layout_constraintStart_toStartOf="@id/constraintLayout1_home_anonymous"
+                    app:layout_constraintTop_toTopOf="@+id/constraintLayout1_home_anonymous"
+                    tools:ignore="MissingConstraints"
+                    app:layout_constraintVertical_bias=".9"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardview_login_home_anonymous"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/card_dimension"
+            android:layout_margin="10dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="10dp"
+            app:cardMaxElevation="10dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".5"
+            app:layout_constraintStart_toEndOf="@+id/cardview_restaurant_home_anonymous"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias=".0">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2_home_anonymous"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <ImageView
+                    android:id="@+id/imageView_login_home_anonymous"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:adjustViewBounds="true"
+                    android:foreground="@drawable/gradient_image"
+                    android:foregroundTintMode="src_atop"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2_home_anonymous"
+                    app:layout_constraintEnd_toEndOf="@+id/constraintLayout2_home_anonymous"
+                    app:layout_constraintStart_toStartOf="@+id/constraintLayout2_home_anonymous"
+                    app:layout_constraintTop_toTopOf="@+id/constraintLayout2_home_anonymous"
+                    app:srcCompat="@drawable/login_image" />
+
+                <TextView
+                    android:id="@+id/textview_login_home_anonymous"
+                    style="@style/title_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/login"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2_home_anonymous"
+                    app:layout_constraintEnd_toEndOf="@+id/constraintLayout2_home_anonymous"
+                    app:layout_constraintStart_toStartOf="@id/constraintLayout2_home_anonymous"
+                    app:layout_constraintTop_toTopOf="@+id/constraintLayout2_home_anonymous"
+                    app:layout_constraintVertical_bias=".9"
+                    tools:ignore="MissingConstraints" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</ScrollView>

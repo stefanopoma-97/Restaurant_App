@@ -50,6 +50,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -263,6 +264,17 @@ public class Activity_Account extends AppCompatActivity {
 
     //METODI
 
+    private void setAdmin(){
+        TableRow row1 = findViewById(R.id.row_1);
+        TableRow row2 = findViewById(R.id.row_2);
+        row1.setBackgroundColor(getResources().getColor(R.color.blue_link));
+        row2.setBackgroundColor(getResources().getColor(R.color.blue_link));
+    }
+
+    private void setUser(){
+
+    }
+
     private void logout(){
         Log.d(TAG_LOG, "Logout - inizio procedura");
         finish();
@@ -333,6 +345,8 @@ public class Activity_Account extends AppCompatActivity {
 
                             if((boolean)data.get("admin")){
                                 Log.d(TAG_LOG, "Utente Admin");
+                                setAdmin();
+
                             }
                             else {
                                 Log.d(TAG_LOG, "Utente Visitatore");

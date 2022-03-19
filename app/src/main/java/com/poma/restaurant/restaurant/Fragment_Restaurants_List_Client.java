@@ -54,8 +54,8 @@ import static android.app.Activity.RESULT_OK;
 public class Fragment_Restaurants_List_Client extends Fragment {
 
     //Per capire cosa mostrare
-    private Boolean favourite = false;
     private Boolean admin = false;
+    private Boolean anonymous = false;
     private String admin_id;
 
     private static final String TAG_LOG = Fragment_Restaurants_List_Client.class.getName();
@@ -277,16 +277,23 @@ public class Fragment_Restaurants_List_Client extends Fragment {
     public void setAdmin(Boolean b){
         this.admin = b;
     }
+    public void setAnonymous(Boolean b){
+        this.btn_filter.setVisibility(View.INVISIBLE);
+        this.anonymous = b;
+    }
     public void setAdminID(String admin_id){
+
         this.admin_id = admin_id;
     }
-    public void setFavourite(Boolean b){
-        this.favourite = b;
-    }
+
 
     private void getRestaurants(){
         Log.d(TAG_LOG,"Get restaurants... quali?");
-        if (this.admin==false){
+        if (this.anonymous==true){
+            Log.d(TAG_LOG,"tutti (anonymous)");
+            getAllRestaurants();
+        }
+        else if (this.admin==false){
             Log.d(TAG_LOG,"tutti (user");
             getAllRestaurants();
         }
@@ -310,65 +317,65 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         rv.setAdapter(adapter);
         this.textView_no_result.setVisibility(View.VISIBLE);
 
-        if (this.currentUser!=null){
-            Query query = getQueryFiltered();
 
-            this.listener_notification = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot snapshots,
-                                    @Nullable FirebaseFirestoreException e) {
-                    if (e != null) {
-                        Log.w(TAG_LOG, "Listen failed.", e);
-                        return;
-                    }
+        Query query = getQueryFiltered();
 
-                    for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                        switch (dc.getType()) {
-                            case ADDED:
-                                Log.d(TAG_LOG, "New notify di tipo: " + dc.getDocument().getString("type"));
-                                mdata.add(createRestaurant(dc.getDocument()));
-                                setAdapterChange();
-
-                                if (searchView.getQuery().toString().equals(""))
-                                    Log.d(TAG_LOG,"Controllo search view, è vuota non faccio nulla");
-                                else{
-                                    Log.d(TAG_LOG,"Controllo search view, contine qualcosa, applico filtro");
-                                    filter(searchView.getQuery().toString());
-                                }
-
-                                break;
-                            case MODIFIED:
-                                Log.d(TAG_LOG, "modify notify: " + dc.getDocument().getData());
-                                int pos = removeRestaurantFromData(dc.getDocument().getId());
-                                mdata.add(pos, createRestaurant(dc.getDocument()));
-                                setAdapterChange();
-
-                                if (searchView.getQuery().toString().equals(""))
-                                    Log.d(TAG_LOG,"Controllo search view, è vuota non faccio nulla");
-                                else{
-                                    Log.d(TAG_LOG,"Controllo search view, contine qualcosa, applico filtro");
-                                    filter(searchView.getQuery().toString());
-                                }
-                                break;
-                            case REMOVED:
-                                Log.d(TAG_LOG, "Removed notify (id = "+dc.getDocument().getId()+"): " + dc.getDocument().getData());
-                                removeRestaurantFromData(dc.getDocument().getId());
-                                setAdapterChange();
-
-                                if (searchView.getQuery().toString().equals(""))
-                                    Log.d(TAG_LOG,"Controllo search view, è vuota non faccio nulla");
-                                else{
-                                    Log.d(TAG_LOG,"Controllo search view, contine qualcosa, applico filtro");
-                                    filter(searchView.getQuery().toString());
-                                }
-                                break;
-                        }
-                    }
-
-
+        this.listener_notification = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot snapshots,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG_LOG, "Listen failed.", e);
+                    return;
                 }
-            });
-        }
+
+                for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                    switch (dc.getType()) {
+                        case ADDED:
+                            Log.d(TAG_LOG, "New notify di tipo: " + dc.getDocument().getString("type"));
+                            mdata.add(createRestaurant(dc.getDocument()));
+                            setAdapterChange();
+
+                            if (searchView.getQuery().toString().equals(""))
+                                Log.d(TAG_LOG,"Controllo search view, è vuota non faccio nulla");
+                            else{
+                                Log.d(TAG_LOG,"Controllo search view, contine qualcosa, applico filtro");
+                                filter(searchView.getQuery().toString());
+                            }
+
+                            break;
+                        case MODIFIED:
+                            Log.d(TAG_LOG, "modify notify: " + dc.getDocument().getData());
+                            int pos = removeRestaurantFromData(dc.getDocument().getId());
+                            mdata.add(pos, createRestaurant(dc.getDocument()));
+                            setAdapterChange();
+
+                            if (searchView.getQuery().toString().equals(""))
+                                Log.d(TAG_LOG,"Controllo search view, è vuota non faccio nulla");
+                            else{
+                                Log.d(TAG_LOG,"Controllo search view, contine qualcosa, applico filtro");
+                                filter(searchView.getQuery().toString());
+                            }
+                            break;
+                        case REMOVED:
+                            Log.d(TAG_LOG, "Removed notify (id = "+dc.getDocument().getId()+"): " + dc.getDocument().getData());
+                            removeRestaurantFromData(dc.getDocument().getId());
+                            setAdapterChange();
+
+                            if (searchView.getQuery().toString().equals(""))
+                                Log.d(TAG_LOG,"Controllo search view, è vuota non faccio nulla");
+                            else{
+                                Log.d(TAG_LOG,"Controllo search view, contine qualcosa, applico filtro");
+                                filter(searchView.getQuery().toString());
+                            }
+                            break;
+                    }
+                }
+
+
+            }
+        });
+
     }
 
     private void getAdminRestaurants(){

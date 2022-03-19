@@ -54,7 +54,7 @@ public class Activity_Restaurants_List_Admin extends Activity_Drawer_Menu_Admin 
 
         this.mAuth= FirebaseAuth.getInstance();
         this.fragment_restaurants_list_client = (Fragment_Restaurants_List_Client)
-                getSupportFragmentManager().findFragmentById(R.id.fragment_restaurants_list_client);
+                getSupportFragmentManager().findFragmentById(R.id.fragment_restaurants_list_admin);
         this.fragment_restaurants_list_client.setAdmin(true);
         this.fragment_restaurants_list_client.setAdminID(mAuth.getCurrentUser().getUid());
 

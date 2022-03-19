@@ -25,7 +25,8 @@
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/red">
+                    android:background="@color/red"
+                    android:id="@+id/row_1">
 
                     <TextView
                         android:id="@+id/textview_account_add_new_image"
@@ -50,7 +51,8 @@
                     android:layout_height="match_parent"
                     android:background="@color/red"
                     android:gravity="center"
-                    android:paddingBottom="@dimen/padding_top_title_medium">
+                    android:paddingBottom="@dimen/padding_top_title_medium"
+                    android:id="@+id/row_2">
 
 
                     <androidx.cardview.widget.CardView

@@ -15,7 +15,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,15 +39,24 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.poma.restaurant.R;
+import com.poma.restaurant.account.Activity_Account;
 import com.poma.restaurant.databinding.ActivityMenuAdminBinding;
 import com.poma.restaurant.login.Activity_First_Access;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
 import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.User;
+import com.poma.restaurant.notifications.Activity_Notifications;
+import com.poma.restaurant.notifications.Activity_Notifications_Admin;
+import com.poma.restaurant.restaurant.Activity_Create_Restaurant;
 import com.poma.restaurant.restaurant.Activity_Restaurant_Admin;
 import com.poma.restaurant.restaurant.Activity_Restaurant_Client;
+import com.poma.restaurant.restaurant.Activity_Restaurants_List_Admin;
+import com.poma.restaurant.restaurant.Activity_Restaurants_List_Client;
 import com.poma.restaurant.utilities.Action;
+import com.poma.restaurant.utilities.AsyncIntent;
+import com.poma.restaurant.utilities.MyAnimationCardListener;
+import com.poma.restaurant.utilities.MyAnimationTextListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,6 +76,22 @@ public class Activity_Menu_Admin extends Activity_Drawer_Menu_Admin {
     private BroadcastReceiver broadcastReceiver;
 
     private static ListenerRegistration listener_notification;
+
+    private ImageView imageView_restaurants;
+    private ImageView imageView_add_restaurant;
+    private ImageView imageView_profile;
+    private ImageView imageView_notifications;
+
+    private TextView textView_restaurant;
+    private TextView textView_add_restaurant;
+    private TextView textView_profile;
+    private TextView textView_notifications;
+
+    private Animation zoom_animation;
+
+    private Animation zoom_in_image;
+    private Animation zoom_out_text;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +121,148 @@ public class Activity_Menu_Admin extends Activity_Drawer_Menu_Admin {
             }
         });
         registerReceiver(this.broadcastReceiver, intentFilter);
+
+        this.imageView_restaurants = findViewById(R.id.imageView_myrestaurant_home_admin);
+        this.imageView_add_restaurant= findViewById(R.id.imageView_create_restaurant_admin);
+        this.imageView_profile = findViewById(R.id.imageView_profile_home_admin);
+        this.imageView_notifications = findViewById(R.id.imageView_notification_home_admin);
+
+        this.textView_restaurant = findViewById(R.id.textview_myrestaurant_menu_admin);
+        this.textView_add_restaurant = findViewById(R.id.textview_create_restaurant_admin);
+        this.textView_profile = findViewById(R.id.textview_profile_menu_admin);
+        this.textView_notifications = findViewById(R.id.textview_notification_menu_admin);
+
+        MyAnimationCardListener myAnimationCardListener = new MyAnimationCardListener();
+        MyAnimationTextListener myAnimationTextListener = new MyAnimationTextListener();
+
+        this.imageView_restaurants.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //load animation
+                myAnimationCardListener.setImage(imageView_restaurants);
+                myAnimationCardListener.setXY(imageView_restaurants.getScaleX(), imageView_restaurants.getScaleY());
+
+                create_animation(myAnimationCardListener);
+
+                myAnimationTextListener.setImage(textView_restaurant);
+                myAnimationTextListener.setXY(textView_restaurant.getScaleX(), textView_restaurant.getScaleY());
+                create_animation_text(myAnimationTextListener);
+
+
+                //start animation
+                imageView_restaurants.startAnimation(zoom_in_image);
+                textView_restaurant.startAnimation(zoom_out_text);
+
+
+                Intent in3 = new Intent(getApplicationContext(), Activity_Restaurants_List_Admin.class);
+                in3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                new AsyncIntent().execute(in3, Activity_Menu_Admin.this);
+
+
+
+            }
+        });
+
+        this.imageView_add_restaurant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myAnimationCardListener.setImage(imageView_add_restaurant);
+                myAnimationCardListener.setXY(imageView_add_restaurant.getScaleX(), imageView_add_restaurant.getScaleY());
+                create_animation(myAnimationCardListener);
+
+                myAnimationTextListener.setImage(textView_add_restaurant);
+                myAnimationTextListener.setXY(textView_add_restaurant.getScaleX(), textView_add_restaurant.getScaleY());
+                create_animation_text(myAnimationTextListener);
+
+                imageView_add_restaurant.startAnimation(zoom_in_image);
+                textView_add_restaurant.startAnimation(zoom_out_text);
+
+                Intent in3 = new Intent(getApplicationContext(), Activity_Create_Restaurant.class);
+                in3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                new AsyncIntent().execute(in3, Activity_Menu_Admin.this);
+
+            }
+        });
+
+        this.imageView_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myAnimationCardListener.setImage(imageView_profile);
+                myAnimationCardListener.setXY(imageView_profile.getScaleX(), imageView_profile.getScaleY());
+                create_animation(myAnimationCardListener);
+
+                myAnimationTextListener.setImage(textView_profile);
+                myAnimationTextListener.setXY(textView_profile.getScaleX(), textView_profile.getScaleY());
+                create_animation_text(myAnimationTextListener);
+
+                imageView_profile.startAnimation(zoom_in_image);
+                textView_profile.startAnimation(zoom_out_text);
+
+                Intent in3 = new Intent(getApplicationContext(), Activity_Account.class);
+                in3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                new AsyncIntent().execute(in3, Activity_Menu_Admin.this);
+
+            }
+        });
+
+        this.imageView_notifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myAnimationCardListener.setImage(imageView_notifications);
+                myAnimationCardListener.setXY(imageView_notifications.getScaleX(), imageView_notifications.getScaleY());
+                create_animation(myAnimationCardListener);
+
+                myAnimationTextListener.setImage(textView_notifications);
+                myAnimationTextListener.setXY(textView_notifications.getScaleX(), textView_notifications.getScaleY());
+                create_animation_text(myAnimationTextListener);
+
+                imageView_notifications.startAnimation(zoom_in_image);
+                textView_notifications.startAnimation(zoom_out_text);
+
+                Intent in3 = new Intent(getApplicationContext(), Activity_Notifications_Admin.class);
+                in3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                new AsyncIntent().execute(in3, Activity_Menu_Admin.this);
+
+            }
+        });
+
+
+    }
+
+    private void create_animation(MyAnimationCardListener listener){
+        Float scalex = listener.getScalex();
+        Float scaley = listener.getScalex();
+
+
+
+        this.zoom_in_image = new ScaleAnimation(
+                scalex, new Float(1.5), // Start and end values for the X axis scaling
+                scaley, new Float(1.5), // Start and end values for the Y axis scaling
+                Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
+                Animation.RELATIVE_TO_SELF, 0.5f); // Pivot point of Y scaling
+        zoom_in_image.setFillAfter(true); // Needed to keep the result of the animation
+        zoom_in_image.setDuration(500);
+        zoom_in_image.setAnimationListener(listener);
+
+
+    }
+
+    private void create_animation_text(MyAnimationTextListener listener){
+        Float scalex = listener.getScalex();
+        Float scaley = listener.getScalex();
+
+
+
+        this.zoom_out_text = new ScaleAnimation(
+                scalex, new Float(0.9), // Start and end values for the X axis scaling
+                scaley, new Float(0.9), // Start and end values for the Y axis scaling
+                Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
+                Animation.RELATIVE_TO_SELF, 0.5f); // Pivot point of Y scaling
+        zoom_out_text.setFillAfter(true); // Needed to keep the result of the animation
+        zoom_out_text.setDuration(500);
+        zoom_out_text.setAnimationListener(listener);
+
+
     }
 
     @Override
