@@ -64,13 +64,6 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
     private User user;
 
 
-    //TODO tutta la parte di gestione delle notifiche è da spostare
-    private NotificationManager nm;
-    private int SIMPLE_NOTIFICATION_ID = 1;
-    private Timestamp time = null;
-    private static List<String> cities = new ArrayList<>();
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +123,6 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
         if(currentUser != null){
             Log.d(TAG_LOG, "Trovato utente con Firestore -> Logout");
             mAuth.signOut();
-
         }
         else {
             //Toast.makeText(Activity_Register.this, "Non c'è utente: ", Toast.LENGTH_SHORT).show();
@@ -153,7 +145,7 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
             Log.d(TAG_LOG,"2 Back button");
             finish();
         } else {
-            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), R.string.press_back_again_to_exit, Toast.LENGTH_SHORT).show();
         }
         pressedTime = System.currentTimeMillis();
     }
@@ -454,7 +446,7 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
                     mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
                     startActivity(mainIntent);
 
-                    Toast.makeText(Activity_First_Access.this, "Login", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Activity_First_Access.this, R.string.login, Toast.LENGTH_SHORT).show();
                     Log.d(TAG_LOG, "start menù with user:"+user.getUsername());
                     finish();
                     break;
@@ -465,7 +457,7 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
                     Log.d(TAG_LOG, "Shared preference, utente loggato con ID: "+this.user.getID());
                     mainIntent = new Intent(Activity_First_Access.this, Activity_Menu_Admin.class);
                     startActivity(mainIntent);
-                    Toast.makeText(Activity_First_Access.this, "Login Admin", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Activity_First_Access.this, R.string.login_admin, Toast.LENGTH_SHORT).show();
                     Log.d(TAG_LOG, "start menù with user:"+user.getUsername());
                     finish();
                     break;
@@ -488,7 +480,7 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
                     Log.d(TAG_LOG, "Id utente SharedPreferences: "+this.user.getID());
                     mainIntent = new Intent(Activity_First_Access.this, Activity_Menu.class);
                     startActivity(mainIntent);
-                    Toast.makeText(Activity_First_Access.this, "Registered", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Activity_First_Access.this, R.string.register, Toast.LENGTH_SHORT).show();
                     Log.d(TAG_LOG, "start menù with user: "+user.getUsername());
                     finish();
                     break;
@@ -501,63 +493,5 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
 
 
 
-    //Gestione delle notifiche (non da usare qua)
-    //TODO queta gestione è da spostare nelle activity dopo il login
-    private void notify_new_city(String name){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel channel =  new NotificationChannel("a_n","approvation_notification", NotificationManager.IMPORTANCE_DEFAULT);
-            NotificationManager notificationManager = getApplicationContext().getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "a_n")
-                .setContentTitle("New City: "+name)
-                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
-                .setAutoCancel(true)
-                .setContentText("contenuto");
-
-
-        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(getApplicationContext());
-        Intent notifyIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.android.com"));
-        PendingIntent intent = PendingIntent.getActivity(Activity_First_Access.this,0,notifyIntent,0);
-
-        builder.setContentIntent(intent);
-        managerCompat.notify(SIMPLE_NOTIFICATION_ID++, builder.build());
-    }
-
-    public void receiveNotifications_cities(){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("n")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot snapshots,
-                                        @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w(TAG_LOG, "Listen failed.", e);
-                            return;
-                        }
-
-                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                            switch (dc.getType()) {
-                                case ADDED:
-                                    if (!cities.contains(dc.getDocument().getString("city"))){
-                                        Log.d(TAG_LOG, "New city: " + dc.getDocument().getString("city"));
-                                        cities.add(dc.getDocument().getString("city"));
-                                        notify_new_city(dc.getDocument().getString("city"));
-                                    }
-                                    break;
-                                case MODIFIED:
-                                    Log.d(TAG_LOG, "Modified city: " + dc.getDocument().getData());
-                                    break;
-                                case REMOVED:
-                                    Log.d(TAG_LOG, "Removed city: " + dc.getDocument().getData());
-                                    break;
-                            }
-                        }
-
-
-                    }
-                });
-    }
 
 }

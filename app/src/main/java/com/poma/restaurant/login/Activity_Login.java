@@ -73,17 +73,16 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
 
         if (intent.getBooleanExtra(USER_LOGIN_EXTRA, false)) {
             this.user = true;
-            Log.d(TAG_LOG, "Dal extra capisco che si tratta di un login Utente");
+            Log.d(TAG_LOG, "Capisco che si tratta di un login Utente");
         }
         else {
             this.user = false;
-            Log.d(TAG_LOG, "Dal extra capisco che si tratta di un login Admin");
+            Log.d(TAG_LOG, "Capisco che si tratta di un login Admin");
         }
 
         //se si sta facendo un login per l'amministratore il layout viene cambiato
         if(user==false){
             title.setText(getResources().getString(R.string.login_admin_title));
-            //title.setTextSize(35);
             view.setBackgroundColor(getResources().getColor(R.color.blue_link));
         }
 

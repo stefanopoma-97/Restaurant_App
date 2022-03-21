@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Restaurant</string>
-    <string name="slogan">Slogan</string>
+    <string name="slogan">Good time, Great taste.</string>
+
+    <string name="press_back_again_to_exit">Press back again to exit</string>
+    <string name="registered">Registered</string>
 
     <string name="register">Sign Up</string>
     <string name="login">Login</string>
@@ -10,7 +13,7 @@
     <string name="username" translatable="false">Username</string>
     <string name="password" translatable="false">Password</string>
     <string name="cancel">Cancel</string>
-    <string name="forget_password">Forget password?</string>
+    <string name="forget_password" translatable="false">Forget password?</string>
     <string name="user_mandatory">Insert a Username</string>
     <string name="password_mandatory">Insert a Password</string>
     <string name="email_mandatory">Insert an Email</string>
@@ -25,7 +28,7 @@
     <string name="date">Date</string>
     <string name="update">Update</string>
     <string name="update_account">Account has been updated</string>
-    <string name="update_account_info">Account has been updated: info</string>
+    <string name="update_account_info" translatable="false">Account has been updated: info</string>
     <string name="old_password">Insert your old password</string>
     <string name="new_password">Insert the new password</string>
     <string name="repeat_password">Repeat the new password</string>
@@ -54,6 +57,8 @@
 
     <string name="loading_cities">Loading cities...</string>
 
+    <string name="birthday">Date of Birth</string>
+
 
     <!-- ACCOUNT -->
     <string name="add_image">Add a new image</string>
@@ -61,7 +66,7 @@
 
     <string name="account_name">Name:</string>
     <string name="account_surname">Surname:</string>
-    <string name="account_username">Username:</string>
+    <string name="account_username" translatable="false">Username:</string>
     <string name="account_mail">Mail:</string>
     <string name="account_location">Location:</string>
     <string name="account_date">Date:</string>
@@ -81,26 +86,26 @@
 
 
     <!-- Menu laterale-->
-    <string name="dashboard">Dashboard</string>
+    <string name="dashboard" translatable="false">Dashboard</string>
     <string name="restaurant">Restaurant</string>
     <string name="add_new_restaurant">Add new restaurant</string>
     <string name="edit_restaurant">Edit restaurant</string>
 
 
     <!-- Restauant-->
-    <string name="restuarant_name">Restaurant name</string>
-    <string name="restuarant_description">Restaurant description</string>
-    <string name="restuarant_email">Restaurant email</string>
-    <string name="restuarant_address">Restaurant address</string>
-    <string name="restuarant_city">Restaurant city</string>
-    <string name="restuarant_phone">Restaurant phone</string>
-    <string name="restuarant_tags">Restaurant tags</string>
-    <string name="restuarant_category">Restaurant category</string>
+    <string name="restuarant_name">Restaurant\'s name</string>
+    <string name="restuarant_description">Restaurant\'s description</string>
+    <string name="restuarant_email">Restaurant\'s email</string>
+    <string name="restuarant_address">Restaurant\'s address</string>
+    <string name="restuarant_city">Restaurant\'s city</string>
+    <string name="restuarant_phone">Restaurant\'s phone</string>
+    <string name="restuarant_tags" translatable="false">Tags</string>
+    <string name="restuarant_category">Restaurant\'s category</string>
     <string name="loading_categories">Loading categories ...</string>
     <string name="create">Create</string>
     <string name="description_mandatory">Insert a description</string>
     <string name="mail_mandatory">Insert a mail</string>
-    <string name="address_mandatory">Insert an address</string>
+    <string name="address_mandatory" translatable="false">Insert an address</string>
     <string name="phone_mandatory">Insert a phone number</string>
     <string name="phone_not_digits_only">Insert a real phone number</string>
     <string name="retrieving_restaurant_wait">Retrieving data Please Wait...</string>
@@ -121,11 +126,11 @@
 
     <!-- Review -->
     <string name="create_review">Create review</string>
-    <string name="insert_experience">insert_experience</string>
-    <string name="insert_service">insert_service</string>
-    <string name="insert_location">Cinsert_location</string>
-    <string name="insert_problems">insert_problems</string>
-    <string name="experience_mandatory">experience_mandatory</string>
+    <string name="insert_experience">Your experience</string>
+    <string name="insert_service">Service</string>
+    <string name="insert_location">Location</string>
+    <string name="insert_problems">Problems</string>
+    <string name="experience_mandatory">Experience is mandatory</string>
 
 
     <!-- Filter -->
@@ -133,30 +138,30 @@
 
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_basic">BasicActivity</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="title_activity_basic" translatable="false">BasicActivity</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="first_fragment_label" translatable="false">First Fragment</string>
+    <string name="second_fragment_label" translatable="false">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="hello_first_fragment" translatable="false">Hello first fragment</string>
+    <string name="hello_second_fragment" translatable="false">Hello second fragment. Arg: %1$s</string>
 
 
     <!-- Menu-->
-    <string name="title_activity_account">Account</string>
-    <string name="title_activity__password">Activity_Password</string>
+    <string name="title_activity_account" translatable="false">Account</string>
+    <string name="title_activity__password" translatable="false">Activity_Password</string>
     <!--
     This string is used for square devices and overridden by hello_world in
     values-round/strings.xml for round devices.
     -->
     <string name="hello_world">Hello Square World!</string>
 
-    <string name="drawer_open">Drawer open</string>
-    <string name="drawer_close">Drawer close</string>
-    <string name="large_text">
+    <string name="drawer_open" translatable="false">Drawer open</string>
+    <string name="drawer_close" translatable="false">Drawer close</string>
+    <string name="large_text" translatable="false">
         "Material is the metaphor.\n\n"
 
         "A material metaphor is the unifying theory of a rationalized space and a system of motion."

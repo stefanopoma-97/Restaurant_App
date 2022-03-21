@@ -272,8 +272,6 @@ public class User implements Parcelable {
         editor.putString(ID_KEY,id);
         editor.commit();
 
-        // using chaining:
-        // editor.putString(USERNAME_KEY,mUserName).putString(EMAIL_KEY,mEmail)....commit();
     }
 
     public static User load(final Context ctx) {

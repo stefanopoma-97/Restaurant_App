@@ -267,6 +267,30 @@
 
                 android:hint="@string/location"/>
 
+            <TextView
+                android:id="@+id/textview_date"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent=".8"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_location"
+                android:textAlignment="center"
+
+
+                android:text="@string/birthday"
+
+                android:textSize="@dimen/text_size_medium"
+
+
+                app:layout_constraintVertical_bias=".15"
+                app:layout_constraintHorizontal_bias=".3"
+
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"/>
+
             <DatePicker
                 android:id="@+id/datepicker_registerform_date"
 
@@ -278,9 +302,9 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edittext_registerform_location"
+                app:layout_constraintTop_toBottomOf="@+id/textview_date"
 
-                app:layout_constraintVertical_bias=".3"
+                app:layout_constraintVertical_bias=".0"
                 app:layout_constraintHorizontal_bias=".5"
 
                 android:paddingTop="10dp"
