@@ -27,11 +27,11 @@
         <activity android:name=".restaurant.Activity_Edit_Restaurant" />
         <activity android:name=".restaurant.Activity_Create_Restaurant" />
         <activity android:name=".restaurant.Activity_Restaurant_Admin" />
-        <activity android:name=".restaurant.Activity_Favourite_Restaurant" />
+        <activity android:name=".restaurant.Activity_Favorite_Restaurant" />
         <activity android:name=".notifications.Activity_Notifications_Admin" />
         <activity android:name=".menu.Activity_Menu_Admin" />
         <activity android:name=".restaurant.Activity_Restaurants_List_Admin" />
-        <activity android:name=".restaurant.Activity_Favourites" />
+        <activity android:name=".restaurant.Activity_Favorites" />
         <activity android:name=".menu.Activity_Test" />
         <activity android:name=".menu.Activity_Menu_Anonymous" />
         <activity android:name=".restaurant.Activity_Restaurant_Client" />

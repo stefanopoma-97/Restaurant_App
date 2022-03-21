@@ -25,9 +25,9 @@ import com.poma.restaurant.model.User;
 
 import java.util.Map;
 
-public class Activity_Favourite_Restaurant extends AppCompatActivity implements Fragment_Restaurant_Client.RestaurantInterface {
+public class Activity_Favorite_Restaurant extends AppCompatActivity implements Fragment_Restaurant_Client.RestaurantInterface {
 
-    private static final String TAG_LOG = Activity_Favourite_Restaurant.class.getName();
+    private static final String TAG_LOG = Activity_Favorite_Restaurant.class.getName();
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private FirebaseUser currentUser;

@@ -50,13 +50,13 @@ public class Activity_Restaurants_List_Admin extends Activity_Drawer_Menu_Admin 
         //Menu laterale
         activityRestaurantsListClientBinding = ActivityRestaurantsListClientBinding.inflate(getLayoutInflater());
         setContentView(activityRestaurantsListClientBinding.getRoot());
-        allocateActivityTitle(getResources().getString(R.string.restaurant));
+        allocateActivityTitle(getResources().getString(R.string.my_restaurant));
 
         this.mAuth= FirebaseAuth.getInstance();
         this.fragment_restaurants_list_client = (Fragment_Restaurants_List_Client)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_restaurants_list_admin);
         this.fragment_restaurants_list_client.setAdmin(true);
-        this.fragment_restaurants_list_client.setAdminID(mAuth.getCurrentUser().getUid());
+        //this.fragment_restaurants_list_client.setAdminID(mAuth.getCurrentUser().getUid());
 
 
         //Riceve broadcast

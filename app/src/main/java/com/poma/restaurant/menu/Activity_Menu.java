@@ -11,7 +11,6 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,8 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -47,20 +44,16 @@ import com.poma.restaurant.login.Activity_First_Access;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
 import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.Receiver;
-import com.poma.restaurant.model.Restaurant;
 import com.poma.restaurant.model.User;
 import com.poma.restaurant.notifications.Activity_Notifications;
-import com.poma.restaurant.restaurant.Activity_Favourites;
+import com.poma.restaurant.restaurant.Activity_Favorites;
 import com.poma.restaurant.restaurant.Activity_Restaurant_Client;
 import com.poma.restaurant.restaurant.Activity_Restaurants_List_Client;
 import com.poma.restaurant.utilities.AsyncIntent;
 import com.poma.restaurant.utilities.MyAnimationCardListener;
 import com.poma.restaurant.utilities.MyAnimationTextListener;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Activity_Menu extends Activity_Drawer_Menu_User {
@@ -192,7 +185,7 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
                 imageView_favourites.startAnimation(zoom_in_image);
                 textView_favourites.startAnimation(zoom_out_text);
 
-                Intent in3 = new Intent(getApplicationContext(), Activity_Favourites.class);
+                Intent in3 = new Intent(getApplicationContext(), Activity_Favorites.class);
                 in3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 new AsyncIntent().execute(in3, Activity_Menu.this);
 

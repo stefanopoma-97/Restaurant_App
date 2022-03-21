@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".restaurant.Activity_Favourite_Restaurant">
+    tools:context=".restaurant.Activity_Favorite_Restaurant">
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/appbar_activity_favourite_restaurant"
         style="@style/Widget.MaterialComponents.BottomAppBar.Colored"

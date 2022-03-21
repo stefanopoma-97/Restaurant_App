@@ -62,6 +62,7 @@ public class Activity_Restaurants_List_Client extends Activity_Drawer_Menu_User 
         this.mAuth= FirebaseAuth.getInstance();
         this.fragment_restaurants_list_client = (Fragment_Restaurants_List_Client)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_restaurants_list_client);
+        //this.fragment_restaurants_list_client.setAdmin(true);
 
 
         //Riceve broadcast
@@ -93,9 +94,7 @@ public class Activity_Restaurants_List_Client extends Activity_Drawer_Menu_User 
     }
 
     private void check_user(){
-        Boolean anonymous_f = false;
-        Boolean anonymous_s = false;
-        Boolean anonymous = false;
+
         Log.d(TAG_LOG, "Controllo ci sia un utente loggato");
 
         //Login Firestore
@@ -105,7 +104,7 @@ public class Activity_Restaurants_List_Client extends Activity_Drawer_Menu_User 
         }
         else {
             Log.d(TAG_LOG, "Non trovato utente con Firestore");
-            anonymous_f = true;
+            finish();
         }
 
         //Login Shared Preferences
@@ -115,19 +114,11 @@ public class Activity_Restaurants_List_Client extends Activity_Drawer_Menu_User 
         }
         else {
             Log.d(TAG_LOG, "Non trovato utente con SharedPreference");
-            anonymous_s = true;
+            finish();
         }
 
-        //anonimo, user, admin o errore
-        if (anonymous_f | anonymous_s){
-            Log.d(TAG_LOG, "ERRORE - Non c'è utente, accesso anonimo");
-            finish();
-        }
-        else if (anonymous_f!=anonymous_s){
-            Log.d(TAG_LOG, "ERRORE - ho trovato solo un utente");
-            finish();
-        }
-        else if (this.currentUser.getUid().equals(this.currentUser2.getID())){
+
+        if (currentUser.getUid().equals(currentUser2.getID())){
             Log.d(TAG_LOG, "Gli utenti coincidono");
             this.db = FirebaseFirestore.getInstance();
             DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
@@ -140,10 +131,11 @@ public class Activity_Restaurants_List_Client extends Activity_Drawer_Menu_User 
                             Map<String, Object> data = document.getData();
 
                             if((boolean)data.get("admin")){
-                                Log.d(TAG_LOG, "Utente Admin");
+                                Log.d(TAG_LOG, "L'utente è admin");
+                                finish();
                             }
                             else {
-                                Log.d(TAG_LOG, "Utente Visitatore");
+                                Log.d(TAG_LOG, "L'utente è visitatore");
                             }
                         }
                     }

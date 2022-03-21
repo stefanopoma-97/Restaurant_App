@@ -65,6 +65,9 @@ public class Fragment_Restaurants_List_Client extends Fragment {
     private static final String CATEGORY_KEY_FRAGMENT_RESTAURANTS_LIST = "com.poma.restaurant.CATEGORY_KEY_FRAGMENT_RESTAURANTS_LIST";
     private static final String VOTE_KEY_FRAGMENT_RESTAURANTS_LIST = "com.poma.restaurant.VOTE_KEY_FRAGMENT_RESTAURANTS_LIST";
 
+    private static final String ADMIN_KEY_FRAGMENT_RESTAURANTS_LIST = "com.poma.restaurant.ADMIN_KEY_FRAGMENT_RESTAURANTS_LIST";
+    private static final String ANONYMOUS_KEY_FRAGMENT_RESTAURANTS_LIST = "com.poma.restaurant.ANONYMOUS_KEY_FRAGMENT_RESTAURANTS_LIST";
+
 
     private RecyclerView rv;
     private ArrayList<Restaurant> mdata;
@@ -121,6 +124,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG_LOG,"on create");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -152,20 +156,20 @@ public class Fragment_Restaurants_List_Client extends Fragment {
             }
         });
 
-
-
-
         return view;
     }
 
     //State
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
+        Log.d(TAG_LOG,"on Save");
 
         savedInstanceState.putString(SEARCH_KEY_FRAGMENT_RESTAURANTS_LIST, this.searchView.getQuery().toString());
         savedInstanceState.putString(CITY_KEY_FRAGMENT_RESTAURANTS_LIST, this.city_filter);
         savedInstanceState.putStringArrayList(CATEGORY_KEY_FRAGMENT_RESTAURANTS_LIST, this.categories_filter);
         savedInstanceState.putFloat(VOTE_KEY_FRAGMENT_RESTAURANTS_LIST, this.vote_filter);
+        savedInstanceState.putBoolean(ADMIN_KEY_FRAGMENT_RESTAURANTS_LIST, this.admin);
+        savedInstanceState.putBoolean(ANONYMOUS_KEY_FRAGMENT_RESTAURANTS_LIST, this.anonymous);
 
         super.onSaveInstanceState(savedInstanceState);
         Log.d(TAG_LOG,"Save state: "+SEARCH_KEY_FRAGMENT_RESTAURANTS_LIST+" valore: "+this.searchView.getQuery().toString());
@@ -184,6 +188,9 @@ public class Fragment_Restaurants_List_Client extends Fragment {
             this.categories_filter = new ArrayList<>();
             this.categories_filter = savedInstanceState.getStringArrayList(CATEGORY_KEY_FRAGMENT_RESTAURANTS_LIST);
 
+            this.admin = savedInstanceState.getBoolean(ADMIN_KEY_FRAGMENT_RESTAURANTS_LIST);
+            this.anonymous = savedInstanceState.getBoolean(ANONYMOUS_KEY_FRAGMENT_RESTAURANTS_LIST);
+
 
             Log.d(TAG_LOG,"Retrive state: "+SEARCH_KEY_FRAGMENT_RESTAURANTS_LIST+" valore: "+search);
         }
@@ -198,6 +205,8 @@ public class Fragment_Restaurants_List_Client extends Fragment {
     public void onStart() {
         super.onStart();
         Log.d(TAG_LOG,"on start");
+        Log.d(TAG_LOG,"Admin: "+this.admin);
+        Log.d(TAG_LOG,"anonymous: "+this.anonymous);
 
         this.db = FirebaseFirestore.getInstance();
         this.mAuth= FirebaseAuth.getInstance();
@@ -224,6 +233,8 @@ public class Fragment_Restaurants_List_Client extends Fragment {
                 startActivityForResult(intent, Action.FILTER_REQUEST);
             }
         });
+
+
 
 
     }
@@ -255,7 +266,8 @@ public class Fragment_Restaurants_List_Client extends Fragment {
                     Log.d(TAG_LOG, "Vote: "+this.vote_filter);
                     Log.d(TAG_LOG, "Category: "+this.categories_filter);
 
-                    onStart();
+                    Log.d(TAG_LOG, "On activity result onStart");
+                    //onStart();
 
                     break;
 
@@ -289,15 +301,15 @@ public class Fragment_Restaurants_List_Client extends Fragment {
 
     private void getRestaurants(){
         Log.d(TAG_LOG,"Get restaurants... quali?");
-        if (this.anonymous==true){
+        if (this.anonymous){
             Log.d(TAG_LOG,"tutti (anonymous)");
             getAllRestaurants();
         }
-        else if (this.admin==false){
+        else if (!this.admin){
             Log.d(TAG_LOG,"tutti (user");
             getAllRestaurants();
         }
-        else if (this.admin==true){
+        else if (this.admin){
             Log.d(TAG_LOG,"admin - admin id:"+this.mAuth.getCurrentUser());
             getAdminRestaurants();
         }
@@ -318,7 +330,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         this.textView_no_result.setVisibility(View.VISIBLE);
 
 
-        Query query = getQueryFiltered();
+        Query query = getQueryFilteredForAdmin();
 
         this.listener_notification = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -379,7 +391,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
     }
 
     private void getAdminRestaurants(){
-        Log.d(TAG_LOG,"get all admin restaurants");
+        Log.d(TAG_LOG,"get all restaurants");
         this.mdata = new ArrayList<>();
 
         createAdapter(mdata);
@@ -391,65 +403,94 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         rv.setAdapter(adapter);
         this.textView_no_result.setVisibility(View.VISIBLE);
 
-        if (this.currentUser!=null){
-            Query query = this.db.collection("restaurants").whereEqualTo("admin_id",this.mAuth.getCurrentUser().getUid());
 
-            this.listener_notification = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot snapshots,
-                                    @Nullable FirebaseFirestoreException e) {
-                    if (e != null) {
-                        Log.w(TAG_LOG, "Listen failed.", e);
-                        return;
-                    }
+        Query query = getQueryFilteredForAdmin();
 
-                    for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                        switch (dc.getType()) {
-                            case ADDED:
-                                Log.d(TAG_LOG, "New notify di tipo: " + dc.getDocument().getString("type"));
-                                mdata.add(createRestaurant(dc.getDocument()));
-                                setAdapterChange();
-
-                                if (searchView.getQuery().toString().equals(""))
-                                    Log.d(TAG_LOG,"Controllo search view, è vuota non faccio nulla");
-                                else{
-                                    Log.d(TAG_LOG,"Controllo search view, contine qualcosa, applico filtro");
-                                    filter(searchView.getQuery().toString());
-                                }
-
-                                break;
-                            case MODIFIED:
-                                Log.d(TAG_LOG, "modify notify: " + dc.getDocument().getData());
-                                int pos = removeRestaurantFromData(dc.getDocument().getId());
-                                mdata.add(pos, createRestaurant(dc.getDocument()));
-                                setAdapterChange();
-
-                                if (searchView.getQuery().toString().equals(""))
-                                    Log.d(TAG_LOG,"Controllo search view, è vuota non faccio nulla");
-                                else{
-                                    Log.d(TAG_LOG,"Controllo search view, contine qualcosa, applico filtro");
-                                    filter(searchView.getQuery().toString());
-                                }
-                                break;
-                            case REMOVED:
-                                Log.d(TAG_LOG, "Removed notify (id = "+dc.getDocument().getId()+"): " + dc.getDocument().getData());
-                                removeRestaurantFromData(dc.getDocument().getId());
-                                setAdapterChange();
-
-                                if (searchView.getQuery().toString().equals(""))
-                                    Log.d(TAG_LOG,"Controllo search view, è vuota non faccio nulla");
-                                else{
-                                    Log.d(TAG_LOG,"Controllo search view, contine qualcosa, applico filtro");
-                                    filter(searchView.getQuery().toString());
-                                }
-                                break;
-                        }
-                    }
-
-
+        this.listener_notification = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot snapshots,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG_LOG, "Listen failed.", e);
+                    return;
                 }
-            });
+
+                for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                    switch (dc.getType()) {
+                        case ADDED:
+                            Log.d(TAG_LOG, "New notify di tipo: " + dc.getDocument().getString("type"));
+                            mdata.add(createRestaurant(dc.getDocument()));
+                            setAdapterChange();
+
+                            if (searchView.getQuery().toString().equals(""))
+                                Log.d(TAG_LOG,"Controllo search view, è vuota non faccio nulla");
+                            else{
+                                Log.d(TAG_LOG,"Controllo search view, contine qualcosa, applico filtro");
+                                filter(searchView.getQuery().toString());
+                            }
+
+                            break;
+                        case MODIFIED:
+                            Log.d(TAG_LOG, "modify notify: " + dc.getDocument().getData());
+                            int pos = removeRestaurantFromData(dc.getDocument().getId());
+                            mdata.add(pos, createRestaurant(dc.getDocument()));
+                            setAdapterChange();
+
+                            if (searchView.getQuery().toString().equals(""))
+                                Log.d(TAG_LOG,"Controllo search view, è vuota non faccio nulla");
+                            else{
+                                Log.d(TAG_LOG,"Controllo search view, contine qualcosa, applico filtro");
+                                filter(searchView.getQuery().toString());
+                            }
+                            break;
+                        case REMOVED:
+                            Log.d(TAG_LOG, "Removed notify (id = "+dc.getDocument().getId()+"): " + dc.getDocument().getData());
+                            removeRestaurantFromData(dc.getDocument().getId());
+                            setAdapterChange();
+
+                            if (searchView.getQuery().toString().equals(""))
+                                Log.d(TAG_LOG,"Controllo search view, è vuota non faccio nulla");
+                            else{
+                                Log.d(TAG_LOG,"Controllo search view, contine qualcosa, applico filtro");
+                                filter(searchView.getQuery().toString());
+                            }
+                            break;
+                    }
+                }
+
+
+            }
+        });
+
+    }
+
+
+
+    private Query getQueryFilteredForAdmin(){
+        Log.d(TAG_LOG, "Get Query Admin");
+        Log.d(TAG_LOG, "Città: "+this.city_filter);
+        Log.d(TAG_LOG, "Vote: "+this.vote_filter);
+        Log.d(TAG_LOG, "Category: "+this.categories_filter);
+
+        //Query query1 = this.db.collection("restaurants").whereEqualTo("admin_id",this.mAuth.getCurrentUser().getUid());
+        Query query1 = this.db.collection("restaurants").whereEqualTo("admin_id","TcD9ubVpgdfgmIBn26R5W7SHFPG3");
+
+        if (!this.city_filter.equals("")){
+            Log.d(TAG_LOG, "Filtro per città");
+            query1 = query1.whereEqualTo("city", this.city_filter);
         }
+
+        if (this.vote_filter!=(new Float(0))){
+            Log.d(TAG_LOG, "Filtro per voto");
+            query1 = query1.whereGreaterThanOrEqualTo("vote", this.vote_filter);
+        }
+
+        if (this.categories_filter.size()!=0){
+            Log.d(TAG_LOG, "Filtro per categoria");
+            query1 = query1.whereIn("category", this.categories_filter);
+        }
+
+        return query1;
     }
 
     private Query getQueryFiltered(){
@@ -492,7 +533,6 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         return index;
     }
 
-    //TODO aggiungendo una recensione partirà un metood che aggiornerà numero di recensionie  voto sul ristorante
     private Restaurant createRestaurant(QueryDocumentSnapshot d){
         Log.d(TAG_LOG, "Creando un ristorante: "+(String)d.get("name"));
         Restaurant n = new Restaurant();
