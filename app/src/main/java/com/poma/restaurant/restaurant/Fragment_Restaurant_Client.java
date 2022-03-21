@@ -230,7 +230,7 @@ public class Fragment_Restaurant_Client extends Fragment {
         load_restaurant();
         load_image();
         check_page_type();
-        if (this.user_access==false){
+        if (this.user_access==false && this.anonymous_access==false){
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

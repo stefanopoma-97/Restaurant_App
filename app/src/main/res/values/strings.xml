@@ -7,6 +7,7 @@
 
     <string name="register">Sign Up</string>
     <string name="login">Login</string>
+    <string name="logout">Log Out</string>
     <string name="login_admin">Login Admin</string>
     <string name="anonymous_access">Anonymous access</string>
     <string name="admin_access">Admin access</string>
@@ -62,6 +63,7 @@
 
     <!-- ACCOUNT -->
     <string name="add_image">Add a new image</string>
+    <string name="image_uploaded">Image uploaded</string>
     <string name="account_information">Information</string>
 
     <string name="account_name">Name:</string>
@@ -87,9 +89,12 @@
 
     <!-- Menu laterale-->
     <string name="dashboard" translatable="false">Dashboard</string>
+    <string name="dashboard_admin" translatable="true">Dashboard Admin</string>
+    <string name="dashboard_anonymous" translatable="true">Dashboard Anonymous</string>
     <string name="restaurant">Restaurant</string>
     <string name="add_new_restaurant">Add new restaurant</string>
     <string name="edit_restaurant">Edit restaurant</string>
+    <string name="my_restaurant">My Restaurants</string>
 
 
     <!-- Restauant-->

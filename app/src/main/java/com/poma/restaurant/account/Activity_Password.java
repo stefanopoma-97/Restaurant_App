@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -54,28 +56,6 @@ public class Activity_Password extends AppCompatActivity implements Fragment_Pas
 
 
 
-    //STATE
-    /*
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putString(OLD_PASS,this.fragment.get_old());
-        outState.putString(NEW_PASS,this.fragment.get_new());
-        outState.putString(REPEAT_PASS,this.fragment.get_repeat());
-
-        super.onSaveInstanceState(outState);
-        Log.d(TAG_LOG,"Save state");
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        this.fragment.set_old(savedInstanceState.getString(OLD_PASS));
-        this.fragment.set_new(savedInstanceState.getString(NEW_PASS));
-        this.fragment.set_repeat(savedInstanceState.getString(REPEAT_PASS));
-
-        Log.d(TAG_LOG,"Retrive state");
-
-    }*/
 
 
     @Override
@@ -110,32 +90,7 @@ public class Activity_Password extends AppCompatActivity implements Fragment_Pas
         this.fragment = (Fragment_Password)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_password_changepassword);
 
-        /*
-        this.mAuth=FirebaseAuth.getInstance();
-        FirebaseUser currentUser = this.mAuth.getCurrentUser();
 
-
-        this.db = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG_LOG, "l'id del mio utente è " + document.getId());
-                        Map<String, Object> data = document.getData();
-                        myPassword = (String) data.get("password");
-                        Log.d(TAG_LOG, "La mia attuale passwod " + myPassword);
-
-                    } else {
-                        Log.d(TAG_LOG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG_LOG, "get failed with ", task.getException());
-                }
-            }
-        });*/
 
     }
 
@@ -224,6 +179,28 @@ public class Activity_Password extends AppCompatActivity implements Fragment_Pas
                     });
                 }else {
                     Log.d(TAG_LOG, "Auth Fail");
+                    // If sign in fails, display a message to the user.
+                    //Toast.makeText(Activity_Login.this, getResources().getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show();
+
+                    try {
+                        throw task.getException();
+                    }
+
+                    catch(FirebaseAuthInvalidCredentialsException e) {
+                        Log.d(TAG_LOG, "credential exception, error code: "+e.getErrorCode());
+                        if(e.getErrorCode() == "ERROR_WRONG_PASSWORD"){
+                            fragment.setError(getResources().getString(R.string.login_error_pass));
+                            progressBarr(false);
+                        }
+
+
+                    }
+
+
+                    catch(Exception e) {
+                        Log.e(TAG_LOG, e.getMessage());
+                        progressBarr(false);
+                    }
                     progressBarr(false);
 
                 }

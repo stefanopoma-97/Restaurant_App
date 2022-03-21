@@ -247,8 +247,6 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
         Float scalex = listener.getScalex();
         Float scaley = listener.getScalex();
 
-
-
         this.zoom_in_image = new ScaleAnimation(
                 scalex, new Float(1.5), // Start and end values for the X axis scaling
                 scaley, new Float(1.5), // Start and end values for the Y axis scaling
@@ -279,18 +277,7 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
 
     }
 
-    //Correzioni al layout sulla base del tipo di utente
-    private void set_for_admin(){
 
-    }
-
-    private void set_for_user(){
-
-    }
-
-    private void set_for_anonymous(){
-
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -306,7 +293,7 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
             {
                 case RESULT_OK:
                     Log.d(TAG_LOG, "Return from edit: OK");
-                    Toast.makeText(Activity_Menu.this, "Edit", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Activity_Menu.this, R.string.edit_restaurant, Toast.LENGTH_SHORT).show();
                     break;
                 case RESULT_CANCELED:
                     Log.d(TAG_LOG, "Return from edit: CANCELED");
@@ -348,18 +335,15 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
             logout();
             finish();
         } else {
-            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), R.string.press_back_again_to_exit, Toast.LENGTH_SHORT).show();
         }
         pressedTime = System.currentTimeMillis();
     }
 
 
     //controllo la presenza di un utente loggato.
-    //per farlo viene utilizzato Firestore e SharedPreferences. Viene anche confrontato l'id degli utenti ricavato nei due modi
     private void check_user(){
-        Boolean anonymous_f = false;
-        Boolean anonymous_s = false;
-        Boolean anonymous = false;
+
         Log.d(TAG_LOG, "Controllo ci sia un utente loggato");
 
         //Login Firestore
@@ -369,7 +353,7 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
         }
         else {
             Log.d(TAG_LOG, "Non trovato utente con Firestore");
-            anonymous_f = true;
+            finish();
         }
 
         //Login Shared Preferences
@@ -379,19 +363,11 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
         }
         else {
             Log.d(TAG_LOG, "Non trovato utente con SharedPreference");
-            anonymous_s = true;
-        }
-
-        //anonimo, user, admin o errore
-        if (anonymous_f & anonymous_s){
-            set_for_anonymous();
-            Log.d(TAG_LOG, "Non c'è utente, accesso anonimo");
-        }
-        else if (anonymous_f!=anonymous_s){
-            Log.d(TAG_LOG, "ERRORE - ho trovato sulo un utente");
             finish();
         }
-        else if (currentUser.getUid().equals(currentUser2.getID())){
+
+
+        if (currentUser.getUid().equals(currentUser2.getID())){
             Log.d(TAG_LOG, "Gli utenti coincidono");
             this.db = FirebaseFirestore.getInstance();
             DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
@@ -404,10 +380,11 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
                             Map<String, Object> data = document.getData();
 
                             if((boolean)data.get("admin")){
-                                set_for_admin();
+                                Log.d(TAG_LOG, "L'utente è admin");
+                                finish();
                             }
                             else {
-                                set_for_user();
+                                Log.d(TAG_LOG, "L'utente è visitatore");
                             }
                         }
                     }
@@ -430,23 +407,14 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
 
         Intent in = new Intent(Activity_Menu.this, Activity_First_Access.class);
         in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        Toast.makeText(Activity_Menu.this, "Log Out", Toast.LENGTH_SHORT).show();
+        Toast.makeText(Activity_Menu.this, R.string.login, Toast.LENGTH_SHORT).show();
         startActivity(in);
         finish();
     }
 
-    //broadcast per logout
-    private void broadcast_logout(View view){
-        Log.d(TAG_LOG, "Logout - inizio procedura");
-        Intent intent = new Intent();
-        intent.setAction("com.poma.restaurant.broadcastreceiversandintents.BROADCAST_LOGOUT");
-        intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-        sendBroadcast(intent);
-        Log.d(TAG_LOG, "Broadcast mandato");
-    }
+
 
     //crea una notifica per l'utente
-    //TODO da personalizzare con intent che rimanda alla pagina della notifica
     private void new_notify(Notification n){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel channel =  new NotificationChannel("a_n","approvation_notification", NotificationManager.IMPORTANCE_DEFAULT);
@@ -531,7 +499,6 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
 
     }
 
-    //TODO da personalizzare sulla base del tipo di notifica
     private Notification createNotification(QueryDocumentSnapshot d){
         Log.d(TAG_LOG, "Creando una notifica");
         Notification n = new Notification(d.getString("user_id"), d.getId(), d.getString("type"));
@@ -565,124 +532,5 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
     }
 
 
-
-    //TODO DA BUTTARE
-    public interface FirestoreCallBackCitiesId {
-        String onCallback(List<String> list);
-    }
-
-    private void getCityIdByName(FirestoreCallBackCitiesId callBack, String name){
-        Log.d(TAG_LOG, "getcitybyname");
-        List<String> cities_id = new ArrayList<>();
-
-        db = FirebaseFirestore.getInstance();
-        db.collection("cities")
-                .whereEqualTo("city", name)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG_LOG, "issuccessful");
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG_LOG, "trovato id della città: "+document.getId());
-                                cities_id.add(document.getId());
-                            }
-                            callBack.onCallback(cities_id);
-                        } else {
-                            Log.w(TAG_LOG, "Error getting documents.", task.getException());
-                            cities_id.add("");
-                        }
-
-                    }
-                });
-
-    }
-
-    private void nuovo_ristorante(){
-        Restaurant r = new Restaurant();
-
-        r.setName("Ristorante 1");
-        r.setDescription("Descrizione ristorante");
-        r.setEmail("mail@mail.it");
-        r.setAddress("Via ancona 13");
-        r.setCity("Brescia");
-        r.setPhone("345664433");
-        r.setCategory("Pizzeria");
-        r.setImageUrl("https://firebasestorage.googleapis.com/v0/b/restaurant-app-f5ff3.appspot.com/o/1646757849636.jpg?alt=media&token=6ec76b56-bdb2-4df4-ae08-d4c240144eee");
-        r.setAdmin_id("TcD9ubVpgdfgmIBn26R5W7SHFPG3");
-        List<String> array = new ArrayList<String>();
-        array.add("tag1");
-        array.add("tag2");
-        r.setTags(array);
-        r.setN_reviews(100);
-        r.setVote(new Float(4));
-
-        db = FirebaseFirestore.getInstance();
-        db.collection("restaurants").add(r).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Log.d(TAG_LOG, "aggiunta ristorante");
-            }
-        })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG_LOG, "Error adding ristorante", e);
-                    }
-                });
-
-
-
-    }
-
-
-    private void nuova_notifica_ristorante(){
-        Log.d(TAG_LOG, "Creazione notifica");
-
-        Notification n = new Notification();
-        n.setUser_id(mAuth.getCurrentUser().getUid());
-        n.setRead(false);
-        n.setShowed(false);
-        n.setContent("è stato aggiunto un nuovo ristorante alla nostra applicazione");
-        n.setType("Nuovo ristorante");
-        n.setUseful_id("id ristorante");
-        Calendar calendar = Calendar.getInstance();
-        long timeMilli2 = calendar.getTimeInMillis();
-        n.setDate(timeMilli2);
-        Log.d(TAG_LOG, "notifica istanziata: "+n.getType());
-
-
-
-        db = FirebaseFirestore.getInstance();
-        db.collection("notifications").add(n).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG_LOG, "aggiunta notifica ristorante");
-                    }
-                })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG_LOG, "Error adding notifica", e);
-                        }
-                    });
-    }
-
-
-    private void direction(){
-        Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse("http://maps.google.com/maps?daddr=via ancona 13 - palazzolo sull'oglio"));
-        startActivity(intent);
-    }
-
-    private void call(){
-        String number = "1234567890";
-        Uri num = Uri.parse("tel:" + number);
-        Intent dial = new Intent(Intent.ACTION_DIAL);
-        dial.setData(num);
-        startActivity(dial);
-
-    }
 
 }

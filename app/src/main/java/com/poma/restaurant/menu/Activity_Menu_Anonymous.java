@@ -104,7 +104,7 @@ public class Activity_Menu_Anonymous extends Activity_Drawer_Menu_Anonymous {
         //Menu laterale
         activityMenuAnonymousBinding = ActivityMenuAnonymousBinding.inflate(getLayoutInflater());
         setContentView(activityMenuAnonymousBinding.getRoot());
-        allocateActivityTitle("Dashboard anonymous");
+        allocateActivityTitle(getResources().getString(R.string.dashboard_anonymous));
 
         this.mAuth= FirebaseAuth.getInstance();
 
@@ -253,7 +253,7 @@ public class Activity_Menu_Anonymous extends Activity_Drawer_Menu_Anonymous {
             logout();
             //finish();
         } else {
-            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), R.string.press_back_again_to_exit, Toast.LENGTH_SHORT).show();
         }
         pressedTime = System.currentTimeMillis();
     }

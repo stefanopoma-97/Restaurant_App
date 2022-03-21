@@ -139,10 +139,7 @@ public class Fragment_Register extends Fragment {
         this.scrollView = (ScrollView) view.findViewById(R.id.scrollview_register);
         this.t_loading_cities = (TextView)view.findViewById(R.id.textview_edit_restaurant_loading_cities);
 
-        /*
-        String[] items = new String[]{"Brescia", "Milano", "Bergamo"};
-        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.support_simple_spinner_dropdown_item, items);
-        spinner.setAdapter(adapter);*/
+
 
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override

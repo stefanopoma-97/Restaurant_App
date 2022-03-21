@@ -97,35 +97,6 @@ public class Activity_Register extends AppCompatActivity implements Fragment_Reg
         Log.d(TAG_LOG, "Ora non c'è nessun utente loggato");
 
 
-        /*
-        Log.d(TAG_LOG, "Città 1 - inizio metodo prendere città");
-        this.cities = new HashMap<>();
-        this.db = FirebaseFirestore.getInstance();
-        db.collection("cities").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                Log.d(TAG_LOG, "Città 2 - On complete");
-
-                if (task.isSuccessful()) {
-                    Log.d(TAG_LOG, "Città 3 -  is successfull");
-
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-
-                        Map<String, Object> data = document.getData();
-                        //Map<String, Object>
-                        cities.put(document.getId(), (String)data.get("city"));
-                    }
-                    fragment_register.setCitiesSpinner(cities, null);
-                    Log.d(TAG_LOG, "Città 4 - lista id città :"+cities.toString());
-
-                } else {
-                    Log.d(TAG_LOG, "Error getting documents: ", task.getException());
-                }
-            }
-        });
-        Log.d(TAG_LOG, "Città 5 - fine");
-        */
-
 
     }
 
@@ -144,12 +115,7 @@ public class Activity_Register extends AppCompatActivity implements Fragment_Reg
 
                             Log.d(TAG_LOG, "createUserWithEmail:success");
 
-/*
-                            for (Map.Entry<String, Object> entry : cities.entrySet()) {
-                                if (entry.getValue().toString().equals(location)) {
-                                    city_id = entry.getKey();
-                                }
-                            }*/
+
 
                             //dal nome della città ricava il suo ID
                             getCityIdByName(new Firestore_call_back_cities_Id() {
@@ -191,7 +157,7 @@ public class Activity_Register extends AppCompatActivity implements Fragment_Reg
 
 
                                 }
-                            }, "Milano");
+                            }, location);
 
 
 
@@ -260,7 +226,6 @@ public class Activity_Register extends AppCompatActivity implements Fragment_Reg
 
     private void getBack(int result, User u){
         Intent intent = new Intent();
-        //intent.putExtra(User.USER_DATA_EXTRA, u);
         u.save(this);
         Log.d(TAG_LOG, "Salvo shared preferences di utente appena creato: "+u.toString());
         setResult(result,intent);

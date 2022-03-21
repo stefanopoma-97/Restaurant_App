@@ -102,7 +102,7 @@ public class Activity_Menu_Admin extends Activity_Drawer_Menu_Admin {
         //Menu laterale
         activityMenuAdminBinding = ActivityMenuAdminBinding.inflate(getLayoutInflater());
         setContentView(activityMenuAdminBinding.getRoot());
-        allocateActivityTitle("Dashboard admin");
+        allocateActivityTitle(getResources().getString(R.string.dashboard_admin));
 
 
         this.mAuth= FirebaseAuth.getInstance();
@@ -295,7 +295,7 @@ public class Activity_Menu_Admin extends Activity_Drawer_Menu_Admin {
             logout();
             //finish();
         } else {
-            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), R.string.press_back_again_to_exit, Toast.LENGTH_SHORT).show();
         }
         pressedTime = System.currentTimeMillis();
     }
@@ -359,13 +359,12 @@ public class Activity_Menu_Admin extends Activity_Drawer_Menu_Admin {
 
         Intent in = new Intent(Activity_Menu_Admin.this, Activity_First_Access.class);
         in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        Toast.makeText(Activity_Menu_Admin.this, "Log Out", Toast.LENGTH_SHORT).show();
+        Toast.makeText(Activity_Menu_Admin.this, R.string.logout, Toast.LENGTH_SHORT).show();
         startActivity(in);
         finish();
     }
 
     //crea una notifica per l'utente
-    //TODO da personalizzare con intent che rimanda alla pagina della notifica
     private void new_notify(Notification n){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel channel =  new NotificationChannel("a_n","approvation_notification", NotificationManager.IMPORTANCE_DEFAULT);
@@ -451,7 +450,6 @@ public class Activity_Menu_Admin extends Activity_Drawer_Menu_Admin {
 
     }
 
-    //TODO da personalizzare sulla base del tipo di notifica
     private Notification createNotification(QueryDocumentSnapshot d){
         Log.d(TAG_LOG, "Creando una notifica");
         Notification n = new Notification(d.getString("user_id"), d.getId(), d.getString("type"));

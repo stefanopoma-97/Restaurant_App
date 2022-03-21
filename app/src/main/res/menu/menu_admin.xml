@@ -7,21 +7,21 @@
         <item
             android:id="@+id/nav_admin_notifications"
             android:icon="@drawable/ic_baseline_notifications_active_24"
-            android:title="Notifications" />
+            android:title="@string/notification_title" />
         <item
             android:id="@+id/nav_admin_profile"
             android:icon="@drawable/ic_baseline_person_24"
-            android:title="Profile" />
+            android:title="@string/profile" />
 
         <item
             android:id="@+id/nav_admin_restaurant"
             android:icon="@drawable/ic_baseline_restaurant_24"
-            android:title="My Restaurant" />
+            android:title="@string/my_restaurant" />
 
         <item
             android:id="@+id/nav_admin_add_restaurant"
             android:icon="@drawable/ic_baseline_add_box_24"
-            android:title="Add new restaurant" />
+            android:title="@string/add_new_restaurant" />
 
         <item
             android:id="@+id/nav_admin_logout"

@@ -22,6 +22,7 @@ import com.poma.restaurant.account.Activity_Account;
 import com.poma.restaurant.login.Activity_First_Access;
 import com.poma.restaurant.login.Activity_Login;
 import com.poma.restaurant.notifications.Activity_Notifications;
+import com.poma.restaurant.restaurant.Activity_Restaurants_List_Anonymous;
 import com.poma.restaurant.restaurant.Activity_Restaurants_List_Client;
 
 
@@ -71,7 +72,7 @@ public class Activity_Drawer_Menu_Anonymous extends AppCompatActivity {
                                 break;
                             case R.id.nav_anonymous_restaurant:
                                 Log.d(TAG_LOG, "click su restaurant");
-                                Intent in3 = new Intent(getApplicationContext(), Activity_Restaurants_List_Client.class);
+                                Intent in3 = new Intent(getApplicationContext(), Activity_Restaurants_List_Anonymous.class);
                                 in3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(in3);
                                 break;

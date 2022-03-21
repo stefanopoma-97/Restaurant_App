@@ -103,5 +103,10 @@
     <string name="account_information">Informazioni</string>
     <string name="account_edit">Modifica dati</string>
     <string name="account_date">Data:</string>
+    <string name="logout">Log Out</string>
+    <string name="my_restaurant">I miei ristoranti</string>
+    <string name="dashboard_admin">Dashboard Amministratore</string>
+    <string name="dashboard_anonymous">Dashboard Anonimo</string>
+    <string name="image_uploaded">Immagine caricata</string>
 
 </resources>

@@ -284,15 +284,7 @@ public class Activity_Account extends AppCompatActivity {
         finish();
     }
 
-    //broadcast per logout
-    private void broadcast_logout(View view){
-        Log.d(TAG_LOG, "Logout - inizio procedura");
-        Intent intent = new Intent();
-        intent.setAction("com.poma.restaurant.broadcastreceiversandintents.BROADCAST_LOGOUT");
-        intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-        sendBroadcast(intent);
-        Log.d(TAG_LOG, "Broadcast mandato");
-    }
+
 
     //controllo la presenza di un utente loggato.
     //per farlo viene utilizzato Firestore e SharedPreferences. Viene anche confrontato l'id degli utenti ricavato nei due modi
@@ -499,7 +491,7 @@ public class Activity_Account extends AppCompatActivity {
                                     // Reload information
                                     updateImageView();
                                     progressDialog_image(false, "");
-                                    Toast.makeText(Activity_Account.this, "Image uploaded", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(Activity_Account.this, R.string.image_uploaded, Toast.LENGTH_LONG).show();
                                 }
                                 else{
                                     Log.d(TAG_LOG, "problemi aggiornamento user");
