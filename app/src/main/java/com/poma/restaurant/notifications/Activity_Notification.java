@@ -143,6 +143,13 @@ public class Activity_Notification extends AppCompatActivity implements Fragment
             Log.d(TAG_LOG, "Inserisco extra: "+Action.RESTAURANT_ID_EXTRA+" - "+n.getUseful_id());
             startActivity(intent2);
         }
+        else if(n.getType().equals(getResources().getString(R.string.new_review))) {
+            Log.d(TAG_LOG, "Creando una notifica di tipo NUOVO PREFERITO");
+            Intent intent2 = new Intent(Activity_Notification.this, Activity_Restaurant_Admin.class);
+            intent2.putExtra(Action.RESTAURANT_ID_EXTRA, n.getUseful_id());
+            Log.d(TAG_LOG, "Inserisco extra: "+Action.RESTAURANT_ID_EXTRA+" - "+n.getUseful_id());
+            startActivity(intent2);
+        }
 
     }
 

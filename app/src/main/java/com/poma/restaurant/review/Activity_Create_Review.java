@@ -7,6 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -26,13 +28,16 @@ import com.google.firebase.firestore.SetOptions;
 import com.poma.restaurant.R;
 import com.poma.restaurant.menu.Activity_Menu;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
+import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.Review;
 import com.poma.restaurant.model.User;
 import com.poma.restaurant.utilities.Action;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Activity_Create_Review extends AppCompatActivity implements Fragment_Create_Review.CreateReviewInterface {
@@ -173,6 +178,7 @@ public class Activity_Create_Review extends AppCompatActivity implements Fragmen
             public void onSuccess(DocumentReference documentReference) {
                 Log.d(TAG_LOG, "aggiunta recensione");
                 search_restaurant_vote(id_restaurant);
+                create_notification_new_review(restaurant_id);
                 Toast.makeText(Activity_Create_Review.this, "Review created", Toast.LENGTH_SHORT).show();
                 back();
             }
@@ -183,6 +189,62 @@ public class Activity_Create_Review extends AppCompatActivity implements Fragmen
                         Log.w(TAG_LOG, "Error adding preferito", e);
                     }
                 });
+    }
+
+    private void create_notification_new_review(String r_id){
+        Log.d(TAG_LOG, "Creazione notifica");
+
+        DocumentReference docRef = this.db.collection("restaurants").document(r_id);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
+
+                        String admin_id = (String) data.get("admin_id");
+
+                        Notification n = new Notification();
+                        n.setUser_id(admin_id);
+                        n.setRead(false);
+                        n.setShowed(false);
+                        n.setContent(getResources().getString(R.string.new_review_description)+" "+(String) data.get("name"));
+                        n.setType(getResources().getString(R.string.new_review));
+                        n.setUseful_id(document.getId());
+                        Calendar calendar = Calendar.getInstance();
+                        long timeMilli2 = calendar.getTimeInMillis();
+                        n.setDate(timeMilli2);
+                        Log.d(TAG_LOG, "notifica istanziata: "+n.toString());
+
+
+
+                        db = FirebaseFirestore.getInstance();
+                        db.collection("notifications").add(n).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Log.d(TAG_LOG, "aggiunta notifica recensione");
+                            }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG_LOG, "Error adding notifica", e);
+                                }
+                            });
+
+
+                    } else {
+                        Log.d(TAG_LOG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG_LOG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+
     }
 
 

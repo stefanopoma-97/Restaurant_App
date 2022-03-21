@@ -72,7 +72,6 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
     private String saved_surname;
 
 
-    //TODO la città e le altre info viene sovrascritta dalle informazione di onstart
     //STATE
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -187,7 +186,6 @@ public class Activity_Edit_Account extends AppCompatActivity implements Fragment
 
     }
 
-    //TODO molto invasivo, forse meglio per altre funzioni
     public void popupMessage(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage(getResources().getString(R.string.update_account_info));

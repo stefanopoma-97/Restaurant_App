@@ -108,5 +108,9 @@
     <string name="dashboard_admin">Dashboard Amministratore</string>
     <string name="dashboard_anonymous">Dashboard Anonimo</string>
     <string name="image_uploaded">Immagine caricata</string>
+    <string name="order">Ordina</string>
+    <string name="new_favourite_description">Qualcuno ha aggiunto ai preferiti il tuo ristorante</string>
+    <string name="new_review">Nuova Recensione</string>
+    <string name="new_review_description">Qualcuno ha aggiunto una nuova recensione a:</string>
 
 </resources>

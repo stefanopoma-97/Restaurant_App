@@ -325,8 +325,6 @@ public class Fragment_Notification_List extends Fragment {
             Collections.sort(this.mdata);
             this.order = true;
         }
-
-
         setAdapterChange();
     }
 

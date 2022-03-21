@@ -12,16 +12,15 @@
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:paddingEnd="200dp"
-            android:paddingStart="20dp"
             android:gravity="center"
-            android:text="Ordina"
+            android:paddingStart="20dp"
+            android:paddingEnd="200dp"
+            android:text="@string/order"
             app:layout_constraintEnd_toEndOf="@+id/swipe_refresh_fragment_favourite"
-            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintHorizontal_bias="0.122"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints"></TextView>
-
+            tools:ignore="MissingConstraints"/>
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_view_fragment_favourite"

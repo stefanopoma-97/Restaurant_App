@@ -28,6 +28,9 @@ import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.RecyclerViewAdapter.OnNotificationClickListener;
 import com.poma.restaurant.model.User;
+import com.poma.restaurant.restaurant.Activity_Restaurant_Admin;
+import com.poma.restaurant.restaurant.Activity_Restaurant_Client;
+import com.poma.restaurant.utilities.Action;
 
 import java.util.Map;
 
@@ -86,13 +89,11 @@ public class Activity_Notifications_Admin extends Activity_Drawer_Menu_Admin imp
     @Override
     protected void onStart() {
         super.onStart();
-        check_user();
+        check_user_admin();
     }
 
-    private void check_user(){
-        Boolean anonymous_f = false;
-        Boolean anonymous_s = false;
-        Boolean anonymous = false;
+    private void check_user_admin(){
+
         Log.d(TAG_LOG, "Controllo ci sia un utente loggato");
 
         //Login Firestore
@@ -185,10 +186,21 @@ public class Activity_Notifications_Admin extends Activity_Drawer_Menu_Admin imp
     }
 
     private void redirect_to_notification(Notification n){
-        //TODO in base al tipo di notifica vanno creati intent differenti
-        final Intent intent = new Intent(Activity_Notifications_Admin.this, Activity_Menu.class);
-        intent.putExtra(USEFUL_ID_EXTRA, n.getUseful_id());
-        startActivity(intent);
+        if (n.getType().equals(getResources().getString(R.string.new_restaurant))){
+            Log.d(TAG_LOG, "Creando una notifica di tipo NUOVO RISTORANTE");
+            Intent intent = new Intent(Activity_Notifications_Admin.this, Activity_Restaurant_Client.class);
+            intent.putExtra(Action.RESTAURANT_ID_EXTRA, n.getUseful_id());
+            Log.d(TAG_LOG, "Inserisco extra: "+Action.RESTAURANT_ID_EXTRA+" - "+n.getUseful_id());
+            startActivity(intent);
+
+        }
+        else if(n.getType().equals(getResources().getString(R.string.new_favourite))) {
+            Log.d(TAG_LOG, "Creando una notifica di tipo NUOVO PREFERITO");
+            Intent intent2 = new Intent(Activity_Notifications_Admin.this, Activity_Restaurant_Admin.class);
+            intent2.putExtra(Action.RESTAURANT_ID_EXTRA, n.getUseful_id());
+            Log.d(TAG_LOG, "Inserisco extra: "+Action.RESTAURANT_ID_EXTRA+" - "+n.getUseful_id());
+            startActivity(intent2);
+        }
 
     }
 }

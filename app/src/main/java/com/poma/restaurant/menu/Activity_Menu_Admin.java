@@ -385,6 +385,16 @@ public class Activity_Menu_Admin extends Activity_Drawer_Menu_Admin {
             pending_intent = PendingIntent.getActivity(Activity_Menu_Admin.this,uniqueInt,intent,0);
 
         }
+        else if (n.getType().equals(getResources().getString(R.string.new_review))){
+            Log.d(TAG_LOG, "Creando una notifica di tipo NUOVO PREFERITO");
+
+            Intent intent = new Intent(Activity_Menu_Admin.this, Activity_Restaurant_Admin.class);
+            intent.putExtra(Action.RESTAURANT_ID_EXTRA, n.getUseful_id());
+            Log.d(TAG_LOG, "Inserisco extra: "+Action.RESTAURANT_ID_EXTRA+" - "+n.getUseful_id());
+            int uniqueInt = (int) (System.currentTimeMillis() & 0xfffffff);
+            pending_intent = PendingIntent.getActivity(Activity_Menu_Admin.this,uniqueInt,intent,0);
+
+        }
         else {
             /*Intent notifyIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.android.com"));
             pending_intent = PendingIntent.getActivity(Activity_Menu.this,0,notifyIntent,0);*/

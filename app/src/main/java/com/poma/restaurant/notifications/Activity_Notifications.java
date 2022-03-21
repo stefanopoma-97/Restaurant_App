@@ -26,6 +26,9 @@ import com.poma.restaurant.model.Notification;
 import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.RecyclerViewAdapter.OnNotificationClickListener;
 import com.poma.restaurant.model.User;
+import com.poma.restaurant.restaurant.Activity_Restaurant_Admin;
+import com.poma.restaurant.restaurant.Activity_Restaurant_Client;
+import com.poma.restaurant.utilities.Action;
 
 import java.util.Map;
 
@@ -92,24 +95,16 @@ public class Activity_Notifications extends Activity_Drawer_Menu_User implements
         check_user();
     }
 
-    private void broadcast_logout(View view){
-        Log.d(TAG_LOG, "Logout - inizio procedura");
-        Intent intent = new Intent();
-        intent.setAction("com.poma.restaurant.broadcastreceiversandintents.BROADCAST_LOGOUT");
-        intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-        sendBroadcast(intent);
-        Log.d(TAG_LOG, "Broadcast mandato");
-    }
+
 
     private void logout(){
         Log.d(TAG_LOG, "Logout - inizio procedura");
         finish();
     }
 
+    //controllo la presenza di un utente loggato.
     private void check_user(){
-        Boolean anonymous_f = false;
-        Boolean anonymous_s = false;
-        Boolean anonymous = false;
+
         Log.d(TAG_LOG, "Controllo ci sia un utente loggato");
 
         //Login Firestore
@@ -119,7 +114,7 @@ public class Activity_Notifications extends Activity_Drawer_Menu_User implements
         }
         else {
             Log.d(TAG_LOG, "Non trovato utente con Firestore");
-            anonymous_f = true;
+            finish();
         }
 
         //Login Shared Preferences
@@ -129,19 +124,11 @@ public class Activity_Notifications extends Activity_Drawer_Menu_User implements
         }
         else {
             Log.d(TAG_LOG, "Non trovato utente con SharedPreference");
-            anonymous_s = true;
+            finish();
         }
 
-        //anonimo, user, admin o errore
-        if (anonymous_f | anonymous_s){
-            Log.d(TAG_LOG, "ERRORE - Non c'è utente, accesso anonimo");
-            finish();
-        }
-        else if (anonymous_f!=anonymous_s){
-            Log.d(TAG_LOG, "ERRORE - ho trovato solo un utente");
-            finish();
-        }
-        else if (this.currentUser.getUid().equals(this.currentUser2.getID())){
+
+        if (currentUser.getUid().equals(currentUser2.getID())){
             Log.d(TAG_LOG, "Gli utenti coincidono");
             this.db = FirebaseFirestore.getInstance();
             DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
@@ -154,10 +141,11 @@ public class Activity_Notifications extends Activity_Drawer_Menu_User implements
                             Map<String, Object> data = document.getData();
 
                             if((boolean)data.get("admin")){
-                                Log.d(TAG_LOG, "Utente Admin");
+                                Log.d(TAG_LOG, "L'utente è admin");
+                                finish();
                             }
                             else {
-                                Log.d(TAG_LOG, "Utente Visitatore");
+                                Log.d(TAG_LOG, "L'utente è visitatore");
                             }
                         }
                     }
@@ -170,6 +158,7 @@ public class Activity_Notifications extends Activity_Drawer_Menu_User implements
         }
 
     }
+
 
 
 
@@ -220,10 +209,21 @@ public class Activity_Notifications extends Activity_Drawer_Menu_User implements
     }
 
     private void redirect_to_notification(Notification n){
-        //TODO in base al tipo di notifica vanno creati intent differenti
-        final Intent intent = new Intent(Activity_Notifications.this, Activity_Menu.class);
-        intent.putExtra(USEFUL_ID_EXTRA, n.getUseful_id());
-        startActivity(intent);
+        if (n.getType().equals(getResources().getString(R.string.new_restaurant))){
+            Log.d(TAG_LOG, "Creando una notifica di tipo NUOVO RISTORANTE");
+            Intent intent = new Intent(Activity_Notifications.this, Activity_Restaurant_Client.class);
+            intent.putExtra(Action.RESTAURANT_ID_EXTRA, n.getUseful_id());
+            Log.d(TAG_LOG, "Inserisco extra: "+Action.RESTAURANT_ID_EXTRA+" - "+n.getUseful_id());
+            startActivity(intent);
+
+        }
+        else if(n.getType().equals(getResources().getString(R.string.new_favourite))) {
+            Log.d(TAG_LOG, "Creando una notifica di tipo NUOVO PREFERITO");
+            Intent intent2 = new Intent(Activity_Notifications.this, Activity_Restaurant_Admin.class);
+            intent2.putExtra(Action.RESTAURANT_ID_EXTRA, n.getUseful_id());
+            Log.d(TAG_LOG, "Inserisco extra: "+Action.RESTAURANT_ID_EXTRA+" - "+n.getUseful_id());
+            startActivity(intent2);
+        }
 
     }
 }

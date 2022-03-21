@@ -115,30 +115,11 @@ public class RecyclerViewAdapter_Notification extends RecyclerView.Adapter<Recyc
             @Override
             public void onClick(View v) {
                 onNotificationClickListener.onNotificationClick(n);
-                /*
-                Log.d(TAG_LOG, "Click su notifica, start activity");
-                final Intent intent = new Intent(v.getContext(), Activity_Notification.class);
-                intent.putExtra(NOTIFICATION_ID_EXTRA, n.getId());
-                v.getContext().startActivity(intent);
-                */
-
 
             }
         });
 
-        holder.imageView_icon_notification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getItemViewType(position)==NOTIFICA_LETTA)
-                    setRead(n);
-                else
-                    setNotRead(n);
 
-            }
-        });
-
-       /* if (getItemViewType(position) == NOTIFICA_NON_LETTA)
-            updateImageView(holder, n);*/
 
     }
 

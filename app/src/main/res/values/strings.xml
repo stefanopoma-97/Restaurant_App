@@ -93,6 +93,7 @@
     <string name="dashboard_anonymous" translatable="true">Dashboard Anonymous</string>
     <string name="restaurant">Restaurant</string>
     <string name="add_new_restaurant">Add new restaurant</string>
+    <string name="order">Sort</string>
     <string name="edit_restaurant">Edit restaurant</string>
     <string name="my_restaurant">My Restaurants</string>
 
@@ -123,8 +124,11 @@
     <string name="delete">Delete</string>
     <string name="new_restaurant">New Restaurant</string>
     <string name="new_restaurant_content">A new restaurant has been added in your city</string>
-    <string name="new_favourite">New Favourite</string>
-    <string name="favourites">Favourites</string>
+    <string name="new_favourite">New Favorite</string>
+    <string name="new_favourite_description">Someone has bookmarked your restaurant</string>
+    <string name="new_review">New Review</string>
+    <string name="new_review_description">Someone has added a new review to:</string>
+    <string name="favourites">Favorites</string>
     <string name="profile">Profile</string>
     <string name="no_element">No result found</string>
 

@@ -430,7 +430,7 @@ public class Fragment_Restaurant_Client extends Fragment {
         n.setUser_id(this.restaurant.getAdmin_id());
         n.setRead(false);
         n.setShowed(false);
-        n.setContent("Qualcuno ha aggiunto ai preferiti il tuo ristorante");
+        n.setContent(getResources().getString(R.string.new_favourite_description)+": "+restaurant.getName());
         n.setType(getResources().getString(R.string.new_favourite));
         n.setUseful_id(this.restaurant.getId());
         Calendar calendar = Calendar.getInstance();
