@@ -299,7 +299,7 @@ public class Fragment_Notification extends Fragment {
 
                         delete();
                         listener.goBack();
-                        Toast.makeText(getContext(), "Delete", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.delete, Toast.LENGTH_SHORT).show();
 
 
                         dialog_box = false;
