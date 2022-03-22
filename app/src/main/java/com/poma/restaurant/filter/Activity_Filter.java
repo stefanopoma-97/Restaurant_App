@@ -94,8 +94,6 @@ public class Activity_Filter extends AppCompatActivity implements Fragment_Filte
         this.vote_filter = intent.getFloatExtra(Action.FILTER_VOTE_EXTRA, new Float(0));
         this.categories_filter = intent.getStringArrayListExtra(Action.FILTER_CATEGORY_EXTRA);
 
-
-
         this.fragment_filter.setCity_filter(city_filter);
         this.fragment_filter.setCategories_filter(categories_filter);
         this.fragment_filter.setVote_filter(vote_filter);

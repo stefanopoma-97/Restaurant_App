@@ -255,15 +255,18 @@ public class Fragment_Filter extends Fragment {
         this.btn_sushi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btn_pressed.get("sushi")){
-                    btn_pressed.put("sushi", false);
-                    set_not_pressed(btn_sushi);
-                }
-                else {
-                    btn_pressed.put("sushi", true);
-                    set_pressed(btn_sushi);
+                if(!btn_pressed.get("all")){
+                    if(btn_pressed.get("sushi")){
+                        btn_pressed.put("sushi", false);
+                        set_not_pressed(btn_sushi);
+                    }
+                    else {
+                        btn_pressed.put("sushi", true);
+                        set_pressed(btn_sushi);
 
+                    }
                 }
+
 
             }
         });
@@ -271,60 +274,72 @@ public class Fragment_Filter extends Fragment {
         this.btn_pizzeria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btn_pressed.get("pizzeria")){
-                    btn_pressed.put("pizzeria", false);
-                    set_not_pressed(btn_pizzeria);
-                }
-                else {
-                    btn_pressed.put("pizzeria", true);
-                    set_pressed(btn_pizzeria);
+                if(!btn_pressed.get("all")){
+                    if(btn_pressed.get("pizzeria")){
+                        btn_pressed.put("pizzeria", false);
+                        set_not_pressed(btn_pizzeria);
+                    }
+                    else {
+                        btn_pressed.put("pizzeria", true);
+                        set_pressed(btn_pizzeria);
 
+                    }
                 }
+
 
             }
         });
         this.btn_pasticceria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btn_pressed.get("pasticceria")){
-                    btn_pressed.put("pasticceria", false);
-                    set_not_pressed(btn_pasticceria);
-                }
-                else {
-                    btn_pressed.put("pasticceria", true);
-                    set_pressed(btn_pasticceria);
+                if(!btn_pressed.get("all")){
+                    if(btn_pressed.get("pasticceria")){
+                        btn_pressed.put("pasticceria", false);
+                        set_not_pressed(btn_pasticceria);
+                    }
+                    else {
+                        btn_pressed.put("pasticceria", true);
+                        set_pressed(btn_pasticceria);
 
+                    }
                 }
+
 
             }
         });
         this.btn_bar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btn_pressed.get("bar")){
-                    btn_pressed.put("bar", false);
-                    set_not_pressed(btn_bar);
-                }
-                else {
-                    btn_pressed.put("bar", true);
-                    set_pressed(btn_bar);
+                if(!btn_pressed.get("all")){
+                    if(btn_pressed.get("bar")){
+                        btn_pressed.put("bar", false);
+                        set_not_pressed(btn_bar);
+                    }
+                    else {
+                        btn_pressed.put("bar", true);
+                        set_pressed(btn_bar);
 
+                    }
                 }
+
 
             }
         });
         this.btn_fastfood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btn_pressed.get("fastfood")){
-                    btn_pressed.put("fastfood", false);
-                    set_not_pressed(btn_fastfood);
-                }
-                else {
-                    btn_pressed.put("fastfood", true);
-                    set_pressed(btn_fastfood);
+                if(!btn_pressed.get("all")){
+                    if(btn_pressed.get("fastfood")){
+                        btn_pressed.put("fastfood", false);
+                        set_not_pressed(btn_fastfood);
+                    }
+                    else {
+                        btn_pressed.put("fastfood", true);
+                        set_pressed(btn_fastfood);
 
+                    }
                 }
+
 
             }
         });

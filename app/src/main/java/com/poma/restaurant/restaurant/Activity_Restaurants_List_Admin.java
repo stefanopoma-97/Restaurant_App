@@ -17,6 +17,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.poma.restaurant.R;
+import com.poma.restaurant.databinding.ActivityRestaurantsListAdminBinding;
 import com.poma.restaurant.databinding.ActivityRestaurantsListClientBinding;
 import com.poma.restaurant.menu.Activity_Drawer_Menu_Admin;
 import com.poma.restaurant.menu.Activity_Drawer_Menu_User;
@@ -29,7 +30,7 @@ import com.poma.restaurant.model.User;
 import java.util.Map;
 
 public class Activity_Restaurants_List_Admin extends Activity_Drawer_Menu_Admin implements Fragment_Restaurants_List_Client.RestaurantListInterfaceClient, OnRestaurantClickListener {
-    ActivityRestaurantsListClientBinding activityRestaurantsListClientBinding;
+    ActivityRestaurantsListAdminBinding activityRestaurantsListAdminBinding;
 
     private static final String RESTAURANT_ID_EXTRA = "com.poma.restaurant.RESTAURANT_ID_EXTRA";
 
@@ -45,17 +46,17 @@ public class Activity_Restaurants_List_Admin extends Activity_Drawer_Menu_Admin 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_restaurants_list_admin);
 
         //Menu laterale
-        activityRestaurantsListClientBinding = ActivityRestaurantsListClientBinding.inflate(getLayoutInflater());
-        setContentView(activityRestaurantsListClientBinding.getRoot());
+        activityRestaurantsListAdminBinding = ActivityRestaurantsListAdminBinding.inflate(getLayoutInflater());
+        setContentView(activityRestaurantsListAdminBinding.getRoot());
         allocateActivityTitle(getResources().getString(R.string.my_restaurant));
 
         this.mAuth= FirebaseAuth.getInstance();
         this.fragment_restaurants_list_client = (Fragment_Restaurants_List_Client)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_restaurants_list_admin);
         this.fragment_restaurants_list_client.setAdmin(true);
+
         //this.fragment_restaurants_list_client.setAdminID(mAuth.getCurrentUser().getUid());
 
 
@@ -77,6 +78,8 @@ public class Activity_Restaurants_List_Admin extends Activity_Drawer_Menu_Admin 
     protected void onStart() {
         super.onStart();
         check_user_admin();
+
+
     }
 
 

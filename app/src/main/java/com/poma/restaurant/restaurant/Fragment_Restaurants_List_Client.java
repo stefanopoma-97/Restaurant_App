@@ -330,7 +330,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         this.textView_no_result.setVisibility(View.VISIBLE);
 
 
-        Query query = getQueryFilteredForAdmin();
+        Query query = getQueryFiltered();
 
         this.listener_notification = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -391,7 +391,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
     }
 
     private void getAdminRestaurants(){
-        Log.d(TAG_LOG,"get all restaurants");
+        Log.d(TAG_LOG,"get all admin restaurants");
         this.mdata = new ArrayList<>();
 
         createAdapter(mdata);
@@ -472,8 +472,8 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         Log.d(TAG_LOG, "Vote: "+this.vote_filter);
         Log.d(TAG_LOG, "Category: "+this.categories_filter);
 
-        //Query query1 = this.db.collection("restaurants").whereEqualTo("admin_id",this.mAuth.getCurrentUser().getUid());
-        Query query1 = this.db.collection("restaurants").whereEqualTo("admin_id","TcD9ubVpgdfgmIBn26R5W7SHFPG3");
+        Query query1 = this.db.collection("restaurants").whereEqualTo("admin_id",this.mAuth.getCurrentUser().getUid());
+        //Query query1 = this.db.collection("restaurants").whereEqualTo("admin_id","TcD9ubVpgdfgmIBn26R5W7SHFPG3");
 
         if (!this.city_filter.equals("")){
             Log.d(TAG_LOG, "Filtro per città");
