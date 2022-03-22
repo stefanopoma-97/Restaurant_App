@@ -84,6 +84,7 @@
     <string name="password_has_been_successfully_updated">Password has been successfully updated</string>
     <string name="updating_account_wait">Updating Please Wait...</string>
     <string name="retrieving_account_wait">Retrieving data Please Wait...</string>
+    <string name="retrieving_data">Retrieving data Please Wait...</string>
     <string name="uploading_image">Uploading image...</string>
 
 

@@ -120,5 +120,6 @@
     <string name="load_more">Carica di più...</string>
     <string name="load_less">Carica di meno...</string>
     <string name="experience">Esperienza</string>
+    <string name="retrieving_data">Recupero dei dati, attendere prego</string>
 
 </resources>

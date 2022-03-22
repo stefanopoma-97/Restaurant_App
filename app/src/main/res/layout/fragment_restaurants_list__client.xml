@@ -7,8 +7,6 @@
     tools:context=".restaurant.Fragment_Restaurants_List_Client">
 
 
-
-
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_view_fragment_favourite"
         android:layout_width="wrap_content"
@@ -33,19 +31,20 @@
         android:layout_width="0dp"
 
         android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
         android:text="@string/Filter"
         app:cornerRadius="@dimen/button_radius"
+
         app:icon="@drawable/ic_baseline_filter_list_24"
 
         app:iconGravity="textStart"
-
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
 
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintTop_toBottomOf="@+id/search_view_fragment_favourite"
+        app:layout_constraintVertical_bias="0."
         app:layout_constraintWidth_percent=".4" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -79,5 +78,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/swipe_refresh_fragment_favourite"
         app:layout_constraintVertical_bias=".1"
+        android:visibility="invisible"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

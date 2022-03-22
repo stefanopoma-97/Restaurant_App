@@ -1,6 +1,7 @@
 package com.poma.restaurant.restaurant;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -13,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -75,6 +77,8 @@ public class Fragment_Restaurants_List_Client extends Fragment {
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
     private static ListenerRegistration listener_notification;
+
+    private ProgressDialog progressDialog;
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerViewAdapter_Restaurant adapter;
@@ -217,6 +221,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
 
         this.mdata = new ArrayList<>();
 
+        progressBarr(true);
         getRestaurants();
 
         setSearchView();
@@ -327,7 +332,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
 
         rv.setLayoutManager(linearLayoutManager);
         rv.setAdapter(adapter);
-        this.textView_no_result.setVisibility(View.VISIBLE);
+        //this.textView_no_result.setVisibility(View.VISIBLE);
 
 
         Query query = getQueryFiltered();
@@ -340,7 +345,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
                     Log.w(TAG_LOG, "Listen failed.", e);
                     return;
                 }
-
+                setAdapterChange();
                 for (DocumentChange dc : snapshots.getDocumentChanges()) {
                     switch (dc.getType()) {
                         case ADDED:
@@ -354,6 +359,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
                                 Log.d(TAG_LOG,"Controllo search view, contine qualcosa, applico filtro");
                                 filter(searchView.getQuery().toString());
                             }
+
 
                             break;
                         case MODIFIED:
@@ -392,6 +398,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
 
     private void getAdminRestaurants(){
         Log.d(TAG_LOG,"get all admin restaurants");
+
         this.mdata = new ArrayList<>();
 
         createAdapter(mdata);
@@ -415,6 +422,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
                     return;
                 }
 
+                setAdapterChange();
                 for (DocumentChange dc : snapshots.getDocumentChanges()) {
                     switch (dc.getType()) {
                         case ADDED:
@@ -602,6 +610,9 @@ public class Fragment_Restaurants_List_Client extends Fragment {
             }
         });
 
+
+
+
         Log.d(TAG_LOG,"recupero valore da mettere in search");
         if (this.search.equals(""))
             searchView.clearFocus();
@@ -641,6 +652,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
 
     private void setAdapterChange(){
         Log.d(TAG_LOG,"set Adapter");
+        progressBarr(false);
 
         this.adapter.notifyDataSetChanged();
         if(adapter.getItemCount()==0)
@@ -672,5 +684,18 @@ public class Fragment_Restaurants_List_Client extends Fragment {
             throw new ClassCastException(activity.toString() +
                     "Does not implement the interface");
         }
+    }
+
+    //gestione progress bar
+    private void progressBarr(Boolean b){
+        if(b){
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage(getResources().getString(R.string.retrieving_data));
+            progressDialog.show();
+        }
+        else{
+            this.progressDialog.dismiss();
+        }
+
     }
 }

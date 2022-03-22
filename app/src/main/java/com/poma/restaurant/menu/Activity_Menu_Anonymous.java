@@ -6,6 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.animation.ValueAnimator;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -96,6 +100,8 @@ public class Activity_Menu_Anonymous extends Activity_Drawer_Menu_Anonymous {
     private Animation zoom_in_image;
     private Animation zoom_out_text;
 
+    private static Boolean animation_start=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +113,7 @@ public class Activity_Menu_Anonymous extends Activity_Drawer_Menu_Anonymous {
         allocateActivityTitle(getResources().getString(R.string.dashboard_anonymous));
 
         this.mAuth= FirebaseAuth.getInstance();
+        this.animation_start=false;
 
 
         //Riceve broadcast
@@ -137,7 +144,7 @@ public class Activity_Menu_Anonymous extends Activity_Drawer_Menu_Anonymous {
             @Override
             public void onClick(View v) {
                 //load animation
-                myAnimationCardListener.setImage(imageView_restaurants);
+                /*myAnimationCardListener.setImage(imageView_restaurants);
                 myAnimationCardListener.setXY(imageView_restaurants.getScaleX(), imageView_restaurants.getScaleY());
 
                 create_animation(myAnimationCardListener);
@@ -154,7 +161,17 @@ public class Activity_Menu_Anonymous extends Activity_Drawer_Menu_Anonymous {
 
                 Intent in3 = new Intent(getApplicationContext(), Activity_Restaurants_List_Anonymous.class);
                 in3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                new AsyncIntent().execute(in3, Activity_Menu_Anonymous.this);
+                new AsyncIntent().execute(in3, Activity_Menu_Anonymous.this);*/
+                if (animation_start==false){
+                    Intent in3 = new Intent(getApplicationContext(), Activity_Restaurants_List_Anonymous.class);
+                    in3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                    ObjectAnimator animation = create_animation_object(imageView_restaurants,in3);
+                    ObjectAnimator animation2 = create_animation_text_object(textView_restaurant);
+                    animation.start();
+                    animation2.start();
+
+                }
 
             }
         });
@@ -163,7 +180,7 @@ public class Activity_Menu_Anonymous extends Activity_Drawer_Menu_Anonymous {
             @Override
             public void onClick(View v) {
                 //load animation
-                myAnimationCardListener.setImage(imageView_login);
+                /*myAnimationCardListener.setImage(imageView_login);
                 myAnimationCardListener.setXY(imageView_login.getScaleX(), imageView_login.getScaleY());
 
                 create_animation(myAnimationCardListener);
@@ -180,7 +197,18 @@ public class Activity_Menu_Anonymous extends Activity_Drawer_Menu_Anonymous {
 
                 Intent in3 = new Intent(getApplicationContext(), Activity_First_Access.class);
                 in3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                new AsyncIntent().execute(in3, Activity_Menu_Anonymous.this);
+                new AsyncIntent().execute(in3, Activity_Menu_Anonymous.this);*/
+
+                if (animation_start==false){
+                    Intent in3 = new Intent(getApplicationContext(), Activity_First_Access.class);
+                    in3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    ObjectAnimator animation = create_animation_object(imageView_login,in3);
+                    ObjectAnimator animation2 = create_animation_text_object(textView_login);
+                    animation.start();
+                    animation2.start();
+
+                }
 
             }
         });
@@ -220,6 +248,163 @@ public class Activity_Menu_Anonymous extends Activity_Drawer_Menu_Anonymous {
         zoom_out_text.setDuration(500);
         zoom_out_text.setAnimationListener(listener);
 
+
+    }
+
+    private ObjectAnimator create_animation_object(ImageView view, Intent intent){
+        float x =view.getScaleX();
+        float y = view.getScaleY();
+        PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("scaleX", x, 1.5f);
+        PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleY", y, 1.5f);
+        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(view, pvhX, pvhY);
+
+        // We set the duration of the animation
+        objectAnimator.setDuration(500);
+        objectAnimator.setRepeatCount(1);
+        objectAnimator.setRepeatMode(ValueAnimator.REVERSE);
+        // We want to be notified of the changes in value
+        objectAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                // The animator gives us the current value
+                String value = animation.getAnimatedValue().toString();
+            }
+        });
+        objectAnimator.addListener(new Animator.AnimatorListener() {
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+                //Toast.makeText(getActivity(), "onAnimationCancel", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                animation_start=false;
+                //mRunning = false;
+                //Toast.makeText(Activity_Menu.this, "onAnimationEnd", Toast.LENGTH_SHORT).show();
+                startActivity(intent);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+                //Toast.makeText(getActivity(), "onAnimationRepeat", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAnimationStart(Animator animator) {
+                animation_start=true;
+                //Toast.makeText(getActivity(), "onAnimationStart", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+        //mRunning = true;
+        // We start the animator
+        return objectAnimator;
+
+    }
+
+    private ObjectAnimator create_animation_object_no_intent(ImageView view){
+        float x =view.getScaleX();
+        float y = view.getScaleY();
+        PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("scaleX", x, 1.5f);
+        PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleY", y, 1.5f);
+        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(view, pvhX, pvhY);
+
+        // We set the duration of the animation
+        objectAnimator.setDuration(500);
+        objectAnimator.setRepeatCount(1);
+        objectAnimator.setRepeatMode(ValueAnimator.REVERSE);
+        // We want to be notified of the changes in value
+        objectAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                // The animator gives us the current value
+                String value = animation.getAnimatedValue().toString();
+            }
+        });
+        objectAnimator.addListener(new Animator.AnimatorListener() {
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+                //Toast.makeText(getActivity(), "onAnimationCancel", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                animation_start=false;
+                //mRunning = false;
+                //Toast.makeText(Activity_Menu.this, "onAnimationEnd", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+                //Toast.makeText(getActivity(), "onAnimationRepeat", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAnimationStart(Animator animator) {
+                animation_start=true;
+                //Toast.makeText(getActivity(), "onAnimationStart", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+        //mRunning = true;
+        // We start the animator
+        return objectAnimator;
+
+    }
+
+    private ObjectAnimator create_animation_text_object(TextView view){
+        float x =view.getScaleX();
+        float y = view.getScaleY();
+        PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("scaleX", x, 0.9f);
+        PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleY", y, 0.9f);
+        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(view, pvhX, pvhY);
+
+        // We set the duration of the animation
+        objectAnimator.setDuration(500);
+        objectAnimator.setRepeatCount(1);
+        objectAnimator.setRepeatMode(ValueAnimator.REVERSE);
+        // We want to be notified of the changes in value
+        objectAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                // The animator gives us the current value
+                String value = animation.getAnimatedValue().toString();
+            }
+        });
+        objectAnimator.addListener(new Animator.AnimatorListener() {
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+                //Toast.makeText(getActivity(), "onAnimationCancel", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                //animation_start=false;
+                //mRunning = false;
+                //Toast.makeText(Activity_Menu.this, "onAnimationEnd", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+                //Toast.makeText(getActivity(), "onAnimationRepeat", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAnimationStart(Animator animator) {
+                //animation_start=true;
+                //Toast.makeText(getActivity(), "onAnimationStart", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+        //mRunning = true;
+        // We start the animator
+        return objectAnimator;
 
     }
 
