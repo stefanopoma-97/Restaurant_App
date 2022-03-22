@@ -193,7 +193,7 @@ public class Fragment_Edit_Restaurant extends Fragment {
                     chip1.setChecked(false);
                     chip1.setVisibility(View.INVISIBLE);
                     tags_insert[0]=false;
-                    Toast.makeText(getContext(), "Remove tag 1", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.remove_tag, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -206,7 +206,7 @@ public class Fragment_Edit_Restaurant extends Fragment {
                     chip2.setChecked(false);
                     chip2.setVisibility(View.INVISIBLE);
                     tags_insert[1]=false;
-                    Toast.makeText(getContext(), "Remove tag 2", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.remove_tag, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -219,7 +219,7 @@ public class Fragment_Edit_Restaurant extends Fragment {
                     chip3.setChecked(false);
                     chip3.setVisibility(View.INVISIBLE);
                     tags_insert[2]=false;
-                    Toast.makeText(getContext(), "Remove tag 3", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.remove_tag, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -456,28 +456,26 @@ public class Fragment_Edit_Restaurant extends Fragment {
     }
 
     private void enter_tag(View view){
-
-
         String tag = editText_tags.getText().toString();
         if (this.tags_insert[0]==false){
             this.chip1.setText(tag);
             this.chip1.setVisibility(View.VISIBLE);
             this.tags_insert[0]=true;
-            Toast.makeText(getContext(), "Add tag 1", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.add_tag, Toast.LENGTH_SHORT).show();
         }
         else if (this.tags_insert[1]==false){
             this.chip2.setText(tag);
             //this.chip2.setChecked(true);
             this.chip2.setVisibility(View.VISIBLE);
             this.tags_insert[1]=true;
-            Toast.makeText(getContext(), "Add tag 2", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.add_tag, Toast.LENGTH_SHORT).show();
         }
         else if (this.tags_insert[2]==false){
             this.chip3.setText(tag);
             //this.chip3.setChecked(true);
             this.chip3.setVisibility(View.VISIBLE);
             this.tags_insert[2]=true;
-            Toast.makeText(getContext(), "Add tag 1", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.add_tag, Toast.LENGTH_SHORT).show();
         }
 
 

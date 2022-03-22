@@ -26,6 +26,8 @@
     <string name="surname">Surname</string>
     <string name="email">Email</string>
     <string name="location">Location</string>
+    <string name="load_more">Load more ...</string>
+    <string name="load_less">Load less ...</string>
     <string name="date">Date</string>
     <string name="update">Update</string>
     <string name="update_account">Account has been updated</string>
@@ -63,8 +65,13 @@
 
     <!-- ACCOUNT -->
     <string name="add_image">Add a new image</string>
+    <string name="add_favorite">Added to favorites</string>
+    <string name="add_tag">Added tag</string>
+    <string name="remove_tag">Removed tag</string>
+    <string name="remove_favorite">Removed from favorites</string>
     <string name="image_uploaded">Image uploaded</string>
     <string name="account_information">Information</string>
+    <string name="login_first">You should login first</string>
 
     <string name="account_name">Name:</string>
     <string name="account_surname">Surname:</string>
@@ -136,6 +143,7 @@
     <!-- Review -->
     <string name="create_review">Create review</string>
     <string name="insert_experience">Your experience</string>
+    <string name="experience">Experience</string>
     <string name="insert_service">Service</string>
     <string name="insert_location">Location</string>
     <string name="insert_problems">Problems</string>

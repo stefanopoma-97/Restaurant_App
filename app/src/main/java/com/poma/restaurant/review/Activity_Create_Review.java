@@ -179,7 +179,7 @@ public class Activity_Create_Review extends AppCompatActivity implements Fragmen
                 Log.d(TAG_LOG, "aggiunta recensione");
                 search_restaurant_vote(id_restaurant);
                 create_notification_new_review(restaurant_id);
-                Toast.makeText(Activity_Create_Review.this, "Review created", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Activity_Create_Review.this, R.string.create_review, Toast.LENGTH_SHORT).show();
                 back();
             }
         })

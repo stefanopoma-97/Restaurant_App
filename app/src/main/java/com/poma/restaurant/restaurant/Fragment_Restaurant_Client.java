@@ -215,10 +215,6 @@ public class Fragment_Restaurant_Client extends Fragment {
             }
         });
 
-
-
-
-
         return view;
     }
 
@@ -258,7 +254,7 @@ public class Fragment_Restaurant_Client extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    Toast.makeText(getContext(), "You should login first", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.login_first, Toast.LENGTH_SHORT).show();
 
 
 
@@ -288,7 +284,7 @@ public class Fragment_Restaurant_Client extends Fragment {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG_LOG, "aggiunta preferito");
-                        Toast.makeText(getContext(), "Add favourite", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.add_favorite, Toast.LENGTH_SHORT).show();
 
                         load_favourite_button();
                         create_notification_favourite();
@@ -327,7 +323,7 @@ public class Fragment_Restaurant_Client extends Fragment {
                                         if(task.isSuccessful()){
                                             Log.d(TAG_LOG, "preferito eliminata");
                                             load_favourite_button();
-                                            Toast.makeText(getContext(), "Remove favourite", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext(), R.string.remove_favorite, Toast.LENGTH_SHORT).show();
 
                                         }
                                         else{
@@ -494,7 +490,10 @@ public class Fragment_Restaurant_Client extends Fragment {
                         }
                         else {
                             progressBar.setVisibility(View.INVISIBLE);
-                            imageView.setImageResource(R.drawable.ic_baseline_image_24);
+                            if (user_access == false && anonymous_access==false)
+                                imageView.setImageResource(R.drawable.add_image);
+                            else
+                                imageView.setImageResource(R.drawable.ic_baseline_image_24);
                         }
 
 
@@ -787,7 +786,7 @@ public class Fragment_Restaurant_Client extends Fragment {
                                             // Reload information
                                             updateImageView();
                                             progressDialog_image(false, "");
-                                            Toast.makeText(getContext(), "Image uploaded", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(getContext(), R.string.image_uploaded, Toast.LENGTH_LONG).show();
                                         }
                                         else{
                                             Log.d(TAG_LOG, "problemi aggiornamento user");

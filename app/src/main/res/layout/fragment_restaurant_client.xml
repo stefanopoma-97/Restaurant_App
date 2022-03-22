@@ -48,7 +48,7 @@
                     android:id="@+id/imagevire_fragment_restaurant"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/add_image" />
+                    android:visibility="visible"/>
             </androidx.cardview.widget.CardView>
 
             <View

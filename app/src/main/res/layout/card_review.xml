@@ -100,7 +100,7 @@
                 android:id="@+id/textview_load_more_cardreview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="LOAD MORE ..."
+                android:text="@string/load_more"
 
                 android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold"
@@ -118,7 +118,7 @@
                 android:id="@+id/textview_location_cardreview"
                 android:layout_width="@dimen/title_review"
                 android:layout_height="wrap_content"
-                android:text="Location:"
+                android:text="@string/location"
 
                 android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold"
@@ -175,7 +175,7 @@
                 android:id="@+id/textview_service_cardreview"
                 android:layout_width="@dimen/title_review"
                 android:layout_height="wrap_content"
-                android:text="Service:"
+                android:text="@string/insert_service"
 
                 android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold"
@@ -228,7 +228,7 @@
                 android:id="@+id/textview_experience_cardreview"
                 android:layout_width="@dimen/title_review"
                 android:layout_height="wrap_content"
-                android:text="Experience:"
+                android:text="@string/experience"
 
                 android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold"
@@ -283,7 +283,7 @@
                 android:id="@+id/textview_problem_cardreview"
                 android:layout_width="@dimen/title_review"
                 android:layout_height="wrap_content"
-                android:text="Problems:"
+                android:text="@string/insert_problems"
 
                 android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold"
@@ -337,7 +337,7 @@
                 android:id="@+id/textview_load_less_cardreview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="LOAD LESS ..."
+                android:text="@string/load_less"
 
                 android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold"
