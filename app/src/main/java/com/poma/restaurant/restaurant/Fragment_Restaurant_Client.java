@@ -463,7 +463,7 @@ public class Fragment_Restaurant_Client extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Map<String, Object> data = document.getData();
-                        Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
+                        //Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
 
                         if ((String)data.get("imageUrl") != null && (String)data.get("imageUrl") != "" ){
                             progressBar.setVisibility(View.VISIBLE);
@@ -515,7 +515,8 @@ public class Fragment_Restaurant_Client extends Fragment {
 
     }
 
-    private void load_restaurant(){
+    public void load_restaurant(){
+        Log.d(TAG_LOG, "load restaurant");
         DocumentReference docRef = this.db.collection("restaurants").document(this.restaurant_id);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -525,7 +526,7 @@ public class Fragment_Restaurant_Client extends Fragment {
                     if (document.exists()) {
                         Map<String, Object> data = document.getData();
                         Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
-
+                        restaurant = new Restaurant();
                         restaurant.setName((String) data.get("name"));
                         restaurant.setCategory((String) data.get("category"));
                         restaurant.setCity((String) data.get("city"));
@@ -557,27 +558,38 @@ public class Fragment_Restaurant_Client extends Fragment {
                         content.setSpan(new UnderlineSpan(), 0, (String.valueOf(restaurant.getN_reviews())).length(), 0);
                         review.setText(content);
 
+                        Log.d(TAG_LOG, "Scrivo i tags: " + restaurant.toString());
+                        Log.d(TAG_LOG, "Tag1: " + restaurant.getTag1());
+                        Log.d(TAG_LOG, "Tag2: " + restaurant.getTag2());
+                        Log.d(TAG_LOG, "Tag3: " + restaurant.getTag3());
+
                         String tag1 = restaurant.getTag1();
                         if (tag1 != ""){
                             textView_tag1.setText(tag1);
+                            textView_tag1.setVisibility(View.VISIBLE);
                         }
                         else {
+                            textView_tag1.setText("");
                             textView_tag1.setVisibility(View.INVISIBLE);
                         }
 
                         String tag2 = restaurant.getTag2();
                         if (tag2 != ""){
                             textView_tag2.setText(tag2);
+                            textView_tag2.setVisibility(View.VISIBLE);
                         }
                         else {
+                            textView_tag2.setText("");
                             textView_tag2.setVisibility(View.INVISIBLE);
                         }
 
                         String tag3 = restaurant.getTag3();
                         if (tag3 != ""){
                             textView_tag3.setText(tag3);
+                            textView_tag3.setVisibility(View.VISIBLE);
                         }
                         else {
+                            textView_tag3.setText("");
                             textView_tag3.setVisibility(View.INVISIBLE);
                         }
 
@@ -702,7 +714,7 @@ public class Fragment_Restaurant_Client extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Map<String, Object> data = document.getData();
-                        Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
+                        //Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
 
                         if ((String)data.get("imageUrl") != null){
                             progressBar.setVisibility(View.VISIBLE);

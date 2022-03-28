@@ -300,12 +300,12 @@ public class Activity_Test extends Activity_Drawer_Menu_User {
         Log.d(TAG_LOG, "Creazione notifica");
 
         Notification n = new Notification();
-        n.setUser_id(mAuth.getCurrentUser().getUid());
+        n.setUser_id("EzgFTtDJASXvESC9FZunuJ6uFFQ2");
         n.setRead(false);
         n.setShowed(false);
-        n.setContent("è stato aggiunto ...");
+        n.setContent(getResources().getString(R.string.new_restaurant_content));
         n.setType(getResources().getString(R.string.new_restaurant));
-        n.setUseful_id("VcvRkd12X78qwGANYdaf");
+        n.setUseful_id("KFjKzIBze5Y5empsgtSR");
         Calendar calendar = Calendar.getInstance();
         long timeMilli2 = calendar.getTimeInMillis();
         n.setDate(timeMilli2);

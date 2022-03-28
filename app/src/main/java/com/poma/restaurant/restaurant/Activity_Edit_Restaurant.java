@@ -263,6 +263,8 @@ public class Activity_Edit_Restaurant extends Activity_Drawer_Menu_Admin impleme
                         if(task.isSuccessful()){
                             Log.d(TAG_LOG, "aggiorno ristorante");
                             update_favourites(id, name, category, address);
+                            Intent intent = new Intent();
+                            setResult(RESULT_OK,intent);
                             finish();
 
                         }

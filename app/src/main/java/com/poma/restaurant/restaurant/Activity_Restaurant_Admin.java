@@ -21,6 +21,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.poma.restaurant.R;
 import com.poma.restaurant.account.Activity_Account;
+import com.poma.restaurant.login.Activity_First_Access;
+import com.poma.restaurant.menu.Activity_Menu;
+import com.poma.restaurant.menu.Activity_Menu_Admin;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
 import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.User;
@@ -160,9 +163,34 @@ public class Activity_Restaurant_Admin extends AppCompatActivity implements Frag
     public void edit_restaurant(String restaurant_id) {
         Intent intent = new Intent(Activity_Restaurant_Admin.this, Activity_Edit_Restaurant.class);
         intent.putExtra(Action.RESTAURANT_ID_EXTRA, restaurant_id);
-        startActivity(intent);
+        startActivityForResult(intent, Action.EDIT_RESTAURANT_ACTION);
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //final User user;
+        final Intent mainIntent;
+        Log.d(TAG_LOG, "On activity result");
+
+        //risposta ad un login
+        if (requestCode == Action.EDIT_RESTAURANT_ACTION) {
+            switch (resultCode) {
+                case RESULT_OK:
+                    Log.d(TAG_LOG, "Return from login (user): OK");
+                    //this.fragment_restaurant_client.load_restaurant();
+                    //onStart();
+                    break;
+
+                case RESULT_CANCELED:
+                    Log.d(TAG_LOG, "Return from login: CANCELED");
+                    break;
+            }
+        }
+
+    }
+
 
 
 }

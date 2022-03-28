@@ -241,7 +241,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="tag1 "
+                android:text=""
                 android:padding="5dp"
                 android:background="@drawable/textview_border"
 
@@ -263,7 +263,7 @@
                 android:background="@drawable/textview_border"
                 android:gravity="center_horizontal"
                 android:padding="5dp"
-                android:text="tag2 "
+                android:text=""
 
                 android:textAlignment="center"
                 android:textSize="@dimen/text_size_small"
@@ -282,7 +282,7 @@
                 android:background="@drawable/textview_border"
                 android:gravity="center_horizontal"
                 android:padding="5dp"
-                android:text="tag3 "
+                android:text=""
 
                 android:textAlignment="center"
                 android:textSize="@dimen/text_size_small"

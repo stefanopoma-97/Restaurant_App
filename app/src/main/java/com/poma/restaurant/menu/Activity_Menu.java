@@ -6,6 +6,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
@@ -112,12 +113,11 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
         allocateActivityTitle(getResources().getString(R.string.dashboard));
 
 
-        this.mAuth= FirebaseAuth.getInstance();
+
 
         this.animation_start=false;
 
-        //notifiche
-        receiveNotifications();
+
 
         //Riceve broadcast
         IntentFilter intentFilter = new IntentFilter();
@@ -244,8 +244,10 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
                     ObjectAnimator animation = create_animation_object_no_intent(imageView_notifications);
                     ObjectAnimator animation2 = create_animation_text_object(textView_notifications);
                     new AsyncIntent().execute(in3, Activity_Menu.this);
-                    animation.start();
-                    animation2.start();
+                    AnimatorSet set = new AnimatorSet();
+                    set.playTogether(animation, animation2);
+                    set.start();
+
                 }
 
 
@@ -480,8 +482,17 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
         super.onStart();
         //controllo la presenza di utenti loggati
         Log.d(TAG_LOG, "Controllo ci sia un utente loggato");
+        this.mAuth= FirebaseAuth.getInstance();
+        this.db = FirebaseFirestore.getInstance();
 
         check_user();
+        //notifiche
+        receiveNotifications();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
 
     }
 
@@ -492,6 +503,7 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
         unregisterReceiver(this.broadcastReceiver);
         Log.d(TAG_LOG,"un register receiver");
         this.listener_notification.remove();
+
     }
 
     //doppio click su back per uscire dall'applicazione
@@ -539,7 +551,7 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
 
         if (currentUser.getUid().equals(currentUser2.getID())){
             Log.d(TAG_LOG, "Gli utenti coincidono");
-            this.db = FirebaseFirestore.getInstance();
+
             DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -628,9 +640,8 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
 
     //verifica l'esistenza di notifiche per l'utente loggato (con l'id dell'utente, non mostrate, non lette)
     public void receiveNotifications(){
-        this.db = FirebaseFirestore.getInstance();
-        this.mAuth= FirebaseAuth.getInstance();
-        this.currentUser = mAuth.getCurrentUser();
+
+        this.currentUser = this.mAuth.getCurrentUser();
         if (this.currentUser!=null){
             Query query = this.db.collection("notifications")
                     .whereEqualTo("user_id", currentUser.getUid())

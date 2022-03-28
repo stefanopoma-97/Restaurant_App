@@ -127,6 +127,7 @@ public class Restaurant implements Comparable<Restaurant>{
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+
     }
 
     public String getTag1(){
