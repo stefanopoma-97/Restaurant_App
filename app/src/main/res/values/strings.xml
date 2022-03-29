@@ -28,6 +28,7 @@
     <string name="location">Location</string>
     <string name="load_more">Load more ...</string>
     <string name="load_less">Load less ...</string>
+    <string name="days_of_the_week">Days of opening</string>
     <string name="date">Date</string>
     <string name="update">Update</string>
     <string name="update_account">Account has been updated</string>
@@ -103,6 +104,7 @@
     <string name="add_new_restaurant">Add new restaurant</string>
     <string name="order">Sort</string>
     <string name="edit_restaurant">Edit restaurant</string>
+    <string name="edit_restaurant_times">Edit restaurant times</string>
     <string name="my_restaurant">My Restaurants</string>
 
 
@@ -153,6 +155,27 @@
 
     <!-- Filter -->
     <string name="Filter">Filters</string>
+    <string name="all_categories">All categories</string>
+    <string name="pizzeria">Pizzeria</string>
+    <string name="bar">Bar</string>
+    <string name="sushi">Sushi</string>
+    <string name="fast_food">Fast food</string>
+    <string name="pasticceria">Pastry Shop</string>
+    <string name="voto_maggiore_di">Rating >=</string>
+
+    <!-- times -->
+    <string name="days_of_the_week">Days of opening</string>
+    <string name="all_day">All days</string>
+    <string name="morning">Morning:</string>
+    <string name="evening">Evening:</string>
+
+    <string name="lunedì">M</string>
+    <string name="martedì">T</string>
+    <string name="mercoledì">W</string>
+    <string name="giovedì">T</string>
+    <string name="venerdì">F</string>
+    <string name="sabato">S</string>
+    <string name="domenica">S</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

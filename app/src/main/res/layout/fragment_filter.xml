@@ -71,7 +71,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Voto >="
+        android:text="@string/voto_maggiore_di"
         android:textSize="@dimen/text_size_medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -103,7 +103,7 @@
 
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="All categories"
+        android:text="@string/all_categories"
 
         app:cornerRadius="@dimen/button_radius"
 
@@ -125,7 +125,7 @@
 
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Pizzeria"
+        android:text="@string/pasticceria"
 
         app:cornerRadius="@dimen/button_radius"
 
@@ -145,7 +145,7 @@
 
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Bar"
+        android:text="@string/bar"
 
         app:cornerRadius="@dimen/button_radius"
 
@@ -166,7 +166,7 @@
 
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="sushi"
+        android:text="@string/sushi"
 
         app:cornerRadius="@dimen/button_radius"
 
@@ -187,7 +187,7 @@
 
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Fast food"
+        android:text="@string/fast_food"
 
         app:cornerRadius="@dimen/button_radius"
 
@@ -208,7 +208,7 @@
 
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Pasticceria"
+        android:text="@string/pasticceria"
 
         app:cornerRadius="@dimen/button_radius"
 

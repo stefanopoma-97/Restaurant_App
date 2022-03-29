@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:id="@+id/scrollview_edit_restaurant"
+    android:background="@drawable/shape_round_white"
+    tools:context=".restaurant.Fragment_Edit_Restaurant">
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/textview_edit_restaurant_time_alert_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:text=""
+
+            android:textAlignment="center"
+            android:textColor="@color/red"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold"
+
+            android:visibility="invisible"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+
+            app:layout_constraintTop_toBottomOf="@+id/btn_evening_start"
+            app:layout_constraintVertical_bias=".1"
+            app:layout_constraintWidth_percent=".8" />
+
+        <TextView
+            android:id="@+id/Textview_days_of_the_week"
+
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent=".8"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_medium"
+            android:gravity="center"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:layout_constraintVertical_bias=".05"
+            app:layout_constraintHorizontal_bias=".5"
+
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+
+            android:visibility="visible"
+            android:text="@string/days_of_the_week"
+
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_all_days"
+            style="@style/button_style_allcategory_not_selected"
+
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/all_day"
+
+            app:cornerRadius="@dimen/button_radius"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Textview_days_of_the_week"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintWidth_percent=".5"
+
+
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_lunedi"
+            style="@style/button_style_category_not_selected"
+
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/lunedì"
+
+            app:cornerRadius="@dimen/button_radius"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_all_days"
+            app:layout_constraintVertical_bias="0.05"
+            app:layout_constraintHorizontal_bias=".1"
+            app:layout_constraintWidth_percent=".15"
+
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_martedi"
+            style="@style/button_style_category_not_selected"
+
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/martedì"
+
+            app:cornerRadius="@dimen/button_radius"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_all_days"
+
+            app:layout_constraintVertical_bias="0.05"
+            app:layout_constraintWidth_percent=".15" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_mercoledi"
+            style="@style/button_style_category_not_selected"
+
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/mercoledì"
+
+            app:cornerRadius="@dimen/button_radius"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_all_days"
+
+            app:layout_constraintVertical_bias="0.05"
+            app:layout_constraintWidth_percent=".15" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_giovedi"
+            style="@style/button_style_category_not_selected"
+
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/giovedì"
+
+            app:cornerRadius="@dimen/button_radius"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_all_days"
+
+            app:layout_constraintVertical_bias="0.05"
+            app:layout_constraintWidth_percent=".15" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_venerdi"
+            style="@style/button_style_category_not_selected"
+
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/venerdì"
+
+            app:cornerRadius="@dimen/button_radius"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_all_days"
+
+            app:layout_constraintVertical_bias="0.05"
+            app:layout_constraintWidth_percent=".15" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_sabato"
+            style="@style/button_style_category_not_selected"
+
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/sabato"
+
+            app:cornerRadius="@dimen/button_radius"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_martedi"
+
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintWidth_percent=".15" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_domenica"
+            style="@style/button_style_category_not_selected"
+
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/domenica"
+
+            app:cornerRadius="@dimen/button_radius"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_martedi"
+
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintWidth_percent=".15" />
+
+
+
+
+        <Switch
+            android:id="@+id/switch_morning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/morning"
+            android:textSize="@dimen/text_size_medium"
+            android:textOff="OFF"
+            android:textOn="ON"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_domenica"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintVertical_bias=".1"
+            app:layout_constraintWidth_percent=".3"
+            />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_morning_start"
+            style="@style/main_button_style_hours"
+
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="8:00"
+
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switch_morning"
+
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintWidth_percent=".3" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_morning_end"
+            style="@style/main_button_style_hours"
+
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="14:00"
+
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switch_morning"
+
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintWidth_percent=".3"
+            android:enabled="true"
+
+            />
+
+
+        <Switch
+            android:id="@+id/switch_evening"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/evening"
+            android:textOff="OFF"
+            android:textOn="ON"
+            android:textSize="@dimen/text_size_medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_morning_start"
+            app:layout_constraintVertical_bias=".1"
+            app:layout_constraintWidth_percent=".3"
+            tools:ignore="MissingConstraints" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_evening_start"
+            style="@style/main_button_style_hours"
+
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="18:00"
+
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switch_evening"
+
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintWidth_percent=".3" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_evening_end"
+            style="@style/main_button_style_hours"
+
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:enabled="true"
+
+
+            android:text="22:00"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".8"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toBottomOf="@+id/switch_evening"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintWidth_percent=".3"
+
+            />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_edit_time"
+            style="@style/main_button_style"
+            android:layout_width="0dp"
+
+            android:layout_height="wrap_content"
+            android:layout_margin="50dp"
+
+            android:text="@string/save"
+            app:cornerRadius="@dimen/button_radius"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".5"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_evening_start"
+            app:layout_constraintVertical_bias=".5"
+            app:layout_constraintWidth_percent=".8"
+
+            />
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

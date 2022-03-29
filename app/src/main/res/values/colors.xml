@@ -16,4 +16,5 @@
     <color name="red_alert">#bfbfbf</color>
     <color name="yellow_star">#ffdd00</color>
     <color name="red_heart">#D7443E</color>
+    <color name="dark_grey">#4A4A4A</color>
 </resources>
