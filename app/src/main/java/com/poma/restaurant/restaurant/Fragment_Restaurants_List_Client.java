@@ -85,6 +85,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
     private SearchView searchView = null;
 
     private TextView textView_no_result;
+    private TextView filter_banner;
     private String search = "";
     private Button btn_filter;
 
@@ -150,6 +151,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         this.textView_no_result = view.findViewById(R.id.textview_no_result_restaurants_list);
         this.textView_no_result.setVisibility(View.INVISIBLE);
         this.btn_filter = view.findViewById(R.id.btn_filter_restaurants_list);
+        this.filter_banner = view.findViewById(R.id.filter_banner);
 
         this.swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_fragment_favourite);
         this.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -238,10 +240,36 @@ public class Fragment_Restaurants_List_Client extends Fragment {
                 startActivityForResult(intent, Action.FILTER_REQUEST);
             }
         });
+        setFilterBanner();
 
 
 
 
+    }
+
+    private void setFilterBanner(){
+        Log.d(TAG_LOG, "SET banner filter");
+        int count = 0;
+        if (!this.city_filter.equals("")){
+            count++;
+        }
+        Log.d(TAG_LOG, "vote_filter: "+this.vote_filter);
+        if (!this.vote_filter.equals(new Float(0))){
+
+            count++;
+        }
+
+        if (this.categories_filter.size()!=0){
+            count++;
+        }
+
+        if (count>0){
+            this.filter_banner.setText(" "+count+" ");
+            this.filter_banner.setVisibility(View.VISIBLE);
+        }
+        else{
+            this.filter_banner.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override

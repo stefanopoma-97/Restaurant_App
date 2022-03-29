@@ -27,6 +27,22 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.1" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="-100dp"
+                android:background="@drawable/badge_shape"
+                android:text="3"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_test_crea_ristorante"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/btn_test_crea_ristorante"
+
+                app:layout_constraintTop_toTopOf="@+id/btn_test_crea_ristorante"
+                app:layout_constraintVertical_bias="0.0" />
+
             <Button
                 android:id="@+id/btn_test_crea_ristorante"
                 android:layout_width="wrap_content"
@@ -37,6 +53,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_test_crea_notifica"
                 app:layout_constraintVertical_bias="0.1" />
+
+
 
             <Button
                 android:id="@+id/btn_test_crea_favourite"
@@ -69,6 +87,60 @@
                 app:layout_constraintHorizontal_bias="0.493"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_test_create_review" />
+
+
+
+            <xyz.hanks.library.bang.SmallBangView
+                android:id="@+id/imageViewAnimation"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_go_to_review"
+                tools:ignore="MissingConstraints"
+                app:layout_constraintWidth_percent=".35"
+                app:layout_constraintHeight_percent=".15"
+
+                >
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/heart_selector"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    app:layout_constraintWidth_percent=".8" />
+
+            </xyz.hanks.library.bang.SmallBangView>
+
+            <xyz.hanks.library.bang.SmallBangView
+
+                android:id="@+id/textViewAnimation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:ignore="MissingConstraints"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_go_to_review"
+                android:visibility="gone"
+                >
+
+                <TextView
+                    android:textColor="@color/text_selector"
+                    android:textAlignment="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="GeeksForGeeks"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </xyz.hanks.library.bang.SmallBangView>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

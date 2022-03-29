@@ -347,6 +347,31 @@
                     app:layout_constraintVertical_bias=".1"
                     tools:ignore="MissingConstraints" />
 
+                <xyz.hanks.library.bang.SmallBangView
+                    android:id="@+id/imageViewAnimation_heart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/textview_reviews_link_fragment_restaurant"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/heart_selector"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        app:layout_constraintWidth_percent=".8" />
+
+                </xyz.hanks.library.bang.SmallBangView>
+
 
 
 
@@ -376,7 +401,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
 
-                android:visibility="visible"
+                android:visibility="gone"
                 app:backgroundTint="#FFEB3B"
 
 

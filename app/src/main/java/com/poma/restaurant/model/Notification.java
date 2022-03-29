@@ -14,8 +14,15 @@ public class Notification implements Comparable<Notification>{
     private Boolean showed;
     private Boolean read;
     private String useful_id;
+    private String useful_id2;
 
+    public String getUseful_id2() {
+        return useful_id2;
+    }
 
+    public void setUseful_id2(String useful_id2) {
+        this.useful_id2 = useful_id2;
+    }
 
     public Notification() {
     }

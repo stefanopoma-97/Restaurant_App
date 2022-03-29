@@ -28,6 +28,8 @@ import android.widget.ImageView;
 
 import java.util.Map;
 
+import xyz.hanks.library.bang.SmallBangView;
+
 public class Activity_Restaurant_Client extends AppCompatActivity implements Fragment_Restaurant_Client.RestaurantInterface{
 
     private static final String TAG_LOG = Activity_Restaurant_Client.class.getName();
@@ -40,6 +42,8 @@ public class Activity_Restaurant_Client extends AppCompatActivity implements Fra
 
     private static Fragment_Restaurant_Client fragment_restaurant_client;
     private ImageView imageView_back;
+
+
 
     private static final String RESTAURANT_ID_EXTRA = "com.poma.restaurant.RESTAURANT_ID_EXTRA";
 

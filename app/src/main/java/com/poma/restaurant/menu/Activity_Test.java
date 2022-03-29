@@ -21,6 +21,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -48,6 +50,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import xyz.hanks.library.bang.SmallBangView;
+
 public class Activity_Test extends Activity_Drawer_Menu_User {
 
     ActivityTestBinding activityTestBinding;
@@ -67,6 +71,9 @@ public class Activity_Test extends Activity_Drawer_Menu_User {
     private static final int EDIT_REQUEST_ID = 3;
 
 
+    private SmallBangView imageView,textView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG_LOG, "on create");
@@ -79,6 +86,42 @@ public class Activity_Test extends Activity_Drawer_Menu_User {
 
 
         this.mAuth= FirebaseAuth.getInstance();
+
+
+        textView = findViewById(R.id.textViewAnimation);
+        imageView = findViewById(R.id.imageViewAnimation);
+
+        textView.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (textView.isSelected()) {
+                            textView.setSelected(false);
+                        } else {
+                            // if not selected only
+                            // then show animation.
+                            textView.setSelected(true);
+                            textView.likeAnimation();
+                        }
+                    }
+                });
+
+        imageView.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (imageView.isSelected()) {
+                            imageView.setSelected(false);
+                        } else {
+                            // if not selected only
+                            // then show animation.
+                            imageView.setSelected(true);
+                            //imageView.setBackgroundResource(R.drawable.ic_heart_red);
+                            imageView.likeAnimation();
+                        }
+                    }
+                });
+
 
 
 
@@ -136,6 +179,7 @@ public class Activity_Test extends Activity_Drawer_Menu_User {
 
             }
         });
+
 
         Button btn_got_to_review= (Button)findViewById(R.id.btn_go_to_review);
         btn_got_to_review.setOnClickListener(new View.OnClickListener() {

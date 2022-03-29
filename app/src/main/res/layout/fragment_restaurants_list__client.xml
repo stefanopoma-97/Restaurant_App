@@ -23,6 +23,8 @@
         app:layout_constraintVertical_bias="0.009"
         app:showAsAction="ifRoom|collapseActionView" />
 
+
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_filter_restaurants_list"
         style="@style/main_button_style"
@@ -40,12 +42,31 @@
         app:iconGravity="textStart"
         app:layout_constraintBottom_toBottomOf="parent"
 
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_view_fragment_favourite"
         app:layout_constraintVertical_bias="0."
         app:layout_constraintWidth_percent=".4" />
+
+    <TextView
+        android:id="@+id/filter_banner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/badge_shape"
+        android:elevation="7dp"
+        android:text=" 3 "
+        android:textColor="@color/white"
+        android:visibility="invisible"
+
+        android:textSize="@dimen/text_size_medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btn_filter_restaurants_list"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@+id/btn_filter_restaurants_list"
+        app:layout_constraintTop_toTopOf="@+id/btn_filter_restaurants_list"
+        app:layout_constraintVertical_bias=".00" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_fragment_favourite"

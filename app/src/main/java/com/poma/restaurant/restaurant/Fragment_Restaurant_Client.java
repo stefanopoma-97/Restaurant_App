@@ -67,6 +67,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import xyz.hanks.library.bang.SmallBangView;
+
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
@@ -105,6 +107,8 @@ public class Fragment_Restaurant_Client extends Fragment {
     private Button btn_back;
     private FloatingActionButton btn_add_favourite;
     private FloatingActionButton btn_remove_favourite;
+
+    private SmallBangView imageView_heart;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -187,6 +191,8 @@ public class Fragment_Restaurant_Client extends Fragment {
         this.btn_remove_favourite = view.findViewById(R.id.floatingActionButton_removefavourite_fragment_restaurant);
         this.view_color = view.findViewById(R.id.view2_restaurant_client);
 
+        this.imageView_heart = view.findViewById(R.id.imageViewAnimation_heart);
+
         this.btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -214,6 +220,23 @@ public class Fragment_Restaurant_Client extends Fragment {
                 remove_to_favourite();
             }
         });
+
+        imageView_heart.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (imageView_heart.isSelected()) {
+                            imageView_heart.setSelected(false);
+                            remove_to_favourite();
+                        } else {
+                            // if not selected only
+                            // then show animation.
+                            imageView_heart.setSelected(true);
+                            imageView_heart.likeAnimation();
+                            add_to_favourite();
+                        }
+                    }
+                });
 
         return view;
     }
@@ -369,12 +392,14 @@ public class Fragment_Restaurant_Client extends Fragment {
         this.btn_edit.setVisibility(View.VISIBLE);
         this.btn_add_favourite.setVisibility(View.INVISIBLE);
         this.btn_remove_favourite.setVisibility(View.INVISIBLE);
+        this.imageView_heart.setVisibility(View.INVISIBLE);
         this.view_color.setBackgroundColor(getResources().getColor(R.color.blue_link));
     }
     private void setForUser(){
         this.btn_edit.setVisibility(View.GONE);
         this.btn_add_favourite.setVisibility(View.INVISIBLE);
         this.btn_remove_favourite.setVisibility(View.INVISIBLE);
+        this.imageView_heart.setVisibility(View.INVISIBLE);
         load_favourite_button();
     }
 
@@ -382,6 +407,7 @@ public class Fragment_Restaurant_Client extends Fragment {
         this.btn_edit.setVisibility(View.GONE);
         this.btn_add_favourite.setVisibility(View.INVISIBLE);
         this.btn_remove_favourite.setVisibility(View.INVISIBLE);
+        this.imageView_heart.setVisibility(View.INVISIBLE);
     }
 
     private void load_favourite_button(){
@@ -401,12 +427,16 @@ public class Fragment_Restaurant_Client extends Fragment {
                             }
 
                             if (fav){
-                                btn_remove_favourite.setVisibility(View.VISIBLE);
+                                imageView_heart.setSelected(true);
+                                imageView_heart.setVisibility(View.VISIBLE);
+                                btn_remove_favourite.setVisibility(View.GONE);
                                 btn_add_favourite.setVisibility(View.GONE);
                             }
                             else {
+                                imageView_heart.setSelected(false);
+                                imageView_heart.setVisibility(View.VISIBLE);
                                 btn_remove_favourite.setVisibility(View.GONE);
-                                btn_add_favourite.setVisibility(View.VISIBLE);
+                                btn_add_favourite.setVisibility(View.GONE);
                             }
 
 
@@ -429,26 +459,53 @@ public class Fragment_Restaurant_Client extends Fragment {
         n.setContent(getResources().getString(R.string.new_favourite_description)+": "+restaurant.getName());
         n.setType(getResources().getString(R.string.new_favourite));
         n.setUseful_id(this.restaurant.getId());
+        n.setUseful_id2(mAuth.getCurrentUser().getUid());
         Calendar calendar = Calendar.getInstance();
         long timeMilli2 = calendar.getTimeInMillis();
         n.setDate(timeMilli2);
         Log.d(TAG_LOG, "notifica istanziata: "+n.toString());
 
-
-
         db = FirebaseFirestore.getInstance();
-        db.collection("notifications").add(n).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Log.d(TAG_LOG, "aggiunta notifica ristorante");
-            }
-        })
-                .addOnFailureListener(new OnFailureListener() {
+        //Controllo che non sia già presente la stessa notifica
+        db.collection("notifications")
+                .whereEqualTo("user_id", this.restaurant.getAdmin_id())
+                .whereEqualTo("useful_id", this.restaurant.getId())
+                .whereEqualTo("useful_id2", mAuth.getCurrentUser().getUid())
+                .whereEqualTo("type", getResources().getString(R.string.new_favourite))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG_LOG, "Error adding notifica", e);
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG_LOG, "issuccessful");
+                            Boolean presente = false;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG_LOG, "trovata notifica uguale: "+document.getId());
+                                presente = true;
+                            }
+                            if (!presente){
+                                db.collection("notifications").add(n).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        Log.d(TAG_LOG, "aggiunta notifica ristorante");
+                                    }
+                                })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w(TAG_LOG, "Error adding notifica", e);
+                                            }
+                                        });
+                            }
+                        } else {
+                            Log.w(TAG_LOG, "Error getting documents.", task.getException());
+                        }
+
                     }
                 });
+
+
+
     }
 
 
