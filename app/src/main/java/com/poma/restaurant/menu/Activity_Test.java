@@ -40,6 +40,8 @@ import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.Restaurant;
 import com.poma.restaurant.model.Review;
 import com.poma.restaurant.model.User;
+import com.poma.restaurant.restaurant.Activity_Edit_Restaurant;
+import com.poma.restaurant.restaurant.Activity_Edit_Restaurant_Times;
 import com.poma.restaurant.restaurant.Activity_Restaurants_List_Client;
 import com.poma.restaurant.review.Activity_Review;
 import com.poma.restaurant.utilities.Action;
@@ -182,10 +184,11 @@ public class Activity_Test extends Activity_Drawer_Menu_User {
 
 
         Button btn_got_to_review= (Button)findViewById(R.id.btn_go_to_review);
+        btn_got_to_review.setText("Go to edit time");
         btn_got_to_review.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in3 = new Intent(getApplicationContext(), Activity_Review.class);
+                Intent in3 = new Intent(getApplicationContext(), Activity_Edit_Restaurant_Times.class);
                 in3.putExtra(Action.RESTAURANT_ID_EXTRA, "1PnYRQVWNaV7EfZ9Guz6");
                 startActivity(in3);
 

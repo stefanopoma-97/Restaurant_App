@@ -9,6 +9,10 @@ public class Restaurant implements Comparable<Restaurant>{
             imageUrl, category, category_id;
     private int n_reviews;
     private Float vote;
+    private List<String> tags = new ArrayList<String>();
+    private List<Boolean> days = new ArrayList<Boolean>();
+    private boolean morning;
+    private boolean evening;
 
     public int getN_reviews() {
         return n_reviews;
@@ -28,7 +32,7 @@ public class Restaurant implements Comparable<Restaurant>{
     }
 
     //TODO capire se gestire i Tags
-    private List<String> tags = new ArrayList<String>();
+
 
     public Restaurant() {
     }

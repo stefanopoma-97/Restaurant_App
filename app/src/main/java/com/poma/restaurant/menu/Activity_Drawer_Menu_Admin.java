@@ -89,6 +89,12 @@ public class Activity_Drawer_Menu_Admin extends AppCompatActivity {
                                 in4.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(in4);
                                 break;
+                            case R.id.nav_admin_test:
+                                Log.d(TAG_LOG, "click su add restaurant");
+                                Intent in5 = new Intent(getApplicationContext(), Activity_Test.class);
+                                in5.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(in5);
+                                break;
                         }
                         return false;
                     }

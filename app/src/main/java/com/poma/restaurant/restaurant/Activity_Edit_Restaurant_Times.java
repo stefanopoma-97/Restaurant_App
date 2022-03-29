@@ -25,9 +25,10 @@ import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.User;
 import com.poma.restaurant.utilities.Action;
 
+import java.util.List;
 import java.util.Map;
 
-public class Activity_Edit_Restaurant_Times extends Activity_Drawer_Menu_Admin {
+public class Activity_Edit_Restaurant_Times extends Activity_Drawer_Menu_Admin implements Fragment_Edit_Restaurant_Time.EditRestaurantTime {
 
     ActivityEditRestaurantTimesBinding activityEditRestaurantTimesBinding;
 
@@ -137,4 +138,16 @@ public class Activity_Edit_Restaurant_Times extends Activity_Drawer_Menu_Admin {
 
     }
 
+    @Override
+    public void edit_time(List<Boolean> days, boolean morning, boolean evening) {
+        Log.d(TAG_LOG, "Salvataggio time");
+        Log.d(TAG_LOG, "days: "+days);
+        Log.d(TAG_LOG, "morning: "+morning);
+        Log.d(TAG_LOG, "evening: "+evening);
+    }
+
+    @Override
+    public void cancel() {
+        finish();
+    }
 }
