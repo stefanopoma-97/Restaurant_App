@@ -38,6 +38,7 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
     private static final String TAG_LOG = Fragment_Edit_Restaurant_Time.class.getName();
 
     private static final String DAYS_NAME_STRING_KEY_FRAGMENT_EDIT_TIME= "com.poma.restaurant.DAYS_NAME_STRING_KEY_FRAGMENT_EDIT_TIME";
+    private static final String TIMES_ARRAY_KEY_FRAGMENT_EDIT_TIME= "com.poma.restaurant.TIMES_ARRAY__KEY_FRAGMENT_EDIT_TIME";
 
 
     private FirebaseFirestore db;
@@ -74,6 +75,8 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
     private HashMap<String, Boolean> days = new HashMap<>();
     private int morning_start_hour, morning_end_hour, morning_start_minute, morning_end_minute,
             evening_start_hour, evening_end_hour, evening_start_minute, evening_end_minute;
+
+
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -294,29 +297,31 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        if (this.saved_state==null)
+            set_default_time();
+
         set_data();
 
     }
 
-    private void set_data(){
-
+    private void set_default_time(){
         this.morning_start_hour=6;
         this.morning_start_minute=0;
         this.morning_end_hour=15;
         this.morning_end_minute=0;
-        btn_morning_end.setText(String.format(Locale.getDefault(), "%02d:%02d",morning_end_hour, morning_end_minute));
-        btn_morning_start.setText(String.format(Locale.getDefault(), "%02d:%02d",morning_start_hour, morning_start_minute));
-
-
         this.evening_start_hour=16;
         this.evening_start_minute=0;
         this.evening_end_hour=4;
         this.evening_end_minute=0;
+    }
+
+    private void set_data(){
+
+
+        btn_morning_end.setText(String.format(Locale.getDefault(), "%02d:%02d",morning_end_hour, morning_end_minute));
+        btn_morning_start.setText(String.format(Locale.getDefault(), "%02d:%02d",morning_start_hour, morning_start_minute));
         btn_evening_end.setText(String.format(Locale.getDefault(), "%02d:%02d",evening_end_hour, evening_end_minute));
         btn_evening_start.setText(String.format(Locale.getDefault(), "%02d:%02d",evening_start_hour, evening_start_minute));
-
-
-
 
         set_time();
     }
@@ -348,6 +353,13 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
     public void onSaveInstanceState(Bundle savedInstanceState) {
 
         savedInstanceState.putSerializable(DAYS_NAME_STRING_KEY_FRAGMENT_EDIT_TIME, this.days);
+        ArrayList<Integer> times = new ArrayList<Integer>();
+        times.add(morning_start_hour);
+        times.add(morning_start_minute);
+
+
+
+        this.saved_state=null;
         super.onSaveInstanceState(savedInstanceState);
 
     }
@@ -360,7 +372,7 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
 
         if (savedInstanceState != null){
             Log.d(TAG_LOG,"Inizio retrive state");
-
+            this.saved_state=true;
             this.days = (HashMap<String, Boolean>)savedInstanceState.getSerializable(DAYS_NAME_STRING_KEY_FRAGMENT_EDIT_TIME);
 
             for(Map.Entry<String, Boolean> element : days.entrySet()) {
