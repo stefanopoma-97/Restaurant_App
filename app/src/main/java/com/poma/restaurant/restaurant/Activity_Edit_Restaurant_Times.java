@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.poma.restaurant.R;
 import com.poma.restaurant.databinding.ActivityEditRestaurantBinding;
 import com.poma.restaurant.databinding.ActivityEditRestaurantTimesBinding;
@@ -25,6 +26,7 @@ import com.poma.restaurant.model.Receiver;
 import com.poma.restaurant.model.User;
 import com.poma.restaurant.utilities.Action;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +34,7 @@ public class Activity_Edit_Restaurant_Times extends Activity_Drawer_Menu_Admin i
 
     ActivityEditRestaurantTimesBinding activityEditRestaurantTimesBinding;
 
-    private static final String TAG_LOG = Activity_Create_Restaurant.class.getName();
+    private static final String TAG_LOG = Activity_Edit_Restaurant_Times.class.getName();
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
@@ -144,10 +146,40 @@ public class Activity_Edit_Restaurant_Times extends Activity_Drawer_Menu_Admin i
         Log.d(TAG_LOG, "evening: "+evening);
         Log.d(TAG_LOG, "times: "+times);
         Log.d(TAG_LOG, "id: "+id);
+
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("morning", morning);
+        data.put("evening", evening);
+        data.put("days", days);
+        data.put("times", times);
+
+
+
+        DocumentReference document = db.collection("restaurants").document(id);
+        document.set(data, SetOptions.merge())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Log.d(TAG_LOG, "aggiorno ristorante");
+                            finish();
+
+                        }
+                        else{
+                            Log.d(TAG_LOG, "problemi aggiornamento notifica");
+
+                        }
+                    }
+                });
+
     }
 
     @Override
     public void cancel() {
         finish();
     }
+
+
+
 }

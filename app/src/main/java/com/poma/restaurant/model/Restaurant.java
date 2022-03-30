@@ -1,6 +1,7 @@
 package com.poma.restaurant.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Restaurant implements Comparable<Restaurant>{
@@ -10,9 +11,101 @@ public class Restaurant implements Comparable<Restaurant>{
     private int n_reviews;
     private Float vote;
     private List<String> tags = new ArrayList<String>();
-    private List<Boolean> days = new ArrayList<Boolean>();
-    private boolean morning;
-    private boolean evening;
+    private List<Boolean> days = new ArrayList<Boolean>(Arrays.asList(false,false,false,false,false,false,false));
+    private List<Integer> times = new ArrayList<Integer>(Arrays.asList(6,0,15,0,16,0,4,0));
+    private boolean morning = false;
+    private boolean evening = false;
+
+    public List<Boolean> getDays() {
+        return days;
+    }
+
+    public void setDays(List<Boolean> days) {
+        this.days = days;
+    }
+
+    public List<Integer> getTimes() {
+        return times;
+    }
+
+    public void setTimes(List<Integer> times) {
+        this.times = times;
+    }
+
+    public boolean isMorning() {
+        return morning;
+    }
+
+    public void setMorning(boolean morning) {
+        this.morning = morning;
+    }
+
+    public boolean isEvening() {
+        return evening;
+    }
+
+    public void setEvening(boolean evening) {
+        this.evening = evening;
+    }
+
+    public String getMorningTime(){
+        String h="";
+        String m="";
+        String h2="";
+        String m2="";
+        if (times.get(0)<10)
+            h="0"+times.get(0);
+        else
+            h=times.get(0)+"";
+
+        if (times.get(1)<10)
+            m="0"+times.get(1);
+        else
+            m=times.get(1)+"";
+
+        if (times.get(2)<10)
+            h2="0"+times.get(2);
+        else
+            h2=times.get(2)+"";
+
+        if (times.get(3)<10)
+            m2="0"+times.get(3);
+        else
+            m2=times.get(3)+"";
+
+        return h+":"+m+" - "+h2+":"+m2;
+
+    }
+
+    public String getEveningTime(){
+        String h="";
+        String m="";
+        String h2="";
+        String m2="";
+        if (times.get(4)<10)
+            h="0"+times.get(4);
+        else
+            h=times.get(4)+"";
+
+        if (times.get(5)<10)
+            m="0"+times.get(5);
+        else
+            m=times.get(5)+"";
+
+        if (times.get(6)<10)
+            h2="0"+times.get(6);
+        else
+            h2=times.get(6)+"";
+
+        if (times.get(7)<10)
+            m2="0"+times.get(7);
+        else
+            m2=times.get(7)+"";
+
+        return h+":"+m+" - "+h2+":"+m2;
+
+    }
+
 
     public int getN_reviews() {
         return n_reviews;

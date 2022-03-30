@@ -118,6 +118,19 @@ public class Fragment_Restaurant_Client extends Fragment {
     private Uri preload_imageUri;
     private Uri imageUri;
 
+    private TextView lunedi;
+    private TextView martedi;
+    private TextView mercoledi;
+    private TextView giovedi;
+    private TextView venerdi;
+    private TextView sabato;
+    private TextView domenica;
+
+    private TextView morning;
+    private TextView evening;
+    private TextView closed;
+
+    private TextView update_times;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -183,6 +196,21 @@ public class Fragment_Restaurant_Client extends Fragment {
         this.textView_tag3 = view.findViewById(R.id.textview_tag3_fragment_restaurant);
         this.review = view.findViewById(R.id.textview_reviews_link_fragment_restaurant);
 
+
+        this.lunedi = view.findViewById(R.id.restaurant_time_lunedi);
+        this.martedi = view.findViewById(R.id.restaurant_time_martedi);
+        this.mercoledi = view.findViewById(R.id.restaurant_time_mercoledi);
+        this.giovedi = view.findViewById(R.id.restaurant_time_giovedi);
+        this.venerdi = view.findViewById(R.id.restaurant_time_venerdi);
+        this.sabato = view.findViewById(R.id.restaurant_time_sabato);
+        this.domenica = view.findViewById(R.id.restaurant_time_domenica);
+
+        this.morning = view.findViewById(R.id.morning_time);
+        this.evening = view.findViewById(R.id.evening_time);
+        this.closed = view.findViewById(R.id.closed);
+
+        this.update_times = view.findViewById(R.id.textview_edit_times);
+
         this.progressDialog_image = new ProgressDialog(view.getContext());
 
         this.btn_edit = view.findViewById(R.id.btn_edit_fragment_restaurant);
@@ -192,6 +220,15 @@ public class Fragment_Restaurant_Client extends Fragment {
         this.view_color = view.findViewById(R.id.view2_restaurant_client);
 
         this.imageView_heart = view.findViewById(R.id.imageViewAnimation_heart);
+
+        this.update_times.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in3 = new Intent(getContext(), Activity_Edit_Restaurant_Times.class);
+                in3.putExtra(Action.RESTAURANT_ID_EXTRA, restaurant_id);
+                startActivity(in3);
+            }
+        });
 
         this.btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -393,12 +430,14 @@ public class Fragment_Restaurant_Client extends Fragment {
         this.btn_add_favourite.setVisibility(View.INVISIBLE);
         this.btn_remove_favourite.setVisibility(View.INVISIBLE);
         this.imageView_heart.setVisibility(View.INVISIBLE);
+        this.update_times.setVisibility(View.VISIBLE);
         this.view_color.setBackgroundColor(getResources().getColor(R.color.blue_link));
     }
     private void setForUser(){
         this.btn_edit.setVisibility(View.GONE);
         this.btn_add_favourite.setVisibility(View.INVISIBLE);
         this.btn_remove_favourite.setVisibility(View.INVISIBLE);
+        this.update_times.setVisibility(View.INVISIBLE);
         this.imageView_heart.setVisibility(View.INVISIBLE);
         load_favourite_button();
     }
@@ -408,6 +447,7 @@ public class Fragment_Restaurant_Client extends Fragment {
         this.btn_add_favourite.setVisibility(View.INVISIBLE);
         this.btn_remove_favourite.setVisibility(View.INVISIBLE);
         this.imageView_heart.setVisibility(View.INVISIBLE);
+        this.update_times.setVisibility(View.INVISIBLE);
     }
 
     private void load_favourite_button(){
@@ -594,6 +634,23 @@ public class Fragment_Restaurant_Client extends Fragment {
                         restaurant.setAdmin_id((String) data.get("admin_id"));
                         restaurant.setId((String) document.getId());
 
+                        if ((List<Boolean>) data.get("days")!=null)
+                            restaurant.setDays((List<Boolean>) data.get("days"));
+                        if((ArrayList<Long>) data.get("times")!=null){
+                            ArrayList<Long> arr = (ArrayList<Long>) data.get("times");
+                            ArrayList<Integer> times = new ArrayList<>();
+                            for (Long e: arr){
+                                times.add(e.intValue());
+                            }
+                            restaurant.setTimes((times));
+                        }
+
+                        if ((Boolean) data.get("morning")!=null)
+                            restaurant.setMorning((Boolean) data.get("morning"));
+
+                        if((Boolean) data.get("evening")!=null)
+                            restaurant.setEvening((Boolean) data.get("evening"));
+
 
                         /*
                         Long in = (long)data.get("vote");
@@ -649,6 +706,42 @@ public class Fragment_Restaurant_Client extends Fragment {
                             textView_tag3.setText("");
                             textView_tag3.setVisibility(View.INVISIBLE);
                         }
+
+                        //TIME
+                        if (restaurant.isMorning()==false && restaurant.isEvening()==false){
+                            closed.setVisibility(View.VISIBLE);
+                            closed.setText(R.string.closed);
+                            morning.setVisibility(View.INVISIBLE);
+                            evening.setVisibility(View.INVISIBLE);
+                        }
+                        else{
+                            if (restaurant.isMorning()){
+                                closed.setVisibility(View.INVISIBLE);
+                                morning.setText(restaurant.getMorningTime());
+                                morning.setVisibility(View.VISIBLE);
+                            }
+                            if (restaurant.isEvening()){
+                                closed.setVisibility(View.INVISIBLE);
+                                evening.setText(restaurant.getEveningTime());
+                                evening.setVisibility(View.VISIBLE);
+                            }
+                        }
+
+                        if (restaurant.getDays().get(0))
+                            lunedi.setTextAppearance(R.style.day_open);
+                        if (restaurant.getDays().get(1))
+                            martedi.setTextAppearance(R.style.day_open);
+                        if (restaurant.getDays().get(2))
+                            mercoledi.setTextAppearance(R.style.day_open);
+                        if (restaurant.getDays().get(3))
+                            giovedi.setTextAppearance(R.style.day_open);
+                        if (restaurant.getDays().get(4))
+                            venerdi.setTextAppearance(R.style.day_open);
+                        if (restaurant.getDays().get(5))
+                            sabato.setTextAppearance(R.style.day_open);
+                        if (restaurant.getDays().get(6))
+                            domenica.setTextAppearance(R.style.day_open);
+
 
 
                     } else {

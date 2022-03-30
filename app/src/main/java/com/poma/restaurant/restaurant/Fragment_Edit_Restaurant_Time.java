@@ -1,9 +1,11 @@
 package com.poma.restaurant.restaurant;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -15,7 +17,11 @@ import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TimePicker;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.poma.restaurant.R;
 import com.poma.restaurant.model.Restaurant;
@@ -70,6 +76,7 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
     private String restaurant_id = null;
     private Restaurant restaurant;
     private Boolean saved_state = null;
+    private ProgressDialog progressDialog;
 
 
     //Info
@@ -164,13 +171,13 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean monrnin_active = false;
+                boolean monrning_active = false;
                 boolean evening_active = false;
                 if(morning.isChecked())
-                    monrnin_active=true;
+                    monrning_active=true;
                 if(evening.isChecked())
                     evening_active=true;
-                listener.edit_time(getDays(), monrnin_active, evening_active, times, restaurant_id);
+                listener.edit_time(getDays(), monrning_active, evening_active, getTimes(), restaurant_id);
             }
         });
 
@@ -247,7 +254,7 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
                     max="0"+String.valueOf(max_h);
                 else
                     max=String.valueOf(max_h);
-                timePickerDialog.setTitle(R.string.select_time+" (6:00 - "+max+":"+max2+")");
+                timePickerDialog.setTitle(getResources().getString(R.string.select_time)+" (6:00 - "+max+":"+max2+")");
                 timePickerDialog.show();
             }
         });
@@ -293,7 +300,7 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
                     min="0"+String.valueOf(min_h);
                 else
                     min=String.valueOf(min_h);
-                timePickerDialog2.setTitle("Select time: "+" ("+min+":"+min2+" - 15:00)");
+                timePickerDialog2.setTitle(getResources().getString(R.string.select_time)+" ("+min+":"+min2+" - 15:00)");
                 timePickerDialog2.show();
             }
         });
@@ -337,7 +344,7 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
                     max="0"+String.valueOf(max_h);
                 else
                     max=String.valueOf(max_h);
-                timePickerDialog3.setTitle("Select time:"+" (16:00 - "+max+":"+max2+")");
+                timePickerDialog3.setTitle(getResources().getString(R.string.select_time)+" (16:00 - "+max+":"+max2+")");
                 timePickerDialog3.show();
             }
         });
@@ -382,7 +389,7 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
                     min="0"+String.valueOf(min_h);
                 else
                     min=String.valueOf(min_h);
-                timePickerDialog4.setTitle("Select time: "+" ("+min+":"+min2+" - 04:00)");
+                timePickerDialog4.setTitle(getResources().getString(R.string.select_time)+" ("+min+":"+min2+" - 04:00)");
                 timePickerDialog4.show();
             }
         });
@@ -391,43 +398,172 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
         return view;
     }
 
-    public void popTimePicker(Button btn)
-    {
-        TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener()
-        {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute)
-            {
-                morning_start_hour = selectedHour;
-                morning_start_minute = selectedMinute;
-                btn.setText(String.format(Locale.getDefault(), "%02d:%02d",selectedHour, selectedMinute));
-            }
-        };
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), /*style,*/ onTimeSetListener, morning_start_hour, morning_start_minute, true);
-        timePickerDialog.setTitle("Select Time");
-        timePickerDialog.show();
-    }
 
     @Override
     public void onStart() {
         super.onStart();
         if (this.saved_state==null)
-            set_default_time();
-
-        set_data();
+            set_restaurant_time();
+        else
+            set_data();
 
     }
 
-    private void set_default_time(){
-        this.morning_start_hour=6;
-        this.morning_start_minute=0;
-        this.morning_end_hour=15;
-        this.morning_end_minute=0;
-        this.evening_start_hour=16;
-        this.evening_start_minute=0;
-        this.evening_end_hour=4;
-        this.evening_end_minute=0;
+    private void setDays(List<Boolean> list){
+
+        if (!list.contains(false)){
+            set_pressed(btn_all);
+            days.put("all", true);
+            return;
+        }
+        days.put("lunedi", list.get(0));
+        if (list.get(0)){
+            set_pressed(btn_lunedi);
+        }
+        days.put("martedi", list.get(1));
+        if (list.get(1)){
+            set_pressed(btn_martedi);
+        }
+        days.put("mercoledi", list.get(2));
+        if (list.get(2)){
+            set_pressed(btn_mercoledi);
+        }
+        days.put("giovedi", list.get(3));
+        if (list.get(3)){
+            set_pressed(btn_giovedi);
+        }
+        days.put("venerdi", list.get(4));
+        if (list.get(4)){
+            set_pressed(btn_venerdi);
+        }
+        days.put("sabato", list.get(5));
+        if (list.get(5)){
+            set_pressed(btn_sabato);
+        }
+        days.put("domenica", list.get(6));
+        if (list.get(6)){
+            set_pressed(btn_domenica);
+        }
+    }
+
+    private void set_restaurant_time(){
+        progressDialog(true, getResources().getString(R.string.retrieving_restaurant_wait));
+
+
+        Log.d(TAG_LOG, "inizio metodo retrive restuarant");
+
+        DocumentReference docRef = db.collection("restaurants").document(this.restaurant_id);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        Log.d(TAG_LOG, "DocumentSnapshot data: " + data);
+
+                        //morning
+                        if (((Boolean) data.get("morning"))!=null){
+                            Boolean m = (Boolean) data.get("morning");
+                            if (m)
+                                morning.setChecked(true);
+                            else{
+                                morning.setChecked(false);
+                            }
+
+                        }
+                        else{
+                            morning.setChecked(true);
+                        }
+
+
+                        //evening
+                        if (((Boolean) data.get("evening"))!=null){
+                            Boolean m = (Boolean) data.get("evening");
+                            if (m)
+                                evening.setChecked(true);
+                            else{
+                                evening.setChecked(false);
+                            }
+                        }
+                        else{
+                            evening.setChecked(true);
+                        }
+
+                        //days
+                        if (((List<Boolean>) data.get("days"))!=null){
+                            setDays((List<Boolean>) data.get("days"));
+                        }
+
+                        //times
+                        ArrayList<Long> pl = (ArrayList<Long>) data.get("times");
+                        Log.d(TAG_LOG, "TIMES ricavato da firestore: "+pl);
+                        if (pl!=null){
+                            if(pl.size()==8){
+                                Log.d(TAG_LOG, "TIMES ricavato da firestore: "+pl);
+                                morning_start_hour = pl.get(0).intValue();
+                                morning_start_minute=pl.get(1).intValue();
+                                morning_end_hour=pl.get(2).intValue();
+                                morning_end_minute=pl.get(3).intValue();
+                                evening_start_hour=pl.get(4).intValue();
+                                evening_start_minute=pl.get(5).intValue();
+                                evening_end_hour=pl.get(6).intValue();
+                                evening_end_minute=pl.get(7).intValue();
+                            }
+                            else{
+                                morning_start_hour=6;
+                                morning_start_minute=0;
+                                morning_end_hour=15;
+                                morning_end_minute=0;
+                                evening_start_hour=16;
+                                evening_start_minute=0;
+                                evening_end_hour=4;
+                                evening_end_minute=0;
+                            }
+
+                        }
+                        else{
+                            morning_start_hour=6;
+                            morning_start_minute=0;
+                            morning_end_hour=15;
+                            morning_end_minute=0;
+                            evening_start_hour=16;
+                            evening_start_minute=0;
+                            evening_end_hour=4;
+                            evening_end_minute=0;
+                        }
+
+
+
+                        set_data();
+                        progressDialog(false, getResources().getString(R.string.retrieving_restaurant_wait));
+
+                    } else {
+                        Log.d(TAG_LOG, "No such document");
+                        progressDialog(false, "");
+                    }
+                } else {
+                    Log.d(TAG_LOG, "get failed with ", task.getException());
+                    progressDialog(false, "");
+                }
+            }
+        });
+
+    }
+
+    private void progressDialog(Boolean b, String text){
+
+        if(b){
+            this.progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage(text);
+            progressDialog.show();
+
+        }
+        else{
+            this.progressDialog.dismiss();
+        }
+
     }
 
     private void set_data(){
@@ -437,6 +573,7 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
         btn_morning_start.setText(String.format(Locale.getDefault(), "%02d:%02d",morning_start_hour, morning_start_minute));
         btn_evening_end.setText(String.format(Locale.getDefault(), "%02d:%02d",evening_end_hour, evening_end_minute));
         btn_evening_start.setText(String.format(Locale.getDefault(), "%02d:%02d",evening_start_hour, evening_start_minute));
+
 
         set_time();
     }
@@ -551,64 +688,79 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
     }
 
     private ArrayList<Boolean> getDays(){
-        ArrayList<Boolean> arrayList = new ArrayList<>();
+        ArrayList<Boolean> arrayList = new ArrayList<Boolean>(Arrays.asList(false,false,false,false,false,false,false));
         for(Map.Entry<String, Boolean> element : days.entrySet()) {
             String key = element.getKey();
             Boolean value = element.getValue();
+            Log.d(TAG_LOG,"Stampo HASH map: "+days);
 
             if (key == "all" && value == true){
                 return new ArrayList<Boolean>(Arrays.asList(true, true, true, true, true, true, true));
             }
             if (key == "lunedi" && value == true){
-                arrayList.add(true);
+                arrayList.set(0, true);
+
             }
-            else {
-                arrayList.add(false);
+            else if (key == "lunedi" && value == false){
+                arrayList.set(0, false);
             }
 
-            if (key == "martedi" && value == true){
-                arrayList.add(true);
+            else if (key == "martedi" && value == true){
+                arrayList.set(1, true);
             }
-            else {
-                arrayList.add(false);
-            }
-
-            if (key == "mercoledi" && value == true){
-                arrayList.add(true);
-            }
-            else {
-                arrayList.add(false);
+            else if (key == "martedi" && value == false){
+                arrayList.set(1,false);
             }
 
-            if (key == "giovedi" && value == true){
-                arrayList.add(true);
+            else if (key == "mercoledi" && value == true){
+                arrayList.set(2,true);
             }
-            else {
-                arrayList.add(false);
-            }
-
-            if (key == "venerdi" && value == true){
-                arrayList.add(true);
-            }
-            else {
-                arrayList.add(false);
+            else if (key == "mercoledi" && value == false){
+                arrayList.set(2,false);
             }
 
-            if (key == "sabato" && value == true){
-                arrayList.add(true);
+            else if (key == "giovedi" && value == true){
+                arrayList.set(3,true);
             }
-            else {
-                arrayList.add(false);
+            else if(key == "giovedi" && value == false) {
+                arrayList.set(3,false);
             }
 
-            if (key == "domenica" && value == true){
-                arrayList.add(true);
+            else if (key == "venerdi" && value == true){
+                arrayList.set(4,true);
             }
-            else {
-                arrayList.add(false);
+            else if (key == "venerdi" && value == false){
+                arrayList.set(4,false);
+            }
+
+            else if (key == "sabato" && value == true){
+                arrayList.set(5,true);
+            }
+            else if (key == "sabato" && value == false){
+                arrayList.set(5,false);
+            }
+
+            else if (key == "domenica" && value == true){
+                arrayList.set(6,true);
+            }
+            else if (key == "domenica" && value == false){
+                arrayList.set(6,false);
             }
 
         }
+        return arrayList;
+    }
+
+    private ArrayList<Integer> getTimes(){
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        arrayList.add(morning_start_hour);
+        arrayList.add(morning_start_minute);
+        arrayList.add(morning_end_hour);
+        arrayList.add(morning_end_minute);
+        arrayList.add(evening_start_hour);
+        arrayList.add(evening_start_minute);
+        arrayList.add(evening_end_hour);
+        arrayList.add(evening_end_minute);
         return arrayList;
     }
 

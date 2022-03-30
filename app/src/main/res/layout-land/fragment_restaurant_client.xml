@@ -418,6 +418,136 @@
                 app:rippleColor="@color/yellow_star"
                 app:srcCompat="@drawable/ic_baseline_star_24" />
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout_restaurant_times"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout_restaurant"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="MissingConstraints">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias=".0"
+                    tools:layout_editor_absoluteX="20dp">
+
+                    <TextView
+                        android:id="@+id/restaurant_time_lunedi"
+                        style="@style/day_not_open"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        android:text="@string/lunedì" />
+
+                    <TextView
+                        android:id="@+id/restaurant_time_martedi"
+                        style="@style/day_not_open"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        android:text="@string/martedì"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/restaurant_time_mercoledi"
+                        style="@style/day_not_open"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        android:text="@string/mercoledì" />
+
+                    <TextView
+                        android:id="@+id/restaurant_time_giovedi"
+                        style="@style/day_not_open"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        android:text="@string/giovedì" />
+
+                    <TextView
+                        android:id="@+id/restaurant_time_venerdi"
+                        style="@style/day_not_open"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        android:text="@string/venerdì" />
+
+                    <TextView
+                        android:id="@+id/restaurant_time_sabato"
+                        style="@style/day_not_open"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        android:text="@string/sabato" />
+
+                    <TextView
+                        android:id="@+id/restaurant_time_domenica"
+                        style="@style/day_not_open"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        android:text="@string/domenica" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/morning_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="08:00 - 16:00"
+
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+
+                    app:layout_constraintVertical_bias=".2" />
+
+                <TextView
+                    android:id="@+id/closed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/domenica"
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+
+                    app:layout_constraintVertical_bias=".2" />
+
+                <TextView
+                    android:id="@+id/evening_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="08:00 - 16:00"
+
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/morning_time"
+
+                    app:layout_constraintVertical_bias=".05"
+                    tools:ignore="UnknownId" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_edit_fragment_restaurant"
                 style="@style/main_button_style"
@@ -436,7 +566,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout_restaurant"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout_restaurant_times"
                 app:layout_constraintVertical_bias="0.3"
 
                 app:layout_constraintWidth_percent=".8"

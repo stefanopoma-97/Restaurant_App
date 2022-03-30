@@ -189,7 +189,7 @@ public class Activity_Test extends Activity_Drawer_Menu_User {
             @Override
             public void onClick(View v) {
                 Intent in3 = new Intent(getApplicationContext(), Activity_Edit_Restaurant_Times.class);
-                in3.putExtra(Action.RESTAURANT_ID_EXTRA, "1PnYRQVWNaV7EfZ9Guz6");
+                in3.putExtra(Action.RESTAURANT_ID_EXTRA, "dBAFNzqLFM8IteyF0k1g");
                 startActivity(in3);
 
             }
