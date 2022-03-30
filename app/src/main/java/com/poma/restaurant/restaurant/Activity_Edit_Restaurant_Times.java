@@ -38,6 +38,8 @@ public class Activity_Edit_Restaurant_Times extends Activity_Drawer_Menu_Admin i
     private FirebaseUser currentUser;
     private User currentUser2;
 
+    private String restaurant_id;
+
 
     private BroadcastReceiver broadcastReceiver;
 
@@ -56,14 +58,10 @@ public class Activity_Edit_Restaurant_Times extends Activity_Drawer_Menu_Admin i
         this.fragment = (Fragment_Edit_Restaurant_Time)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_edit_restaurant_time);
 
-        //Imposta il fragment per la modifica
-
-        /*
         Intent intent = getIntent(); //receive the intent from Activity_first_access
-        String id_restaurant= intent.getStringExtra(Action.RESTAURANT_ID_EXTRA);
-        this.fragment.setRestaurantID(id_restaurant);
-        this.fragment.setUpdate();
-         */
+        this.restaurant_id = intent.getStringExtra(Action.RESTAURANT_ID_EXTRA);
+        this.fragment.set_restaurant_id(restaurant_id);
+
 
         //Riceve broadcast
         IntentFilter intentFilter = new IntentFilter();
@@ -139,11 +137,13 @@ public class Activity_Edit_Restaurant_Times extends Activity_Drawer_Menu_Admin i
     }
 
     @Override
-    public void edit_time(List<Boolean> days, boolean morning, boolean evening) {
+    public void edit_time(List<Boolean> days, boolean morning, boolean evening, List<Integer>times, String id) {
         Log.d(TAG_LOG, "Salvataggio time");
         Log.d(TAG_LOG, "days: "+days);
         Log.d(TAG_LOG, "morning: "+morning);
         Log.d(TAG_LOG, "evening: "+evening);
+        Log.d(TAG_LOG, "times: "+times);
+        Log.d(TAG_LOG, "id: "+id);
     }
 
     @Override

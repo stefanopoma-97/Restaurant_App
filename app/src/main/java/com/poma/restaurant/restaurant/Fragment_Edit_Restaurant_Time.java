@@ -39,6 +39,7 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
 
     private static final String DAYS_NAME_STRING_KEY_FRAGMENT_EDIT_TIME= "com.poma.restaurant.DAYS_NAME_STRING_KEY_FRAGMENT_EDIT_TIME";
     private static final String TIMES_ARRAY_KEY_FRAGMENT_EDIT_TIME= "com.poma.restaurant.TIMES_ARRAY__KEY_FRAGMENT_EDIT_TIME";
+    private static final String RESTAURANT_ID_KEY_FRAGMENT_EDIT_TIME= "com.poma.restaurant.RESTAURANT_ID_KEY_FRAGMENT_EDIT_TIME";
 
 
     private FirebaseFirestore db;
@@ -73,6 +74,7 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
 
     //Info
     private HashMap<String, Boolean> days = new HashMap<>();
+    private ArrayList<Integer> times = new ArrayList<Integer>();
     private int morning_start_hour, morning_end_hour, morning_start_minute, morning_end_minute,
             evening_start_hour, evening_end_hour, evening_start_minute, evening_end_minute;
 
@@ -159,6 +161,19 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
 
         set_button();
 
+        btn_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean monrnin_active = false;
+                boolean evening_active = false;
+                if(morning.isChecked())
+                    monrnin_active=true;
+                if(evening.isChecked())
+                    evening_active=true;
+                listener.edit_time(getDays(), monrnin_active, evening_active, times, restaurant_id);
+            }
+        });
+
 
         morning.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -221,7 +236,18 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
 
                 timePickerDialog.setMax(max_h, max_m);
                 timePickerDialog.setMin(6, 0);
-                timePickerDialog.setTitle(R.string.select_time+" (6:00 - "+max_h+":"+max_m+")");
+
+                String max = null;
+                String max2=null;
+                if(max_m<10)
+                    max2="0"+String.valueOf(max_m);
+                else
+                    max2=String.valueOf(max_m);
+                if(max_h<10)
+                    max="0"+String.valueOf(max_h);
+                else
+                    max=String.valueOf(max_h);
+                timePickerDialog.setTitle(R.string.select_time+" (6:00 - "+max+":"+max2+")");
                 timePickerDialog.show();
             }
         });
@@ -269,6 +295,95 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
                     min=String.valueOf(min_h);
                 timePickerDialog2.setTitle("Select time: "+" ("+min+":"+min2+" - 15:00)");
                 timePickerDialog2.show();
+            }
+        });
+
+
+        btn_evening_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomTimePickerMorning.OnTimeSetListener onTimeSetListener = new CustomTimePickerMorning.OnTimeSetListener()
+                {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute)
+                    {
+                        evening_start_hour = selectedHour;
+                        evening_start_minute = selectedMinute;
+                        btn_evening_start.setText(String.format(Locale.getDefault(), "%02d:%02d",selectedHour, selectedMinute));
+                    }
+                };
+
+                CustomTimePickerMorning timePickerDialog3 = new CustomTimePickerMorning(getContext(),android.R.style.Theme_Holo_Light_Dialog_NoActionBar,onTimeSetListener, evening_start_hour, evening_start_minute, true);
+
+                int max_h = 4;
+                int max_m = 0;
+                if (evening_end_hour<max_h){
+                    max_h=evening_end_hour;
+                    max_m=evening_end_minute;
+                }
+
+                Log.d(TAG_LOG,"Ora massima: "+max_h);
+
+                timePickerDialog3.setMax(max_h, max_m);
+                timePickerDialog3.setMin(16, 0);
+
+                String max = null;
+                String max2=null;
+                if(max_m<10)
+                    max2="0"+String.valueOf(max_m);
+                else
+                    max2=String.valueOf(max_m);
+                if(max_h<10)
+                    max="0"+String.valueOf(max_h);
+                else
+                    max=String.valueOf(max_h);
+                timePickerDialog3.setTitle("Select time:"+" (16:00 - "+max+":"+max2+")");
+                timePickerDialog3.show();
+            }
+        });
+
+        btn_evening_end.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                CustomTimePickerMorning.OnTimeSetListener onTimeSetListener = new CustomTimePickerMorning.OnTimeSetListener()
+                {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute)
+                    {
+                        evening_end_hour = selectedHour;
+                        evening_end_minute = selectedMinute;
+                        btn_evening_end.setText(String.format(Locale.getDefault(), "%02d:%02d",selectedHour, selectedMinute));
+                    }
+                };
+
+                CustomTimePickerMorning timePickerDialog4 = new CustomTimePickerMorning(getContext(),android.R.style.Theme_Holo_Light_Dialog_NoActionBar,onTimeSetListener, evening_end_hour, evening_end_minute, true);
+
+
+                int min_h = 16;
+                int min_m = 0;
+                if (evening_start_hour>min_h){
+                    min_h=evening_start_hour;
+                    min_m=evening_start_minute;
+                }
+                Log.d(TAG_LOG,"Ora minima: "+min_h);
+
+
+                timePickerDialog4.setMax(4, 0);
+                timePickerDialog4.setMin(min_h, min_m);
+
+                String min = null;
+                String min2=null;
+                if(min_m<10)
+                    min2="0"+String.valueOf(min_m);
+                else
+                    min2=String.valueOf(min_m);
+                if(min_h<10)
+                    min="0"+String.valueOf(min_h);
+                else
+                    min=String.valueOf(min_h);
+                timePickerDialog4.setTitle("Select time: "+" ("+min+":"+min2+" - 04:00)");
+                timePickerDialog4.show();
             }
         });
 
@@ -353,10 +468,17 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
     public void onSaveInstanceState(Bundle savedInstanceState) {
 
         savedInstanceState.putSerializable(DAYS_NAME_STRING_KEY_FRAGMENT_EDIT_TIME, this.days);
-        ArrayList<Integer> times = new ArrayList<Integer>();
+        this.times = new ArrayList<Integer>();
         times.add(morning_start_hour);
         times.add(morning_start_minute);
-
+        times.add(morning_end_hour);
+        times.add(morning_end_minute);
+        times.add(evening_start_hour);
+        times.add(evening_start_minute);
+        times.add(evening_end_hour);
+        times.add(evening_end_minute);
+        savedInstanceState.putSerializable(TIMES_ARRAY_KEY_FRAGMENT_EDIT_TIME, this.times);
+        savedInstanceState.putSerializable(RESTAURANT_ID_KEY_FRAGMENT_EDIT_TIME, this.restaurant_id);
 
 
         this.saved_state=null;
@@ -374,6 +496,10 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
             Log.d(TAG_LOG,"Inizio retrive state");
             this.saved_state=true;
             this.days = (HashMap<String, Boolean>)savedInstanceState.getSerializable(DAYS_NAME_STRING_KEY_FRAGMENT_EDIT_TIME);
+            this.times = (ArrayList<Integer>)savedInstanceState.getSerializable(TIMES_ARRAY_KEY_FRAGMENT_EDIT_TIME);
+            this.restaurant_id = (String) savedInstanceState.getSerializable(RESTAURANT_ID_KEY_FRAGMENT_EDIT_TIME);
+            Log.d(TAG_LOG,"days:"+this.days);
+            Log.d(TAG_LOG,"times:"+this.times);
 
             for(Map.Entry<String, Boolean> element : days.entrySet()) {
                 String key = element.getKey();
@@ -405,6 +531,16 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
                 }
 
             }
+
+
+            this.morning_start_hour=this.times.get(0);
+            this.morning_start_minute=this.times.get(1);
+            this.morning_end_hour=this.times.get(2);
+            this.morning_end_minute=this.times.get(3);
+            this.evening_start_hour=this.times.get(4);
+            this.evening_start_minute=this.times.get(5);
+            this.evening_end_hour=this.times.get(6);
+            this.evening_end_minute=this.times.get(7);
 
 
         }
@@ -656,7 +792,7 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
     //Interfaccia
     //Interfaccia
     public interface EditRestaurantTime {
-        public void edit_time(List<Boolean>days, boolean morning, boolean evening);
+        public void edit_time(List<Boolean>days, boolean morning, boolean evening, List<Integer>times, String id);
         public void cancel();
     }
 
@@ -677,5 +813,9 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
             throw new ClassCastException(activity.toString() +
                     "Does not implement the interface");
         }
+    }
+
+    public void set_restaurant_id(String id){
+        this.restaurant_id=id;
     }
 }

@@ -33,10 +33,29 @@ public class CustomTimePickerMorning extends TimePickerDialog {
         maxMinute = minute;
     }
 
+    //Min:6, Max:16
+    //Min:16, Max:4
     @Override
     public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
         super.onTimeChanged(view, hourOfDay, minute);
 
+        boolean validTime;
+        if (maxHour>minHour)
+            validTime=check_valid_time(hourOfDay, minute);
+        else
+            validTime=check_valid_time2(hourOfDay, minute);
+
+
+        if(validTime) {
+            currentHour = hourOfDay;
+            currentMinute = minute;
+        }
+        else {
+            updateTime(currentHour, currentMinute);
+        }
+    }
+
+    private boolean check_valid_time(int hourOfDay, int minute){
         boolean validTime;
         if(hourOfDay < minHour) {
             validTime = false;
@@ -53,13 +72,27 @@ public class CustomTimePickerMorning extends TimePickerDialog {
         else {
             validTime = true;
         }
+        return validTime;
+    }
 
-        if(validTime) {
-            currentHour = hourOfDay;
-            currentMinute = minute;
+    //min:16, max:4
+    private boolean check_valid_time2(int hourOfDay, int minute){
+        boolean validTime;
+
+        if (hourOfDay<maxHour || hourOfDay>minHour){
+            validTime = true;
         }
         else {
-            updateTime(currentHour, currentMinute);
+            validTime = false;
         }
+
+        if(hourOfDay == minHour) {
+            validTime = minute >= minMinute;
+        }
+        else if(hourOfDay == maxHour) {
+            validTime = minute <= maxMinute;
+        }
+
+        return validTime;
     }
 }
