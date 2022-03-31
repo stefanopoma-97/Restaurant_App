@@ -1,10 +1,18 @@
 package com.poma.restaurant.model;
 
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
+import android.util.Log;
+
+import com.poma.restaurant.model.RecyclerViewAdapter.RecyclerViewAdapter_Restaurant;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class Restaurant implements Comparable<Restaurant>{
+    private static final String TAG_LOG = "Restaurant class";
     private String id;
     private String name, description, email, address, city, phone, admin_id,
             imageUrl, category, category_id;
@@ -15,6 +23,122 @@ public class Restaurant implements Comparable<Restaurant>{
     private List<Integer> times = new ArrayList<Integer>(Arrays.asList(6,0,15,0,16,0,4,0));
     private boolean morning = false;
     private boolean evening = false;
+
+    public Boolean isOpen(){
+        Log.d(TAG_LOG, "IS open:"+name);
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat mdformat = new SimpleDateFormat("EEEE - HH:mm");
+
+        int day_now = calendar.get(Calendar.DAY_OF_WEEK); //1-7
+        int day = day_now-2;
+        if (day==-1)
+            day=6;
+
+
+        int hour_now = calendar.get(Calendar.HOUR_OF_DAY); //0-23
+        int minute_now = calendar.get(Calendar.MINUTE);//0-59
+
+        //TEST
+        //hour_now=23;
+        //minute_now=0;
+
+        boolean morning_now = false;
+        boolean evening_now = false;
+        if (hour_now>=6 && hour_now<=15){
+            morning_now=true;
+            evening_now=false;
+        }
+        else if (hour_now>=16 && hour_now<=23){
+            morning_now=false;
+            evening_now=true;
+        }
+        else if (hour_now>=0 && hour_now<=4){
+            morning_now=false;
+            evening_now=true;
+        }
+
+        //se sono tra le 00 e le 5 setto il giorno precedente
+        if (hour_now<=5){
+            day--;
+            day_now--;
+        }
+
+
+
+        //Log.d(TAG_LOG, "ORARI NOW: settimana: "+day_now+", "+hour_now+" : "+minute_now+" morning:"+morning_now+" evening:"+evening_now);
+        //Log.d(TAG_LOG, "ORARI APERTURA: settimana: "+days.get(day_now)+" Mattina("+morning+"):"+times.get(0)+":"+times.get(1)+" - "+times.get(2)+":"+times.get(3)+
+        //        "   Sera("+evening+"):"+times.get(4)+":"+times.get(5)+" - "+times.get(6)+":"+times.get(7));
+        boolean open = false;
+
+        //TEST
+        //calendar.set(Calendar.HOUR_OF_DAY, 23);
+        //calendar.set(Calendar.MINUTE, 0);
+
+        //calendar.set(Calendar.DAY_OF_WEEK, day_now);
+        Date time_now = calendar.getTime();
+        Log.d(TAG_LOG, "Orario formattato ora: "+mdformat.format(time_now));
+
+
+        Calendar cal = Calendar.getInstance();
+
+
+
+
+        if (days.get(day)==true){
+            Log.d(TAG_LOG, "è aperto questo giorno");
+            if (morning_now == true && morning==true){
+                Log.d(TAG_LOG, "è mattina ed è aperto la mattina");
+                cal.set(Calendar.HOUR_OF_DAY, times.get(0));
+                cal.set(Calendar.MINUTE, times.get(1));
+                Date time_morning_start = cal.getTime();
+
+                cal.set(Calendar.HOUR_OF_DAY, times.get(2));
+                cal.set(Calendar.MINUTE, times.get(3));
+                Date time_morning_end = cal.getTime();
+
+                if ((time_now.after(time_morning_start) || time_now.equals(time_morning_start))
+                &&(time_now.before(time_morning_end) || time_now.equals(time_morning_end))){
+                    open=true;
+                    Log.d(TAG_LOG, "Segno come aperto");
+                }
+
+            }
+            else if (evening_now == true && evening==true){
+                Log.d(TAG_LOG, "è sera ed è aperto la sera");
+                cal.set(Calendar.HOUR_OF_DAY, times.get(4));
+                cal.set(Calendar.MINUTE, times.get(5));
+                cal.set(Calendar.DAY_OF_WEEK, day_now);
+                if (times.get(4)<=5)
+                    cal.set(Calendar.DAY_OF_WEEK, day_now+1);
+
+                Date time_evening_start = cal.getTime();
+
+                cal.set(Calendar.HOUR_OF_DAY, times.get(6));
+                cal.set(Calendar.MINUTE, times.get(7));
+                cal.set(Calendar.DAY_OF_WEEK, day_now);
+                if (times.get(6)<=5){
+                    Log.d(TAG_LOG, "aumento giorno di 1");
+                    cal.set(Calendar.DAY_OF_WEEK, day_now+1);
+                }
+
+                Date time_evening_end = cal.getTime();
+
+                Log.d(TAG_LOG, "Orario sera start: "+mdformat.format(time_evening_start));
+                Log.d(TAG_LOG, "Orario sera end: "+mdformat.format(time_evening_end));
+
+                if ((time_now.after(time_evening_start) || time_now.equals(time_evening_start))
+                        &&(time_now.before(time_evening_end) || time_now.equals(time_evening_end))){
+                    open=true;
+                    Log.d(TAG_LOG, "Segno come aperto");
+                }
+
+
+            }
+        }
+        return open;
+
+
+    }
 
     public List<Boolean> getDays() {
         return days;

@@ -590,6 +590,25 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         n.setN_reviews((int)in2);
 
 
+        //TIMES
+        if ((List<Boolean>) d.get("days")!=null)
+            n.setDays((List<Boolean>) d.get("days"));
+        if((ArrayList<Long>) d.get("times")!=null){
+            ArrayList<Long> arr = (ArrayList<Long>) d.get("times");
+            ArrayList<Integer> times = new ArrayList<>();
+            for (Long e: arr){
+                times.add(e.intValue());
+            }
+            n.setTimes((times));
+        }
+
+        if ((Boolean) d.get("morning")!=null)
+            n.setMorning((Boolean) d.get("morning"));
+
+        if((Boolean) d.get("evening")!=null)
+            n.setEvening((Boolean) d.get("evening"));
+
+
 
 
 

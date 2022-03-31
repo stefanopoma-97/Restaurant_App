@@ -176,6 +176,8 @@
     <string name="sabato">S</string>
     <string name="domenica">S</string>
     <string name="closed">Closed</string>
+    <string name="close">Close</string>
+    <string name="open">Open</string>
 
     <string name="select_time">Select time</string>
     <string name="edit_times">Update restaurant hours</string>

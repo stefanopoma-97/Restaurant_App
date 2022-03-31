@@ -112,7 +112,6 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
         // to set data to textview and imageview of each card layout
         Restaurant n = this.mData.get(position);
 
-
         holder.textview_card_restaurant_title.setText(n.getName());
         holder.textview_card_restaurant_category.setText(n.getCategory());
         holder.textview_card_restaurant_adress.setText(n.getAddress()+" - "+n.getCity());
@@ -146,6 +145,21 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
                 holder.view.setVisibility(View.GONE);
                 holder.btn_direction.setVisibility(View.GONE);
                 holder.btn_call.setVisibility(View.GONE);
+            }
+            else {
+
+
+            }
+
+            Log.d(TAG_LOG, "inizio update imageView");
+            boolean open = n.isOpen();
+            if (open){
+                holder.textView_open.setVisibility(View.VISIBLE);
+                holder.textView_close.setVisibility(View.INVISIBLE);
+            }
+            else{
+                holder.textView_open.setVisibility(View.INVISIBLE);
+                holder.textView_close.setVisibility(View.VISIBLE);
             }
 
             holder.btn_direction.setOnClickListener(new View.OnClickListener() {
@@ -190,7 +204,8 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
 
         TextView textview_card_restaurant_title, textview_card_restaurant_category, textview_card_restaurant_adress,
                 textview_card_restaurant_tag1,
-                textview_card_restaurant_review;
+                textview_card_restaurant_review,
+                textView_open, textView_close;
         CardView cardView_restaurant;
         ImageView imageView_icon_restaurant, star1, star2, star3, star4, star5;
         Button btn_direction, btn_call;
@@ -225,6 +240,8 @@ public class RecyclerViewAdapter_Restaurant extends RecyclerView.Adapter<Recycle
             textview_card_restaurant_adress = (TextView) itemView.findViewById(R.id.textview_card_favourite_adress);
             textview_card_restaurant_tag1 = (TextView) itemView.findViewById(R.id.textview_card_restaurant_tag1);
             textview_card_restaurant_review = (TextView) itemView.findViewById(R.id.textview_card_restaurant_number_review);
+            textView_open = (TextView) itemView.findViewById(R.id.textview_card_open);
+            textView_close = (TextView) itemView.findViewById(R.id.textview_card_close);
 
 
         }
