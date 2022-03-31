@@ -192,6 +192,7 @@
 
     <style name="day_not_open">
         <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="day_open">

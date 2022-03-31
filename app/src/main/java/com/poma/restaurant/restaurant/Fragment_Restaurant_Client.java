@@ -720,27 +720,57 @@ public class Fragment_Restaurant_Client extends Fragment {
                                 morning.setText(restaurant.getMorningTime());
                                 morning.setVisibility(View.VISIBLE);
                             }
+                            else{
+                                morning.setVisibility(View.INVISIBLE);
+                            }
                             if (restaurant.isEvening()){
                                 closed.setVisibility(View.INVISIBLE);
                                 evening.setText(restaurant.getEveningTime());
                                 evening.setVisibility(View.VISIBLE);
                             }
+                            else
+                                evening.setVisibility(View.INVISIBLE);
+                        }
+                        if (restaurant.isMorning()==false && restaurant.isEvening()==false){
+                            lunedi.setTextAppearance(R.style.day_not_open);
+                            martedi.setTextAppearance(R.style.day_not_open);
+                            mercoledi.setTextAppearance(R.style.day_not_open);
+                            giovedi.setTextAppearance(R.style.day_not_open);
+                            venerdi.setTextAppearance(R.style.day_not_open);
+                            sabato.setTextAppearance(R.style.day_not_open);
+                            domenica.setTextAppearance(R.style.day_not_open);
+                        }
+                        else{
+                            if (restaurant.getDays().get(0))
+                                lunedi.setTextAppearance(R.style.day_open);
+                            else
+                                lunedi.setTextAppearance(R.style.day_not_open);
+                            if (restaurant.getDays().get(1))
+                                martedi.setTextAppearance(R.style.day_open);
+                            else
+                                martedi.setTextAppearance(R.style.day_not_open);
+                            if (restaurant.getDays().get(2))
+                                mercoledi.setTextAppearance(R.style.day_open);
+                            else
+                                mercoledi.setTextAppearance(R.style.day_not_open);
+                            if (restaurant.getDays().get(3))
+                                giovedi.setTextAppearance(R.style.day_open);
+                            else
+                                giovedi.setTextAppearance(R.style.day_not_open);
+                            if (restaurant.getDays().get(4))
+                                venerdi.setTextAppearance(R.style.day_open);
+                            else
+                                venerdi.setTextAppearance(R.style.day_not_open);
+                            if (restaurant.getDays().get(5))
+                                sabato.setTextAppearance(R.style.day_open);
+                            else
+                                sabato.setTextAppearance(R.style.day_not_open);
+                            if (restaurant.getDays().get(6))
+                                domenica.setTextAppearance(R.style.day_open);
+                            else
+                                domenica.setTextAppearance(R.style.day_not_open);
                         }
 
-                        if (restaurant.getDays().get(0))
-                            lunedi.setTextAppearance(R.style.day_open);
-                        if (restaurant.getDays().get(1))
-                            martedi.setTextAppearance(R.style.day_open);
-                        if (restaurant.getDays().get(2))
-                            mercoledi.setTextAppearance(R.style.day_open);
-                        if (restaurant.getDays().get(3))
-                            giovedi.setTextAppearance(R.style.day_open);
-                        if (restaurant.getDays().get(4))
-                            venerdi.setTextAppearance(R.style.day_open);
-                        if (restaurant.getDays().get(5))
-                            sabato.setTextAppearance(R.style.day_open);
-                        if (restaurant.getDays().get(6))
-                            domenica.setTextAppearance(R.style.day_open);
 
 
 

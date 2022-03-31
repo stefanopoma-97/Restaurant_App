@@ -125,7 +125,7 @@
 
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/pasticceria"
+        android:text="@string/pizzeria"
 
         app:cornerRadius="@dimen/button_radius"
 
