@@ -161,7 +161,7 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
                                                     user.save(getApplicationContext());
                                                     Log.d(TAG_LOG, "User ID: "+user.getID());
                                                     Intent intent = new Intent();
-                                                    //intent.putExtra(User.USER_DATA_EXTRA, user);
+                                                    //intent.putExtra(Action.RESULT_OK_EXTRA, true);
                                                     setResult(RESULT_OK,intent);
                                                     progressBarr(false);
                                                     finish();

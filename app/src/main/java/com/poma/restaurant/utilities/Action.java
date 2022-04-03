@@ -12,6 +12,8 @@ public class Action {
 
         public static final String RESTAURANT_ID_EXTRA = "com.poma.restaurant.RESTAURANT_ID_EXTRA";
 
+        public static final String RESULT_OK_EXTRA= "com.poma.restaurant.RESULT_OK_EXTRA";
+
         public static final int EDIT_RESTAURANT_ACTION = 24;
 
 

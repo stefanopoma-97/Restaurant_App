@@ -56,12 +56,15 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
 
     //extra
     private static final String USER_LOGIN_EXTRA = "com.poma.restaurant.USER_LOGIN_EXTRA ";
+    private static final String SEND_FOR_RESULT = "com.poma.restaurant.SEND_FOR_RESULT";
     private static final int LOGIN_REQUEST_ID = 1;
     private static final int REGISTRATION_REQUEST_ID = 2;
 
     private FirebaseAuth mAuth;
 
     private User user;
+
+    private boolean send_for_result = false;
 
 
 
@@ -71,6 +74,12 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
         Log.d(TAG_LOG,"on create");
         setContentView(R.layout.activity_first_access);
 
+        /*Intent result_intent = getIntent();
+        if (result_intent.getBooleanExtra(Action.RESULT_OK_EXTRA, false)==true)
+            Log.d(TAG_LOG,"Ho ricevuto un risultato");
+        else
+            Log.d(TAG_LOG,"Non ho ricevuto un risultato");
+            */
 
 
         ImageView login_rapido = (ImageView) findViewById(R.id.login_rapido);
@@ -118,8 +127,26 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
         Log.d(TAG_LOG, "on start");
         mAuth= FirebaseAuth.getInstance();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG_LOG, "on Resume");
+        if (send_for_result == false)
+            check_user();
+    }
+
+    //OnCreate creo l'activity
+    //OnStart connessione con DB
+    //On restore state
+    //On activity result
+    //On Resume
+
+    private void check_user(){
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        Log.d(TAG_LOG, "Check user");
         if(currentUser != null){
             Log.d(TAG_LOG, "Trovato utente con Firestore -> Logout");
             mAuth.signOut();
@@ -158,6 +185,7 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
         final Intent intent = new Intent(this, Activity_Login.class);
         intent.putExtra(USER_LOGIN_EXTRA, user);
         startActivityForResult(intent, LOGIN_REQUEST_ID);
+        this.send_for_result=true;
         Log.d(TAG_LOG, "send Intent for result. Login with user: "+user+" (True -> User)");
 
     }
@@ -397,6 +425,7 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
         final Intent intent = new Intent(this, Activity_Register.class);
         intent.putExtra(USER_LOGIN_EXTRA, user);
         startActivityForResult(intent, REGISTRATION_REQUEST_ID);
+        this.send_for_result=true;
         Log.d(TAG_LOG, "send Intent for result. Login with user: "+user+" False -> Admin");
 
     }
@@ -419,6 +448,7 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
         final Intent intent = new Intent(this, Activity_Login.class);
         intent.putExtra(USER_LOGIN_EXTRA, user);
         startActivityForResult(intent, LOGIN_REQUEST_ID);
+        this.send_for_result=true;
         Log.d(TAG_LOG, "send Intent for result. Login with user: "+user);
     }
 
@@ -427,6 +457,7 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode,resultCode,data);
+        Log.d(TAG_LOG, "On activity result");
         //final User user;
         final Intent mainIntent;
 
@@ -491,7 +522,29 @@ public class Activity_First_Access extends AppCompatActivity implements Fragment
         }
     }
 
+    //STATE
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(TAG_LOG,"On save state");
+        outState.putBoolean(SEND_FOR_RESULT, this.send_for_result);
+        Log.d(TAG_LOG, "Save state");
+    }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.d(TAG_LOG,"On restore state");
+        if (savedInstanceState != null){
+            this.send_for_result = (savedInstanceState.getBoolean(SEND_FOR_RESULT));
+            Log.d(TAG_LOG,"Retrive state, send for result: "+this.send_for_result);
+        }
+        else {
+            Log.d(TAG_LOG,"Retrive state, non presente");
+        }
+
+
+    }
 
 
 }
