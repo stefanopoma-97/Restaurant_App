@@ -59,7 +59,7 @@ public class Fragment_Notification_List extends Fragment {
 
     private RecyclerViewAdapter_Notification adapter;
     private TextView textView_filter;
-    private SearchView searchView = null;
+    private SearchView searchView;
     private TextView textView_no_result;
     private String search = "";
 
@@ -116,7 +116,7 @@ public class Fragment_Notification_List extends Fragment {
         //RV
         this.rv = view.findViewById(R.id.RV_fragment_favourite);
         this.textView_filter = view.findViewById(R.id.textview_filter_notifications_list);
-        this.searchView = view.findViewById(R.id.search_view_fragment_favourite);
+        this.searchView = view.findViewById(R.id.search_view_fragment_notifications_list);
         this.textView_no_result = view.findViewById(R.id.textview_no_result_notifications_list);
         this.textView_no_result.setVisibility(View.INVISIBLE);
 

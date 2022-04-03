@@ -24,7 +24,7 @@
         tools:ignore="MissingConstraints"></TextView>
 
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/search_view_fragment_favourite"
+        android:id="@+id/search_view_fragment_notifications_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -47,7 +47,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_view_fragment_favourite">
+        app:layout_constraintTop_toBottomOf="@+id/search_view_fragment_notifications_list">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RV_fragment_favourite"
@@ -68,7 +68,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_view_fragment_favourite"
+        app:layout_constraintTop_toBottomOf="@+id/search_view_fragment_notifications_list"
         app:layout_constraintVertical_bias=".1"
         android:visibility="invisible"
         />
