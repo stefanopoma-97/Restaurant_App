@@ -596,6 +596,20 @@
                 app:layout_constraintVertical_bias=".1"
 
                 app:layout_constraintWidth_percent=".8" />
+            <TextView
+                android:id="@+id/textview_edit_times"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="@string/edit_times"
+                android:textSize="@dimen/text_size_medium"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_back_fragment_restaurant"
+                app:layout_constraintVertical_bias=".1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
