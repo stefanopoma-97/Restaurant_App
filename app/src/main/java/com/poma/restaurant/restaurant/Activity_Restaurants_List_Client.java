@@ -52,6 +52,7 @@ public class Activity_Restaurants_List_Client extends Activity_Drawer_Menu_User 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG_LOG, "On Create");
         //setContentView(R.layout.activity_restaurants_list_client);
 
         //Menu laterale
@@ -82,6 +83,7 @@ public class Activity_Restaurants_List_Client extends Activity_Drawer_Menu_User 
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d(TAG_LOG, "On Start");
         check_user();
     }
 
@@ -95,7 +97,7 @@ public class Activity_Restaurants_List_Client extends Activity_Drawer_Menu_User 
 
     private void check_user(){
 
-        Log.d(TAG_LOG, "Controllo ci sia un utente loggato");
+        Log.d(TAG_LOG, "Check users");
 
         //Login Firestore
         this.currentUser = mAuth.getCurrentUser();

@@ -221,6 +221,24 @@ public class Fragment_Restaurants_List_Client extends Fragment {
 
         this.currentUser = mAuth.getCurrentUser();
 
+
+
+
+
+
+    }
+
+    //OnCreate creo l'activity
+    //OnStart connessione con DB
+    //On restore state
+    //On activity result
+    //On Resume
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG_LOG,"on resume");
         this.mdata = new ArrayList<>();
 
         progressBarr(true);
@@ -241,10 +259,6 @@ public class Fragment_Restaurants_List_Client extends Fragment {
             }
         });
         setFilterBanner();
-
-
-
-
     }
 
     private void setFilterBanner(){
@@ -279,27 +293,26 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         //final User user;
         final Intent mainIntent;
 
-        //risposta ad un login
         if(requestCode == Action.FILTER_REQUEST) {
             switch (resultCode)
             {
                 case RESULT_OK:
                     Log.d(TAG_LOG, "Return from filter OK");
 
-                    Log.d(TAG_LOG, "Città: "+data.getStringExtra(Action.FILTER_CITY_EXTRA));
-                    Log.d(TAG_LOG, "Vote: "+data.getFloatExtra(Action.FILTER_VOTE_EXTRA, new Float(0)));
-                    Log.d(TAG_LOG, "Category: "+data.getStringArrayListExtra(Action.FILTER_CATEGORY_EXTRA));
+                    //Log.d(TAG_LOG, "Città: "+data.getStringExtra(Action.FILTER_CITY_EXTRA));
+                    //Log.d(TAG_LOG, "Vote: "+data.getFloatExtra(Action.FILTER_VOTE_EXTRA, new Float(0)));
+                    //Log.d(TAG_LOG, "Category: "+data.getStringArrayListExtra(Action.FILTER_CATEGORY_EXTRA));
 
                     this.city_filter=data.getStringExtra(Action.FILTER_CITY_EXTRA);
                     this.vote_filter=data.getFloatExtra(Action.FILTER_VOTE_EXTRA, new Float(0));
                     this.categories_filter = new ArrayList<>();
                     this.categories_filter=data.getStringArrayListExtra(Action.FILTER_CATEGORY_EXTRA);
 
-                    Log.d(TAG_LOG, "Città: "+this.city_filter);
-                    Log.d(TAG_LOG, "Vote: "+this.vote_filter);
-                    Log.d(TAG_LOG, "Category: "+this.categories_filter);
+                    //Log.d(TAG_LOG, "Città: "+this.city_filter);
+                    //Log.d(TAG_LOG, "Vote: "+this.vote_filter);
+                    //Log.d(TAG_LOG, "Category: "+this.categories_filter);
 
-                    Log.d(TAG_LOG, "On activity result onStart");
+                    //Log.d(TAG_LOG, "On activity result onStart");
                     //onStart();
 
                     break;
@@ -584,7 +597,7 @@ public class Fragment_Restaurants_List_Client extends Fragment {
         Double valore = (Double) d.get("vote");
         n.setVote(new Float(valore.floatValue()));
 
-        Log.d(TAG_LOG, "Voto settato: "+valore);
+        //Log.d(TAG_LOG, "Voto settato: "+valore);
 
         int in2 = d.getLong("n_reviews").intValue();
         n.setN_reviews((int)in2);
