@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -265,6 +266,7 @@ public class Activity_Edit_Restaurant extends Activity_Drawer_Menu_Admin impleme
                             update_favourites(id, name, category, address);
                             Intent intent = new Intent();
                             setResult(RESULT_OK,intent);
+                            Toast.makeText(Activity_Edit_Restaurant.this, R.string.restaurant_data_saved, Toast.LENGTH_SHORT).show();
                             finish();
 
                         }

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,6 +21,7 @@ import com.google.firebase.firestore.SetOptions;
 import com.poma.restaurant.R;
 import com.poma.restaurant.databinding.ActivityEditRestaurantBinding;
 import com.poma.restaurant.databinding.ActivityEditRestaurantTimesBinding;
+import com.poma.restaurant.login.Activity_First_Access;
 import com.poma.restaurant.menu.Activity_Drawer_Menu_Admin;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
 import com.poma.restaurant.model.Receiver;
@@ -163,6 +165,7 @@ public class Activity_Edit_Restaurant_Times extends Activity_Drawer_Menu_Admin i
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
                             Log.d(TAG_LOG, "aggiorno ristorante");
+                            Toast.makeText(Activity_Edit_Restaurant_Times.this, R.string.times_saved, Toast.LENGTH_SHORT).show();
                             finish();
 
                         }

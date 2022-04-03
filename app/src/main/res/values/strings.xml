@@ -182,6 +182,9 @@
     <string name="select_time">Select time</string>
     <string name="edit_times">Update restaurant hours</string>
 
+    <string name="times_saved">Saved</string>
+    <string name="restaurant_data_saved">Saved</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
