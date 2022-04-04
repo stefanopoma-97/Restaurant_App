@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -22,6 +23,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.poma.restaurant.R;
 import com.poma.restaurant.databinding.ActivityCreateRestaurantBinding;
 import com.poma.restaurant.databinding.ActivityRestaurantsListClientBinding;
+import com.poma.restaurant.login.Activity_First_Access;
 import com.poma.restaurant.menu.Activity_Drawer_Menu_Admin;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
 import com.poma.restaurant.model.Notification;
@@ -161,6 +163,7 @@ public class Activity_Create_Restaurant extends Activity_Drawer_Menu_Admin imple
             public void onSuccess(DocumentReference documentReference) {
                 Log.d(TAG_LOG, "aggiunta ristorante");
                 nuova_notifica_ristorante(city, documentReference.getId());
+                Toast.makeText(Activity_Create_Restaurant.this, R.string.restaurant_created, Toast.LENGTH_SHORT).show();
                 finish();
             }
         })

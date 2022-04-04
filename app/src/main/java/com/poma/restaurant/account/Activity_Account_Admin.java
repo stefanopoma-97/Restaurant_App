@@ -1,45 +1,5 @@
 package com.poma.restaurant.account;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.poma.restaurant.R;
-import com.poma.restaurant.databinding.ActivityAccountBinding;
-import com.poma.restaurant.databinding.ActivityEditRestaurantBinding;
-import com.poma.restaurant.login.Activity_First_Access;
-import com.poma.restaurant.menu.Activity_Drawer_Menu_Admin;
-import com.poma.restaurant.menu.Activity_Drawer_Menu_User;
-import com.poma.restaurant.menu.Activity_Menu;
-import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
-import com.poma.restaurant.model.Receiver;
-import com.poma.restaurant.model.User;
-
-import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -58,19 +18,45 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.DateFormat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.poma.restaurant.R;
+import com.poma.restaurant.databinding.ActivityAccountBinding;
+import com.poma.restaurant.menu.Activity_Drawer_Menu_Admin;
+import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
+import com.poma.restaurant.model.Receiver;
+import com.poma.restaurant.model.User;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.google.common.io.Files.getFileExtension;
-
-public class Activity_Account extends Activity_Drawer_Menu_User {
-
+public class Activity_Account_Admin extends Activity_Drawer_Menu_Admin{
+    
     ActivityAccountBinding activityAccountBinding;
 
-    private static final String TAG_LOG = Activity_Account.class.getName();
+    private static final String TAG_LOG = Activity_Account_Admin.class.getName();
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
@@ -135,8 +121,8 @@ public class Activity_Account extends Activity_Drawer_Menu_User {
         this.mAuth= FirebaseAuth.getInstance();
         this.db = FirebaseFirestore.getInstance();
 
-        this.progressDialog = new ProgressDialog(Activity_Account.this);
-        this.progressDialog_image = new ProgressDialog(Activity_Account.this);
+        this.progressDialog = new ProgressDialog(Activity_Account_Admin.this);
+        this.progressDialog_image = new ProgressDialog(Activity_Account_Admin.this);
 
 
         //Riceve broadcast
@@ -158,7 +144,7 @@ public class Activity_Account extends Activity_Drawer_Menu_User {
             @Override
             public void onClick(View v) {
                 Log.d(TAG_LOG, "edit account");
-                final Intent intent = new Intent(Activity_Account.this, Activity_Edit_Account.class);
+                final Intent intent = new Intent(Activity_Account_Admin.this, Activity_Edit_Account.class);
                 startActivityForResult(intent, EDIT_REQUEST_ID);
                 Log.d(TAG_LOG, "send Intent for result. edit");
             }
@@ -168,7 +154,7 @@ public class Activity_Account extends Activity_Drawer_Menu_User {
             @Override
             public void onClick(View v) {
                 Log.d(TAG_LOG, "change password");
-                final Intent intent = new Intent(Activity_Account.this, Activity_Password.class);
+                final Intent intent = new Intent(Activity_Account_Admin.this, Activity_Password.class);
                 startActivityForResult(intent, CHANGE_PASSWORD_REQUEST_ID);
                 Log.d(TAG_LOG, "send Intent for result. change password");
             }
@@ -230,7 +216,7 @@ public class Activity_Account extends Activity_Drawer_Menu_User {
             {
                 case RESULT_OK:
                     Log.d(TAG_LOG, "Return from edit: OK");
-                    Toast.makeText(Activity_Account.this, R.string.data_has_been_successfully_updated, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Activity_Account_Admin.this, R.string.data_has_been_successfully_updated, Toast.LENGTH_SHORT).show();
                     break;
                 case RESULT_CANCELED:
                     Log.d(TAG_LOG, "Return from edit: CANCELED");
@@ -241,7 +227,7 @@ public class Activity_Account extends Activity_Drawer_Menu_User {
             switch (resultCode)
             {
                 case RESULT_OK:
-                    Toast.makeText(Activity_Account.this, R.string.password_has_been_successfully_updated, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Activity_Account_Admin.this, R.string.password_has_been_successfully_updated, Toast.LENGTH_SHORT).show();
                     Log.d(TAG_LOG, "Return from change password: OK");
 
                     break;
@@ -502,7 +488,7 @@ public class Activity_Account extends Activity_Drawer_Menu_User {
                                     // Reload information
                                     updateImageView();
                                     progressDialog_image(false, "");
-                                    Toast.makeText(Activity_Account.this, R.string.image_uploaded, Toast.LENGTH_LONG).show();
+                                    Toast.makeText(Activity_Account_Admin.this, R.string.image_uploaded, Toast.LENGTH_LONG).show();
                                 }
                                 else{
                                     Log.d(TAG_LOG, "problemi aggiornamento user");
@@ -568,7 +554,7 @@ public class Activity_Account extends Activity_Drawer_Menu_User {
                                 Uri uri = Uri.parse((String)data.get("imageUrl"));
                                 preload_imageUri = uri;
                                 Log.d("firebase", "Image Url: " + preload_imageUri);
-                                Glide.with(Activity_Account.this)
+                                Glide.with(Activity_Account_Admin.this)
                                         .load(uri)
                                         .listener(new RequestListener<Drawable>() {
                                             @Override

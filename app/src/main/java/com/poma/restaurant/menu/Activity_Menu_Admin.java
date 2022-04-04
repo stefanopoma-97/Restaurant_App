@@ -44,6 +44,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.poma.restaurant.R;
 import com.poma.restaurant.account.Activity_Account;
+import com.poma.restaurant.account.Activity_Account_Admin;
 import com.poma.restaurant.databinding.ActivityMenuAdminBinding;
 import com.poma.restaurant.login.Activity_First_Access;
 import com.poma.restaurant.model.Broadcast_receiver_callBack_logout;
@@ -230,7 +231,7 @@ public class Activity_Menu_Admin extends Activity_Drawer_Menu_Admin {
                 in3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 new AsyncIntent().execute(in3, Activity_Menu_Admin.this);*/
                 if (animation_start==false){
-                    Intent in3 = new Intent(getApplicationContext(), Activity_Account.class);
+                    Intent in3 = new Intent(getApplicationContext(), Activity_Account_Admin.class);
                     in3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                     ObjectAnimator animation = create_animation_object(imageView_profile,in3);

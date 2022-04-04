@@ -19,6 +19,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.poma.restaurant.R;
 import com.poma.restaurant.account.Activity_Account;
+import com.poma.restaurant.account.Activity_Account_Admin;
 import com.poma.restaurant.notifications.Activity_Notifications_Admin;
 import com.poma.restaurant.restaurant.Activity_Create_Restaurant;
 import com.poma.restaurant.restaurant.Activity_Restaurants_List_Admin;
@@ -69,7 +70,7 @@ public class Activity_Drawer_Menu_Admin extends AppCompatActivity {
                                 break;
                             case R.id.nav_admin_profile:
                                 Log.d(TAG_LOG, "click su profilo");
-                                Intent in2 = new Intent(getApplicationContext(), Activity_Account.class);
+                                Intent in2 = new Intent(getApplicationContext(), Activity_Account_Admin.class);
                                 in2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(in2);
                                 break;
