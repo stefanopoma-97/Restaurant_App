@@ -579,7 +579,7 @@
                 app:iconGravity="textStart"
 
                 android:layout_height="wrap_content"
-                android:text="@string/cancel"
+                android:text="@string/back"
                 android:layout_marginBottom="100dp"
                 android:layout_marginTop="10dp"
 
