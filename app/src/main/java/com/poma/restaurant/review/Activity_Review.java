@@ -62,6 +62,7 @@ public class Activity_Review extends AppCompatActivity {
 
         this.imageView_back = findViewById(R.id.arrow_back_review_client);
         this.btn_create_review = findViewById(R.id.btn_create_review);
+        this.btn_create_review.setVisibility(View.INVISIBLE);
 
 
         //Riceve broadcast

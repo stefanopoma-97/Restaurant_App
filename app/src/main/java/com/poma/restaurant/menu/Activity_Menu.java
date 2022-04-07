@@ -589,7 +589,7 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
 
         Intent in = new Intent(Activity_Menu.this, Activity_First_Access.class);
         in.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        Toast.makeText(Activity_Menu.this, R.string.login, Toast.LENGTH_SHORT).show();
+        Toast.makeText(Activity_Menu.this, R.string.logout, Toast.LENGTH_SHORT).show();
         startActivity(in);
         finish();
     }

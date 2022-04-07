@@ -168,7 +168,7 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
                                                 }
                                                 else {
                                                     Log.d(TAG_LOG, "questo utente è admin (sto facendo login per utente normale)");
-                                                    fragment_login.setError(getResources().getString(R.string.no_admin));
+                                                    fragment_login.setError(getResources().getString(R.string.is_admin));
                                                     progressBarr(false);
 
                                                 }
@@ -277,7 +277,7 @@ public class Activity_Login extends AppCompatActivity implements Fragment_Login.
                                                 }
                                                 else{
                                                     Log.d(TAG_LOG, "questo utente non è admin");
-                                                    fragment_login.setError(getResources().getString(R.string.is_admin));
+                                                    fragment_login.setError(getResources().getString(R.string.no_admin));
                                                     progressBarr(false);
                                                 }
 

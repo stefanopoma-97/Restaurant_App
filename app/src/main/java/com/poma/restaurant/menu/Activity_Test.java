@@ -361,18 +361,45 @@ public class Activity_Test extends Activity_Drawer_Menu_User {
 
 
         db = FirebaseFirestore.getInstance();
-        db.collection("notifications").add(n).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Log.d(TAG_LOG, "aggiunta notifica ristorante");
-            }
-        })
-                .addOnFailureListener(new OnFailureListener() {
+        db.collection("notifications")
+                .whereEqualTo("user_id", "EzgFTtDJASXvESC9FZunuJ6uFFQ2")
+                .whereEqualTo("useful_id", "KFjKzIBze5Y5empsgtSR")
+                .whereEqualTo("type", getResources().getString(R.string.new_restaurant))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG_LOG, "Error adding notifica", e);
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG_LOG, "issuccessful");
+                            Boolean presente = false;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG_LOG, "trovata notifica uguale: "+document.getId());
+                                presente = true;
+                            }
+                            if (!presente){
+                                db.collection("notifications").add(n).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        Log.d(TAG_LOG, "aggiunta notifica ristorante");
+                                    }
+                                })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w(TAG_LOG, "Error adding notifica", e);
+                                            }
+                                        });
+                            }
+                        } else {
+                            Log.w(TAG_LOG, "Error getting documents.", task.getException());
+                        }
+
                     }
                 });
+
+
+
+
     }
 
 
