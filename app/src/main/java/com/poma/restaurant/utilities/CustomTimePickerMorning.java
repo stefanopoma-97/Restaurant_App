@@ -18,9 +18,12 @@ public class CustomTimePickerMorning extends TimePickerDialog {
 
     private int currentHour, currentMinute;
 
-    public CustomTimePickerMorning(Context context, int theme_Holo_Light_Dialog_NoActionBar, OnTimeSetListener callBack, int hourOfDay, int minute, boolean is24HourView) {
+    private Boolean min;
+
+    public CustomTimePickerMorning(Context context, int theme_Holo_Light_Dialog_NoActionBar, OnTimeSetListener callBack, int hourOfDay, int minute, boolean is24HourView, Boolean min) {
         //super(context, theme_Holo_Light_Dialog_NoActionBar, callBack, hourOfDay, minute, is24HourView);
         super(context, callBack, hourOfDay, minute, is24HourView);
+        this.min=min;
     }
 
     public void setMin(int hour, int minute) {
@@ -51,7 +54,10 @@ public class CustomTimePickerMorning extends TimePickerDialog {
             currentMinute = minute;
         }
         else {
-            updateTime(currentHour, currentMinute);
+            if(min)
+                updateTime(minHour, minMinute);
+            else
+                updateTime(maxHour, maxMinute);
         }
     }
 

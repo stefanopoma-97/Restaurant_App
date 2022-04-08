@@ -229,7 +229,7 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
                     }
                 };
 
-                CustomTimePickerMorning timePickerDialog = new CustomTimePickerMorning(getContext(),android.R.style.Theme_Holo_Light_Dialog_NoActionBar,onTimeSetListener, morning_start_hour, morning_start_minute, true);
+                CustomTimePickerMorning timePickerDialog = new CustomTimePickerMorning(getContext(),android.R.style.Theme_Holo_Light_Dialog_NoActionBar,onTimeSetListener, morning_start_hour, morning_start_minute, true, true);
                 timePickerDialog.setTitle("Select Time");
 
                 int max_h = 15;
@@ -275,7 +275,7 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
                     }
                 };
 
-                CustomTimePickerMorning timePickerDialog2 = new CustomTimePickerMorning(getContext(),android.R.style.Theme_Holo_Light_Dialog_NoActionBar,onTimeSetListener, morning_end_hour, morning_end_minute, true);
+                CustomTimePickerMorning timePickerDialog2 = new CustomTimePickerMorning(getContext(),android.R.style.Theme_Holo_Light_Dialog_NoActionBar,onTimeSetListener, morning_end_hour, morning_end_minute, true, false);
 
 
                 int min_h = 6;
@@ -320,7 +320,7 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
                     }
                 };
 
-                CustomTimePickerMorning timePickerDialog3 = new CustomTimePickerMorning(getContext(),android.R.style.Theme_Holo_Light_Dialog_NoActionBar,onTimeSetListener, evening_start_hour, evening_start_minute, true);
+                CustomTimePickerMorning timePickerDialog3 = new CustomTimePickerMorning(getContext(),android.R.style.Theme_Holo_Light_Dialog_NoActionBar,onTimeSetListener, evening_start_hour, evening_start_minute, true, true);
 
                 int max_h = 4;
                 int max_m = 0;
@@ -364,7 +364,7 @@ public class Fragment_Edit_Restaurant_Time extends Fragment {
                     }
                 };
 
-                CustomTimePickerMorning timePickerDialog4 = new CustomTimePickerMorning(getContext(),android.R.style.Theme_Holo_Light_Dialog_NoActionBar,onTimeSetListener, evening_end_hour, evening_end_minute, true);
+                CustomTimePickerMorning timePickerDialog4 = new CustomTimePickerMorning(getContext(),android.R.style.Theme_Holo_Light_Dialog_NoActionBar,onTimeSetListener, evening_end_hour, evening_end_minute, true, false);
 
 
                 int min_h = 16;
