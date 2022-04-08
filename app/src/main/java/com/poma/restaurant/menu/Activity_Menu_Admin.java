@@ -115,8 +115,7 @@ public class Activity_Menu_Admin extends Activity_Drawer_Menu_Admin {
         this.mAuth= FirebaseAuth.getInstance();
         this.animation_start=false;
 
-        //notifiche
-        receiveNotifications();
+
 
         //Riceve broadcast
         IntentFilter intentFilter = new IntentFilter();
@@ -479,6 +478,9 @@ public class Activity_Menu_Admin extends Activity_Drawer_Menu_Admin {
 
         check_user_admin();
 
+        //notifiche
+        receiveNotifications();
+
     }
 
     @Override
@@ -625,6 +627,8 @@ public class Activity_Menu_Admin extends Activity_Drawer_Menu_Admin {
 
     //verifica l'esistenza di notifiche per l'utente loggato (con l'id dell'utente, non mostrate, non lette)
     public void receiveNotifications(){
+        if (this.listener_notification!=null)
+            this.listener_notification.remove();
         this.db = FirebaseFirestore.getInstance();
         this.mAuth= FirebaseAuth.getInstance();
         this.currentUser = mAuth.getCurrentUser();

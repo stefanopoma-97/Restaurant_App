@@ -238,7 +238,7 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
                 new AsyncIntent().execute(in3, Activity_Menu.this);*/
 
                 if (animation_start==false){
-                    Intent in3 = new Intent(getApplicationContext(), Activity_Account.class);
+                    Intent in3 = new Intent(getApplicationContext(), Activity_Notifications.class);
                     in3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                     ObjectAnimator animation = create_animation_object_no_intent(imageView_notifications);
@@ -253,6 +253,66 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
 
             }
         });
+
+    }
+
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode,resultCode,data);
+        //final User user;
+        final Intent mainIntent;
+
+        //risposta ad un login
+        if(requestCode == EDIT_REQUEST_ID)
+        {
+            switch (resultCode)
+            {
+                case RESULT_OK:
+                    Log.d(TAG_LOG, "Return from edit: OK");
+                    //Toast.makeText(Activity_Menu.this, R.string.edit_restaurant, Toast.LENGTH_SHORT).show();
+                    break;
+                case RESULT_CANCELED:
+                    Log.d(TAG_LOG, "Return from edit: CANCELED");
+                    break;
+            }
+        }
+
+    }
+
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //controllo la presenza di utenti loggati
+        Log.d(TAG_LOG, "Controllo ci sia un utente loggato");
+        this.mAuth= FirebaseAuth.getInstance();
+        this.db = FirebaseFirestore.getInstance();
+
+        check_user();
+        //notifiche
+        receiveNotifications();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG_LOG,"on destroy");
+        super.onDestroy();
+        unregisterReceiver(this.broadcastReceiver);
+        Log.d(TAG_LOG,"un register receiver");
+
+        this.listener_notification.remove();
+        Log.d(TAG_LOG,"un register receiver Notification");
 
     }
 
@@ -450,62 +510,6 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
     }
 
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode,resultCode,data);
-        //final User user;
-        final Intent mainIntent;
-
-        //risposta ad un login
-        if(requestCode == EDIT_REQUEST_ID)
-        {
-            switch (resultCode)
-            {
-                case RESULT_OK:
-                    Log.d(TAG_LOG, "Return from edit: OK");
-                    //Toast.makeText(Activity_Menu.this, R.string.edit_restaurant, Toast.LENGTH_SHORT).show();
-                    break;
-                case RESULT_CANCELED:
-                    Log.d(TAG_LOG, "Return from edit: CANCELED");
-                    break;
-            }
-        }
-
-    }
-
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //controllo la presenza di utenti loggati
-        Log.d(TAG_LOG, "Controllo ci sia un utente loggato");
-        this.mAuth= FirebaseAuth.getInstance();
-        this.db = FirebaseFirestore.getInstance();
-
-        check_user();
-        //notifiche
-        receiveNotifications();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        Log.d(TAG_LOG,"on destroy");
-        super.onDestroy();
-        unregisterReceiver(this.broadcastReceiver);
-        Log.d(TAG_LOG,"un register receiver");
-        this.listener_notification.remove();
-
-    }
-
     //doppio click su back per uscire dall'applicazione
     private long pressedTime;
     @Override
@@ -640,7 +644,8 @@ public class Activity_Menu extends Activity_Drawer_Menu_User {
 
     //verifica l'esistenza di notifiche per l'utente loggato (con l'id dell'utente, non mostrate, non lette)
     public void receiveNotifications(){
-
+        if (this.listener_notification!=null)
+            this.listener_notification.remove();
         this.currentUser = this.mAuth.getCurrentUser();
         if (this.currentUser!=null){
             Query query = this.db.collection("notifications")
