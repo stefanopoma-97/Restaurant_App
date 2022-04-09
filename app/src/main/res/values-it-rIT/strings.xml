@@ -121,5 +121,32 @@
     <string name="load_less">Carica di meno...</string>
     <string name="experience">Esperienza</string>
     <string name="retrieving_data">Recupero dei dati, attendere prego</string>
+    <string name="edit_restaurant_times">Modifica l\'orario</string>
+    <string name="all_categories">Tutte le categori</string>
+    <string name="pizzeria">Pizzeria</string>
+    <string name="bar">Bar</string>
+    <string name="sushi">Sushi</string>
+    <string name="fast_food">Fast Food</string>
+    <string name="pasticceria">Pasticceria</string>
+    <string name="voto_maggiore_di">Voto >=</string>
+    <string name="days_of_the_week">Giorni di apertura</string>
+    <string name="all_day">Tutti i giorni</string>
+    <string name="morning">Mattina:</string>
+    <string name="evening">Sera:</string>
+    <string name="lunedì">L</string>
+    <string name="martedì">M</string>
+    <string name="mercoledì">M</string>
+    <string name="giovedì">G</string>
+    <string name="venerdì">V</string>
+    <string name="sabato">S</string>
+    <string name="domenica">D</string>
+    <string name="closed">Chiuso</string>
+    <string name="close">Chiuso</string>
+    <string name="open">Aperto</string>
+    <string name="select_time">Seleziona l\'orario</string>
+    <string name="edit_times">Aggiorna gli orari</string>
+    <string name="times_saved">Salvato</string>
+    <string name="restaurant_data_saved">Salvato</string>
+    <string name="restaurant_created">Ristorante creato</string>
 
 </resources>
